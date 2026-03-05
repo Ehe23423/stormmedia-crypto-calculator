@@ -159,7 +159,12 @@ export default function App() {
   };
 
   if (!session) {
-    return <LandingPage onAuth={() => setShowAuth(true)} />;
+    return (
+      <>
+        <LandingPage onAuth={() => setShowAuth(true)} />
+        {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      </>
+    );
   }
 
   return (
