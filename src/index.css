@@ -1769,3 +1769,12 @@ table {
     grid-template-columns: 1fr !important;
   }
 }
+/* ============================================================
+   SIDEBAR FIX — Force panels to stay expanded
+   ============================================================ */
+.layout-sidebar > div {
+  flex-shrink: 0 !important;
+  min-height: min-content !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
