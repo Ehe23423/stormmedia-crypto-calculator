@@ -92,6 +92,7 @@ export function DealSimulator({ params, updateParam }: Props) {
                         value={params.R}
                         onChange={(e) => updateParam('R', parseInt(e.target.value))}
                         className="glass-input"
+                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-glass)' }}
                     />
                 </div>
 

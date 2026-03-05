@@ -15,17 +15,15 @@ export function FinancialSnapshot({ metrics }: Props) {
             {/* PRIMARY PROFIT FIGURE */}
             <div style={{
                 flex: 1,
-                background: 'rgba(0,0,0,0.3)',
-                borderRadius: '12px',
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '8px',
                 border: `1px solid ${metrics.netProfit > 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)'}`,
-                padding: '20px',
+                padding: '16px',
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                boxShadow: metrics.netProfit > 0
-                    ? '0 0 20px rgba(16, 185, 129, 0.05)'
-                    : '0 0 20px rgba(239, 68, 68, 0.05)'
+                backdropFilter: 'blur(5px)'
             }}>
                 <div style={{
                     color: 'var(--text-secondary)',
