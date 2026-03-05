@@ -57,11 +57,11 @@ const QA_LIST: QA[] = [
         question: 'How risky is this bonus?',
         emoji: '💣',
         getAnswer: (p) => {
-            if (p.B === 0) return `✅ No bonus in this deal. Zero stacking risk. Clean and simple structure.`;
+            if (p.B === 0) return `🟢 No bonus structured. Zero stacking risk. Structure remains clean and predictable.`;
             const eq = (p.B / 350) * 100;
-            if (eq > 28.6) return `💀 DANGER: Bonus $${p.B}/1M = ${eq.toFixed(1)}% equivalent of gross/1M. PDF states 28.6% is the max safe threshold (=$100/1M bonus). You're above it. At high volumes this bonus will eat your margin. Freeze rule: if Net≤0, bonus pauses — but damage is done.`;
-            if (eq > 15) return `⚠️ CAUTION: Bonus ${eq.toFixed(1)}% equivalent. Above 15% is considered elevated risk. Consider converting to tier upgrade at 30M milestone instead.`;
-            return `✅ Bonus $${p.B}/1M = ${eq.toFixed(1)}% equivalent — within safe range (<15%). Bonus freeze rule applies if Net turns negative.`;
+            if (eq > 28.6) return `🔴 HIGH RISK: Bonus $${p.B}/1M represents ${eq.toFixed(1)}% of gross fees. Recommended threshold is <28.6% ($100/1M). This structure heavily compresses margins at scale. Note: The 'Freeze Rule' (pausing bonus if Net profit ≤ 0) protects from bankruptcy but does not recover prior margin erosion.`;
+            if (eq > 15) return `🟡 ELEVATED RISK: Bonus represents ${eq.toFixed(1)}% equivalent. Threshold for caution is 15%. Transitioning to volume-based commission tiers instead of flat bonuses is recommended to protect the baseline.`;
+            return `🟢 LOW RISK: Bonus $${p.B}/1M (${eq.toFixed(1)}% equivalent) is within safe operational limits (<15%). Standard freeze rules apply if net margin turns negative.`;
         }
     },
     {
@@ -83,9 +83,9 @@ const QA_LIST: QA[] = [
         emoji: '💰',
         getAnswer: (_p, m) => {
             const r1m = m.retainedPer1M;
-            if (r1m < 80) return `☠️ COLLAPSE ZONE: Only $${r1m.toFixed(0)} retained per $1M volume. PDF thresholds: <$80/1M = MARGIN COLLAPSE RISK. You need at least $${(80).toFixed(0)} to cover operational variability.`;
-            if (r1m < 140) return `⚠️ LOW MARGIN: $${r1m.toFixed(0)}/1M retained. Base formula at 0.035% fee = $350/1M gross. You're keeping ${(r1m / 350 * 100).toFixed(0)}% of gross — below recommended 40%+ floor.`;
-            return `✅ $${r1m.toFixed(0)} retained per $1M volume. Healthy: ${(r1m / 350 * 100).toFixed(0)}% of $350/1M base fee. Fee compression buffer: survives to ${(0.035 - (0.035 * (1 - r1m / 350))).toFixed(3)}% fee scenario.`;
+            if (r1m < 80) return `🔴 MARGIN COLLAPSE RISK: Only $${r1m.toFixed(0)} retained per $1M volume. Minimum safety threshold is $80/1M. This deal does not provide enough buffer for operational variability.`;
+            if (r1m < 140) return `🟡 LOW MARGIN BUFFER: $${r1m.toFixed(0)}/1M retained. Recommended floor is $140/1M (40% of standard $350/1M gross fee). This deal is vulnerable to sudden fee compression.`;
+            return `🟢 HEALTHY MARGIN: $${r1m.toFixed(0)} retained per $1M volume. You are retaining ${(r1m / 350 * 100).toFixed(0)}% of gross fees. Deal can withstand market fee compression down to ${(0.035 - (0.035 * (1 - r1m / 350))).toFixed(3)}% without going negative.`;
         }
     },
 ];
