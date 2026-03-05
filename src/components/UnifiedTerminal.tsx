@@ -156,11 +156,11 @@ export const UnifiedTerminal: React.FC = () => {
                                 padding: '4px 12px',
                                 fontSize: '0.7rem',
                                 fontWeight: 800,
-                                color: chip.color,
+                                color: '#ffffff',
                                 whiteSpace: 'nowrap',
-                                boxShadow: `0 0 12px ${chip.glow}30, inset 0 0 8px ${chip.glow}20`,
-                                textShadow: `0 1px 3px rgba(0,0,0,0.9), 0 0 6px ${chip.glow}60`,
-                                border: `1px solid ${chip.glow}77`,
+                                boxShadow: `0 0 16px ${chip.glow}40, inset 0 0 12px ${chip.glow}25`,
+                                textShadow: `0 1px 3px rgba(0,0,0,1), 0 0 6px ${chip.glow}`,
+                                border: `1px solid ${chip.glow}66`,
                                 borderRadius: '6px',
                                 position: 'relative'
                             }}>
