@@ -122,77 +122,78 @@ export const UnifiedTerminal: React.FC = () => {
                 padding: '12px 20px',
                 borderBottom: '1px solid rgba(255,255,255,0.07)',
                 background: 'linear-gradient(135deg,rgba(139,92,246,0.08) 0%,rgba(0,0,0,0.4) 100%)',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px', flexWrap: 'wrap',
             }} className="terminal-header">
-                <div style={{ flex: 1 }}>
-                    <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, letterSpacing: '0.05em' }}>
-                        BD <span style={{ color: 'var(--accent-purple)' }}>BRAIN</span>
-                    </h1>
-                    <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '4px' }}>
-                        First Ever Exchange deal calculator for Crypto Business developers - one to help us all
+                <div className="layout-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px', flexWrap: 'wrap' }}>
+                    <div style={{ flex: 1 }}>
+                        <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, letterSpacing: '0.05em' }}>
+                            BD <span style={{ color: 'var(--accent-purple)' }}>BRAIN</span>
+                        </h1>
+                        <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '4px' }}>
+                            First Ever Exchange deal calculator for Crypto Business developers - one to help us all
+                        </div>
+                        <div style={{ fontSize: '0.55rem', color: 'var(--accent-emerald)', fontWeight: 700, marginTop: '2px', opacity: 0.8 }}>
+                            TELEGRAM: @ostryopos
+                        </div>
                     </div>
-                    <div style={{ fontSize: '0.55rem', color: 'var(--accent-emerald)', fontWeight: 700, marginTop: '2px', opacity: 0.8 }}>
-                        TELEGRAM: @ostryopos
-                    </div>
-                </div>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch', flexWrap: 'wrap' }}>
-                    <select
-                        onChange={(e) => {
-                            if (e.target.value) setParams(PRESET_SCENARIOS[parseInt(e.target.value)].params);
-                        }}
-                        defaultValue=""
-                        className="storm-btn"
-                        style={{ fontSize: '0.65rem', padding: '0 8px', background: 'rgba(139, 92, 246, 0.2)', borderRadius: '4px', border: '1px solid rgba(139, 92, 246, 0.4)', color: 'white', outline: 'none', cursor: 'pointer', fontWeight: 700 }}
-                    >
-                        <option value="" disabled>⚡ LOAD SCENARIO</option>
-                        {PRESET_SCENARIOS.map((s, i) => (
-                            <option key={i} value={i} style={{ background: '#111827' }}>{s.label}</option>
-                        ))}
-                    </select>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch', flexWrap: 'wrap' }}>
+                        <select
+                            onChange={(e) => {
+                                if (e.target.value) setParams(PRESET_SCENARIOS[parseInt(e.target.value)].params);
+                            }}
+                            defaultValue=""
+                            className="storm-btn"
+                            style={{ fontSize: '0.65rem', padding: '0 8px', background: 'rgba(139, 92, 246, 0.2)', borderRadius: '4px', border: '1px solid rgba(139, 92, 246, 0.4)', color: 'white', outline: 'none', cursor: 'pointer', fontWeight: 700 }}
+                        >
+                            <option value="" disabled>⚡ LOAD SCENARIO</option>
+                            {PRESET_SCENARIOS.map((s, i) => (
+                                <option key={i} value={i} style={{ background: '#111827' }}>{s.label}</option>
+                            ))}
+                        </select>
 
-                    <select
-                        value={selectedRainCoin}
-                        onChange={(e) => setSelectedRainCoin(e.target.value as CoinType)}
-                        className="storm-btn"
-                        style={{ fontSize: '0.65rem', padding: '0 8px', background: 'rgba(0,0,0,0.4)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', color: 'white', outline: 'none', cursor: 'pointer' }}
-                    >
-                        <option value="SOL">SOL</option>
-                        <option value="BTC">BTC</option>
-                        <option value="ETH">ETH</option>
-                        <option value="DOGE">DOGE</option>
-                        <option value="XRP">XRP</option>
-                    </select>
-                    <button
-                        className="storm-btn"
-                        data-variant="hunter"
-                        style={{ fontSize: '0.65rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-                        onClick={() => triggerRain(selectedRainCoin)}
-                    >
-                        MAKE IT RAIN {selectedRainCoin}
-                    </button>
-                    <div style={{ display: 'flex', gap: '6px' }} className="header-chips">
-                        {[
-                            { label: metrics.status, color: sColor, glow: sColor },
-                            { label: `Score ${dealScore}/100`, color: 'var(--accent-amber)', glow: 'var(--accent-amber)' },
-                            { label: `V $${(params.V / 1e6).toFixed(1)}M`, color: 'var(--accent-blue)', glow: 'var(--accent-blue)' },
-                        ].map(chip => (
-                            <div key={chip.label} style={{
-                                background: 'rgba(255,255,255,0.03)',
-                                padding: '4px 12px',
-                                fontSize: '0.7rem',
-                                fontWeight: 800,
-                                color: '#ffffff',
-                                whiteSpace: 'nowrap',
-                                boxShadow: `0 0 16px ${chip.glow}40, inset 0 0 12px ${chip.glow}25`,
-                                textShadow: `0 1px 3px rgba(0,0,0,1), 0 0 6px ${chip.glow}`,
-                                border: `1px solid ${chip.glow}66`,
-                                borderRadius: '6px',
-                                position: 'relative'
-                            }}>
-                                <div style={{ position: 'absolute', inset: 0, borderRadius: '6px', background: `linear-gradient(45deg, ${chip.glow}22, transparent)`, pointerEvents: 'none' }} />
-                                {chip.label}
-                            </div>
-                        ))}
+                        <select
+                            value={selectedRainCoin}
+                            onChange={(e) => setSelectedRainCoin(e.target.value as CoinType)}
+                            className="storm-btn"
+                            style={{ fontSize: '0.65rem', padding: '0 8px', background: 'rgba(0,0,0,0.4)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', color: 'white', outline: 'none', cursor: 'pointer' }}
+                        >
+                            <option value="SOL">SOL</option>
+                            <option value="BTC">BTC</option>
+                            <option value="ETH">ETH</option>
+                            <option value="DOGE">DOGE</option>
+                            <option value="XRP">XRP</option>
+                        </select>
+                        <button
+                            className="storm-btn"
+                            data-variant="hunter"
+                            style={{ fontSize: '0.65rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                            onClick={() => triggerRain(selectedRainCoin)}
+                        >
+                            MAKE IT RAIN {selectedRainCoin}
+                        </button>
+                        <div style={{ display: 'flex', gap: '6px' }} className="header-chips">
+                            {[
+                                { label: metrics.status, color: sColor, glow: sColor },
+                                { label: `Score ${dealScore}/100`, color: 'var(--accent-amber)', glow: 'var(--accent-amber)' },
+                                { label: `V $${(params.V / 1e6).toFixed(1)}M`, color: 'var(--accent-blue)', glow: 'var(--accent-blue)' },
+                            ].map(chip => (
+                                <div key={chip.label} style={{
+                                    background: 'rgba(255,255,255,0.03)',
+                                    padding: '4px 12px',
+                                    fontSize: '0.7rem',
+                                    fontWeight: 800,
+                                    color: '#ffffff',
+                                    whiteSpace: 'nowrap',
+                                    boxShadow: `0 0 16px ${chip.glow}40, inset 0 0 12px ${chip.glow}25`,
+                                    textShadow: `0 1px 3px rgba(0,0,0,1), 0 0 6px ${chip.glow}`,
+                                    border: `1px solid ${chip.glow}66`,
+                                    borderRadius: '6px',
+                                    position: 'relative'
+                                }}>
+                                    <div style={{ position: 'absolute', inset: 0, borderRadius: '6px', background: `linear-gradient(45deg, ${chip.glow}22, transparent)`, pointerEvents: 'none' }} />
+                                    {chip.label}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,142 +225,144 @@ export const UnifiedTerminal: React.FC = () => {
             <div style={{ flex: 1, display: 'flex', minHeight: 0, overflow: 'hidden' }} className="terminal-content">
 
                 {/* LEFT SIDEBAR */}
-                <div style={{
-                    width: '300px',
-                    flexShrink: 0,
-                    borderRight: '1px solid rgba(255,255,255,0.06)',
-                    overflowY: 'auto',
-                    padding: '16px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '16px',
-                    background: 'rgba(0,0,0,0.18)',
-                    scrollbarWidth: 'none',
-                }} className="layout-sidebar">
-                    <Panel title="🎚️ Parameters">
-                        <DealSimulator params={params} updateParam={updateParam} />
-                    </Panel>
-                    <Panel title="📑 Quick Templates" noPad>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                            {[
-                                { name: '🛡️ Conservative', params: { V: 5000000, F: 0.035, P: 40, S: 30, R: 0, I: 0, B: 0 } },
-                                { name: '⚖️ Balanced', params: { V: 15000000, F: 0.035, P: 50, S: 37, R: 1200, I: 500, B: 50 } },
-                                { name: '🔥 Aggressive', params: { V: 30000000, F: 0.035, P: 60, S: 45, R: 1800, I: 800, B: 100 } },
-                            ].map(t => (
-                                <button
-                                    key={t.name}
-                                    onClick={() => setParams(prev => ({ ...prev, ...t.params }))}
-                                    className="storm-btn"
-                                    style={{
-                                        width: '100%', justifyContent: 'flex-start', padding: '10px 14px',
-                                        fontSize: '0.7rem', background: 'rgba(255,255,255,0.03)'
-                                    }}
-                                >
-                                    {t.name}
-                                </button>
-                            ))}
-                        </div>
-                    </Panel>
-                    <Panel title="🛡️ Safety Protocol" noPad>
-                        <MarginSafetyLock value={params.safetyThreshold} onChange={v => updateParam('safetyThreshold', v)} />
-                    </Panel>
-                    <Panel title="📖 Terminal Glossary" noPad>
-                        <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', minHeight: '100px' }}>
-                            <Glossary />
-                        </div>
-                    </Panel>
-                    <div style={{ height: '40px' }} /> {/* Extra space at bottom of sidebar */}
+                <div className="layout-main-content" style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+                    {/* LEFT SIDEBAR - HUNTER MODE */}
+                    <div className="layout-sidebar" style={{
+                        width: '100%',
+                        maxWidth: '430px',
+                        padding: '20px 0 20px 20px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '12px',
+                        overflowY: 'auto',
+                        background: 'rgba(0,0,0,0.18)',
+                        scrollbarWidth: 'none',
+                    }}>
+                        <Panel title="🎚️ Parameters">
+                            <DealSimulator params={params} updateParam={updateParam} />
+                        </Panel>
+                        <Panel title="📑 Quick Templates" noPad>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                {[
+                                    { name: '🛡️ Conservative', params: { V: 5000000, F: 0.035, P: 40, S: 30, R: 0, I: 0, B: 0 } },
+                                    { name: '⚖️ Balanced', params: { V: 15000000, F: 0.035, P: 50, S: 37, R: 1200, I: 500, B: 50 } },
+                                    { name: '🔥 Aggressive', params: { V: 30000000, F: 0.035, P: 60, S: 45, R: 1800, I: 800, B: 100 } },
+                                ].map(t => (
+                                    <button
+                                        key={t.name}
+                                        onClick={() => setParams(prev => ({ ...prev, ...t.params }))}
+                                        className="storm-btn"
+                                        style={{
+                                            width: '100%', justifyContent: 'flex-start', padding: '10px 14px',
+                                            fontSize: '0.7rem', background: 'rgba(255,255,255,0.03)'
+                                        }}
+                                    >
+                                        {t.name}
+                                    </button>
+                                ))}
+                            </div>
+                        </Panel>
+                        <Panel title="🛡️ Safety Protocol" noPad>
+                            <MarginSafetyLock value={params.safetyThreshold} onChange={v => updateParam('safetyThreshold', v)} />
+                        </Panel>
+                        <Panel title="📖 Terminal Glossary" noPad>
+                            <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', minHeight: '100px' }}>
+                                <Glossary />
+                            </div>
+                        </Panel>
+                        <div style={{ height: '40px' }} /> {/* Extra space at bottom of sidebar */}
 
-                </div>
+                    </div>
 
-                {/* RIGHT CONTENT */}
-                <div style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '14px' }} className="layout-main">
+                    {/* RIGHT CONTENT */}
+                    <div style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '14px' }} className="layout-main">
 
-                    {/* ─── HUNTER TAB ─── */}
-                    {activeTab === 'hunter' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                <Panel title="🚨 Deal Score Engine" tint="hunter">
-                                    <DealScore params={params} metrics={metrics} />
+                        {/* ─── HUNTER TAB ─── */}
+                        {activeTab === 'hunter' && (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
+                                    <Panel title="🚨 Deal Score Engine" tint="hunter">
+                                        <DealScore params={params} metrics={metrics} />
+                                    </Panel>
+                                    <Panel title="⚠️ Structural Warnings" tint="warning">
+                                        <StructuralWarnings params={params} metrics={metrics} />
+                                    </Panel>
+                                </div>
+                                <Panel title="📊 Financial Snapshot">
+                                    <FinancialSnapshot params={params} metrics={metrics} />
                                 </Panel>
-                                <Panel title="⚠️ Structural Warnings" tint="warning">
-                                    <StructuralWarnings params={params} metrics={metrics} />
+                                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
+                                    <Panel title="📈 Volume Projections">
+                                        <MinimalCharts params={params} />
+                                    </Panel>
+                                    <Panel title="⛈️ Stress Tests" tint="danger">
+                                        <StressTests baseParams={params} />
+                                    </Panel>
+                                </div>
+                                <Panel title="🌡️ Sensitivity Heatmap">
+                                    <Heatmap params={params} />
+                                </Panel>
+                                <Panel title="🤖 BD Deal Assistant" tint="blue">
+                                    <DealAssistant params={params} metrics={metrics} dealScore={dealScore} />
                                 </Panel>
                             </div>
-                            <Panel title="📊 Financial Snapshot">
-                                <FinancialSnapshot params={params} metrics={metrics} />
-                            </Panel>
-                            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                <Panel title="📈 Volume Projections">
-                                    <MinimalCharts params={params} />
+                        )}
+
+                        {/* ─── AGENCY TAB ─── */}
+                        {activeTab === 'agency' && (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
+                                    <Panel title="📊 Financial Snapshot" tint="blue">
+                                        <FinancialSnapshot params={params} metrics={metrics} />
+                                    </Panel>
+                                    <Panel title="🤝 Partner Side Economics">
+                                        <PartnerRevenueSim params={params} metrics={metrics} />
+                                    </Panel>
+                                </div>
+                                <Panel title="💬 Negotiation Proposal Generator" tint="purple">
+                                    <ProposalGenerator params={params} />
                                 </Panel>
-                                <Panel title="⛈️ Stress Tests" tint="danger">
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
+                                    <Panel title="📝 Executive Summary">
+                                        <ExecutiveSummary params={params} metrics={metrics} />
+                                    </Panel>
+                                    <Panel title="📖 BD Rulebook" tint="purple">
+                                        <NegotiationRulebook />
+                                    </Panel>
+                                </div>
+                                <Panel title="🏅 Deal Score Breakdown">
+                                    <DealScore params={params} metrics={metrics} />
+                                </Panel>
+                            </div>
+                        )}
+
+                        {/* ─── ROAST TAB ─── */}
+                        {activeTab === 'roast' && (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <Panel tint="roast" title={<>🔥 Deal Roast Mode <span style={{ fontSize: '0.55rem', fontWeight: 400, color: 'rgba(255,255,255,0.28)', fontStyle: 'italic', marginLeft: 8, textTransform: 'none', letterSpacing: 0 }}>na granicy dobrego smaku</span></>}>
+                                    <DealRoast params={params} metrics={metrics} dealScore={dealScore} />
+                                </Panel>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
+                                    <Panel title="🚨 Score Breakdown">
+                                        <DealScore params={params} metrics={metrics} />
+                                    </Panel>
+                                    <Panel title="⚠️ Structural Warnings" tint="warning">
+                                        <StructuralWarnings params={params} metrics={metrics} />
+                                    </Panel>
+                                </div>
+                                <Panel title="⛈️ Stress Tests — is your deal cooked?" tint="danger">
                                     <StressTests baseParams={params} />
                                 </Panel>
                             </div>
-                            <Panel title="🌡️ Sensitivity Heatmap">
-                                <Heatmap params={params} />
-                            </Panel>
-                            <Panel title="🤖 BD Deal Assistant" tint="blue">
-                                <DealAssistant params={params} metrics={metrics} dealScore={dealScore} />
-                            </Panel>
-                        </div>
-                    )}
+                        )}
 
-                    {/* ─── AGENCY TAB ─── */}
-                    {activeTab === 'agency' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                <Panel title="📊 Financial Snapshot" tint="blue">
-                                    <FinancialSnapshot params={params} metrics={metrics} />
-                                </Panel>
-                                <Panel title="🤝 Partner Side Economics">
-                                    <PartnerRevenueSim params={params} metrics={metrics} />
-                                </Panel>
-                            </div>
-                            <Panel title="💬 Negotiation Proposal Generator" tint="purple">
-                                <ProposalGenerator params={params} />
-                            </Panel>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                <Panel title="📝 Executive Summary">
-                                    <ExecutiveSummary params={params} metrics={metrics} />
-                                </Panel>
-                                <Panel title="📖 BD Rulebook" tint="purple">
-                                    <NegotiationRulebook />
-                                </Panel>
-                            </div>
-                            <Panel title="🏅 Deal Score Breakdown">
-                                <DealScore params={params} metrics={metrics} />
-                            </Panel>
+                        {/* Footer */}
+                        <div style={{ marginTop: '20px', paddingBottom: '12px', textAlign: 'center', color: 'rgba(255,255,255,0.15)', fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                            SZYMON CRYPTO BRAIN ACTIVE · {tab.emoji} {tab.label} · V4.2 PRO · TERMINAL ACTIVE
                         </div>
-                    )}
-
-                    {/* ─── ROAST TAB ─── */}
-                    {activeTab === 'roast' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <Panel tint="roast" title={<>🔥 Deal Roast Mode <span style={{ fontSize: '0.55rem', fontWeight: 400, color: 'rgba(255,255,255,0.28)', fontStyle: 'italic', marginLeft: 8, textTransform: 'none', letterSpacing: 0 }}>na granicy dobrego smaku</span></>}>
-                                <DealRoast params={params} metrics={metrics} dealScore={dealScore} />
-                            </Panel>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                <Panel title="🚨 Score Breakdown">
-                                    <DealScore params={params} metrics={metrics} />
-                                </Panel>
-                                <Panel title="⚠️ Structural Warnings" tint="warning">
-                                    <StructuralWarnings params={params} metrics={metrics} />
-                                </Panel>
-                            </div>
-                            <Panel title="⛈️ Stress Tests — is your deal cooked?" tint="danger">
-                                <StressTests baseParams={params} />
-                            </Panel>
-                        </div>
-                    )}
-
-                    {/* Footer */}
-                    <div style={{ marginTop: '20px', paddingBottom: '12px', textAlign: 'center', color: 'rgba(255,255,255,0.15)', fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                        SZYMON CRYPTO BRAIN ACTIVE · {tab.emoji} {tab.label} · V4.2 PRO · TERMINAL ACTIVE
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };

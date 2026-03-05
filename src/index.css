@@ -1762,11 +1762,72 @@ table {
 }
 
 /* ============================================================
-   RESPONSIVE — sidebar collapses below 1200px
+   RESPONSIVE OVERHAUL (Mobile, Tablet, Desktop, 4K TV)
    ============================================================ */
+
+/* Mobile Devices (phones, less than 768px) */
+@media (max-width: 767px) {
+  body {
+    font-size: 10px;
+    /* Base font smaller */
+  }
+
+  .bento-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .layout-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .layout-sidebar {
+    gap: 8px !important;
+  }
+
+  .bento-item {
+    padding: 12px;
+  }
+
+  .header-chips {
+    flex-wrap: wrap;
+  }
+}
+
+/* Tablets and small laptops (1024px to 1200px) */
 @media (max-width: 1200px) {
   .bento-grid-2 {
     grid-template-columns: 1fr !important;
+  }
+
+  .layout-main-content {
+    flex-direction: column !important;
+  }
+}
+
+/* Massive 4K TV / HDMI Presentation Displays (min-width: 2500px) */
+@media (min-width: 2500px) {
+  body {
+    font-size: 16px;
+    /* Base font much larger */
+  }
+
+  .bento-item {
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.5rem !important;
+  }
+
+  .storm-btn {
+    font-size: 1rem !important;
+    padding: 12px 24px !important;
+  }
+
+  .value-display {
+    font-size: 2rem !important;
   }
 }
 
