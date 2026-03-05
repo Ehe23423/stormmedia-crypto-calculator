@@ -7,8 +7,8 @@ export function DealScore({ metrics }: { metrics: DealResult }) {
 
     // Use pre-computed, safe percentage from DealModel (or fallback to 0 if missing)
     const safetyBufferVal = metrics.safetyBufferPct ?? 0;
-    const safetyBufferDisplay = formatPct(safetyBufferVal);
     const safetyBufferPctNum = safetyBufferVal * 100;
+    const safetyBufferDisplay = isFinite(safetyBufferPctNum) ? formatPct(safetyBufferVal) : '—';
 
     let color = 'var(--text-primary)';
     let badge = '🟢';

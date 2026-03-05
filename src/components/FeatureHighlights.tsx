@@ -3,7 +3,7 @@ import '../index.css';
 
 export function FeatureHighlights() {
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '24px' }}>
 
             {/* Card 1: Abstract Chart */}
             <div className="glass-panel feature-card">

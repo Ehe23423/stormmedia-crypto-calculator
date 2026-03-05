@@ -452,12 +452,16 @@ export default function App() {
 
                   {activeTab === 'BD_OS' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                      <PartnerCRM />
-                      <SimulatorPro />
-                      <DealBattle currentParams={params} currentMetrics={metrics} />
-                      <StreamerMode />
-                      <AIAssistant />
-                      <IntelligenceScout />
+                      <div className="grid-layout grid-cols-3">
+                        <PartnerCRM />
+                        <SimulatorPro />
+                        <DealBattle currentParams={params} currentMetrics={metrics} />
+                      </div>
+                      <div className="grid-layout grid-cols-3">
+                        <StreamerMode />
+                        <AIAssistant />
+                        <IntelligenceScout />
+                      </div>
                       <AffiliateLinkBuilder />
                     </div>
                   )}
