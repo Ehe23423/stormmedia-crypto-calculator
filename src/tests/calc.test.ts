@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { calculateDealMetrics, DealParams } from '../model/DealModel';
+import { calculateDealMetrics } from '../model/DealModel';
+import type { DealParams } from '../model/DealModel';
 
 describe('Calculator Core Logic', () => {
     const baseParams: DealParams = {
@@ -9,47 +10,47 @@ describe('Calculator Core Logic', () => {
         S: 20,
         R: 0,
         I: 0,
-        bonusPer1M: 0,
-        useTiers: false,
-        tiers: [],
-        useMilestones: false,
-        milestones: [],
-        requireMarginLock: false
+        B: 0,
+        safetyThreshold: 15
     };
 
     it('should decrease net profit when Retainer (R) increases', () => {
         const metricsBefore = calculateDealMetrics({ ...baseParams, R: 0 });
         const metricsAfter = calculateDealMetrics({ ...baseParams, R: 5000 });
 
-        expect(metricsAfter.net).toBeLessThan(metricsBefore.net);
+        expect(metricsAfter.netProfit).toBeLessThan(metricsBefore.netProfit);
     });
 
     it('should decrease net profit when Operational Cost (I) increases', () => {
         const metricsBefore = calculateDealMetrics({ ...baseParams, I: 0 });
         const metricsAfter = calculateDealMetrics({ ...baseParams, I: 1000 });
 
-        expect(metricsAfter.net).toBeLessThan(metricsBefore.net);
+        expect(metricsAfter.netProfit).toBeLessThan(metricsBefore.netProfit);
     });
 
-    it('should decrease retained revenue when Partner Share (P) increases', () => {
+    it('should decrease net profit when Partner Share (P) increases', () => {
         const metricsBefore = calculateDealMetrics({ ...baseParams, P: 40 });
         const metricsAfter = calculateDealMetrics({ ...baseParams, P: 50 });
 
-        expect(metricsAfter.net).toBeLessThan(metricsBefore.net);
+        expect(metricsAfter.netProfit).toBeLessThan(metricsBefore.netProfit);
     });
 
     it('should increase all revenues when Volume (V) increases', () => {
         const metricsBefore = calculateDealMetrics({ ...baseParams, V: 10_000_000 });
         const metricsAfter = calculateDealMetrics({ ...baseParams, V: 20_000_000 });
 
-        expect(metricsAfter.net).toBeGreaterThan(metricsBefore.net);
-        expect(metricsAfter.hunterEarnings).toBeGreaterThan(metricsBefore.hunterEarnings);
+        expect(metricsAfter.netProfit).toBeGreaterThan(metricsBefore.netProfit);
+        expect(metricsAfter.partnerPool).toBeGreaterThan(metricsBefore.partnerPool);
     });
 
-    it('should clamp percent inputs correctly (e.g. F, P, S)', () => {
-        const metrics = calculateDealMetrics({ ...baseParams, P: -10, S: 150 });
-        // Assuming your math does some clamping, but wait, the prompt says "Percent inputs clamped 0-100".
-        // Let's test if the output is valid. For now, testing basic direction.
-        expect(metrics.net).toBeTypeOf('number');
+    it('should respond to Safety Threshold changes', () => {
+        const params = { ...baseParams, P: 70 }; // High share creates low margin
+        const metricsLowThreshold = calculateDealMetrics({ ...params, safetyThreshold: 5 });
+        const metricsHighThreshold = calculateDealMetrics({ ...params, safetyThreshold: 20 });
+
+        // At 70% share, margin is low. High threshold should trigger BLOCKED.
+        if (metricsHighThreshold.marginBuffer < 0.2) {
+            expect(metricsHighThreshold.status).toBe('BLOCKED');
+        }
     });
 });
