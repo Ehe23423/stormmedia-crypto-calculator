@@ -1,60 +1,96 @@
-
 import '../index.css';
 
 export function FeatureHighlights() {
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+        <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: '12px',
+            marginBottom: '20px'
+        }}>
 
-            {/* Card 1: Abstract Chart */}
-            <div className="glass-panel feature-card">
-                <div className="card-graphic">
-                    <div className="abstract-chart">
-                        <svg viewBox="0 0 200 80" width="100%" height="100%" preserveAspectRatio="none">
-                            <path d="M0,80 Q25,40 50,60 T100,30 T150,50 T200,10" fill="none" stroke="var(--accent-purple)" strokeWidth="3" />
-                            <circle cx="50" cy="60" r="4" fill="var(--accent-purple)" />
-                            <circle cx="100" cy="30" r="4" fill="var(--bg-dark)" stroke="var(--accent-purple)" strokeWidth="2" />
-                            <circle cx="150" cy="50" r="4" fill="var(--bg-dark)" stroke="var(--accent-purple)" strokeWidth="2" />
-                            <circle cx="200" cy="10" r="4" fill="var(--bg-dark)" stroke="var(--accent-purple)" strokeWidth="2" />
-                        </svg>
-                        <div className="floating-tag tag-1">Tight Spreads</div>
-                        <div className="floating-tag tag-2">No Commissions</div>
-                    </div>
-                </div>
-                <div className="card-content">
-                    <h3>Institutional Spreads</h3>
-                    <p>Access some of the lowest all-in costs. Benefit from market-leading prices and zero commissions.</p>
+            {/* Card 1: BD OS */}
+            <div style={{
+                background: 'linear-gradient(135deg, rgba(61,155,255,0.12) 0%, rgba(61,155,255,0.04) 100%)',
+                border: '1px solid rgba(61,155,255,0.25)',
+                borderRadius: '12px',
+                padding: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+            }}>
+                <span style={{ fontSize: '1.6rem' }}>⚡</span>
+                <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>BD Operating System</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-blue)' }}>Real-time Deal Engine</div>
                 </div>
             </div>
 
-            {/* Card 2: Tier One Liquidity (Floating Icons) */}
-            <div className="glass-panel feature-card">
-                <div className="card-graphic">
-                    <div className="liquidity-ring">
-                        <div className="center-node">🏦</div>
-                        <div className="orbiting-node n1">💰</div>
-                        <div className="orbiting-node n2">📈</div>
-                        <div className="orbiting-node n3">⚡</div>
-                    </div>
-                </div>
-                <div className="card-content">
-                    <h3>Tier-One Liquidity</h3>
-                    <p>Sourced from major institutions and top cryptocurrency exchanges to offer the best trading conditions.</p>
+            {/* Card 2: Zero Auth */}
+            <div style={{
+                background: 'linear-gradient(135deg, rgba(16,217,138,0.12) 0%, rgba(16,217,138,0.04) 100%)',
+                border: '1px solid rgba(16,217,138,0.25)',
+                borderRadius: '12px',
+                padding: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+            }}>
+                <span style={{ fontSize: '1.6rem' }}>🔓</span>
+                <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>Access Level</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-emerald)' }}>Open Dashboard</div>
                 </div>
             </div>
 
-            {/* Card 3: Deep Markets (Bars) */}
-            <div className="glass-panel feature-card">
-                <div className="card-graphic">
-                    <div className="crypto-pairs">
-                        <div className="pair-row"><span>BTC/USDT</span> <span className="pair-val">0.05</span></div>
-                        <div className="pair-row"><span>ETH/USDT</span> <span className="pair-val">0.03</span></div>
-                        <div className="pair-row"><span>SOL/USDT</span> <span className="pair-val">0.01</span></div>
-                        <div className="floating-plus">+</div>
-                    </div>
+            {/* Card 3: Roast Mode */}
+            <div style={{
+                background: 'linear-gradient(135deg, rgba(244,114,182,0.12) 0%, rgba(244,114,182,0.04) 100%)',
+                border: '1px solid rgba(244,114,182,0.25)',
+                borderRadius: '12px',
+                padding: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+            }}>
+                <span style={{ fontSize: '1.6rem' }}>🔥</span>
+                <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>Roast Mode</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-pink)' }}>Deal Massacre Ready</div>
                 </div>
-                <div className="card-content">
-                    <h3>200+ Crypto Pairs</h3>
-                    <p>Trade your favorite pairs with tight spreads and huge depth. Scale up without slippage.</p>
+            </div>
+
+            {/* Card 4: Tools */}
+            <div style={{
+                background: 'linear-gradient(135deg, rgba(168,85,247,0.12) 0%, rgba(168,85,247,0.04) 100%)',
+                border: '1px solid rgba(168,85,247,0.25)',
+                borderRadius: '12px',
+                padding: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+            }}>
+                <span style={{ fontSize: '1.6rem' }}>🛠️</span>
+                <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>Tools Active</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-purple)' }}>20+ BD Modules</div>
+                </div>
+            </div>
+
+            {/* Card 5: VIP Upgrade */}
+            <div style={{
+                background: 'linear-gradient(135deg, rgba(251,188,4,0.12) 0%, rgba(251,188,4,0.04) 100%)',
+                border: '1px solid rgba(251,188,4,0.25)',
+                borderRadius: '12px',
+                padding: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+            }}>
+                <span style={{ fontSize: '1.6rem' }}>👑</span>
+                <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>VIP Upgrade</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-amber)' }}>Beat Any Exchange</div>
                 </div>
             </div>
 
