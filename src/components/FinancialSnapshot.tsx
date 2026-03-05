@@ -1,4 +1,4 @@
-import { DealResult } from '../model/DealModel';
+import type { DealResult } from '../model/DealModel';
 
 interface Props {
     metrics: DealResult;

@@ -1,4 +1,4 @@
-import { type DealParams } from '../model/DealModel';
+import type { DealParams } from '../model/DealModel';
 
 interface Props {
     applyParams: (newParams: Partial<DealParams>) => void;
