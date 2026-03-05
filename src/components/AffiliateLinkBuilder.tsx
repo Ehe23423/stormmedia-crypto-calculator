@@ -62,8 +62,8 @@ export function AffiliateLinkBuilder() {
                         {generateURL()}
                     </div>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                        <button onClick={() => alert('Link Copied!')} style={{ flex: 1, padding: '10px', background: 'var(--accent-blue)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>Copy Tracking URL</button>
-                        <button style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid var(--border-light)', color: 'var(--text-primary)', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>Save & Log to CRM</button>
+                        <button onClick={() => { navigator.clipboard.writeText(generateURL()); alert('✅ Link Copied to clipboard!'); }} style={{ flex: 1, padding: '10px', background: 'var(--accent-blue)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>📋 Copy Tracking URL</button>
+                        <button style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid var(--border-light)', color: 'var(--text-primary)', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>💾 Save & Log to CRM</button>
                     </div>
                 </div>
 

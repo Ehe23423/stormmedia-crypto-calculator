@@ -13,8 +13,8 @@ export function SimulatorPro() {
     // Derived Metrics
     const activeTraders = Math.floor(users * (activePercent / 100));
     const totalMonthlyVolume = activeTraders * avgVol;
-    const totalExchangeFee = totalMonthlyVolume * (feeLevel / 100);
-    const partnerEarnings = totalExchangeFee * (payoutShare / 100);
+    const totalExchangeFee = totalMonthlyVolume * feeLevel;          // feeLevel already in decimal e.g. 0.00035
+    const partnerEarnings = totalExchangeFee * payoutShare;            // payoutShare already in decimal e.g. 0.40
 
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
