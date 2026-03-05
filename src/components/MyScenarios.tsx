@@ -16,6 +16,7 @@ export function MyScenarios({ session, onLoadScenario }: { session: any, onLoadS
         const { data, error } = await supabase
             .from('scenarios')
             .select('*')
+            .eq('owner_user_id', session.user.id)
             .order('created_at', { ascending: false });
 
         if (!error && data) {
