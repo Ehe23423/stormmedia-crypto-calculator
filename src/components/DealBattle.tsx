@@ -4,9 +4,10 @@ import '../index.css';
 interface Props {
     currentParams?: any;
     currentMetrics?: any;
+    globalRoastMode?: boolean;
 }
 
-export function DealBattle({ currentParams, currentMetrics }: Props) {
+export function DealBattle({ currentParams, currentMetrics, globalRoastMode }: Props) {
     interface ScenarioPayload {
         retainedPer1M: number;
         breakEvenVolume: number | null;
@@ -65,14 +66,23 @@ export function DealBattle({ currentParams, currentMetrics }: Props) {
         alert('Scenario copied!');
     };
 
+    const getSnarkyComment = (isWinner: boolean) => {
+        if (!globalRoastMode) return isWinner ? "Solid structure." : "Needs refinement.";
+        return isWinner
+            ? "👑 KING OF MARGIN. This deal actually makes sense. Surprising."
+            : "🤡 CLOWN DEAL. You're basically a charity for the exchange. Retrain immediately.";
+    };
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div className="glass-panel" style={{ borderTop: '4px solid var(--accent-amber)' }}>
+            <div className="glass-panel" style={{ borderTop: `4px solid ${globalRoastMode ? 'var(--accent-pink)' : 'var(--accent-amber)'}`, position: 'relative', overflow: 'hidden' }}>
+                {globalRoastMode && <div style={{ position: 'absolute', top: '-10px', right: '-10px', fontSize: '4rem', opacity: 0.1, pointerEvents: 'none' }}>🔥</div>}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                     <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>⚔️</span> Deal Battle Mode
+                        <span>{globalRoastMode ? '👺' : '⚔️'}</span> {globalRoastMode ? 'DEAL MASSACRE' : 'Deal Battle Mode'}
                     </h3>
                 </div>
+                {/* ... rest of UI ... */}
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '24px' }}>
                     Save architectures from the builder into slots below to compare mathematically sound structures side-by-side.
                 </p>
@@ -109,7 +119,12 @@ export function DealBattle({ currentParams, currentMetrics }: Props) {
                                         <span style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>{s.payload.breakEvenVolume !== null ? formatCurrency(s.payload.breakEvenVolume) : '—'}</span>
                                     </div>
 
-                                    <div style={{ background: 'var(--bg-dark)', padding: '12px', borderRadius: '8px', textAlign: 'center', marginTop: '12px', border: '1px solid var(--border-light)' }}>
+                                    <div style={{ background: 'var(--bg-dark)', padding: '12px', borderRadius: '8px', textAlign: 'center', marginTop: '12px', border: '1px solid var(--border-light)', position: 'relative' }}>
+                                        {globalRoastMode && (
+                                            <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: calcNet(s, simVol) >= (currentMetrics?.net || 0) ? 'var(--accent-emerald)' : 'var(--accent-rose)', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.65rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+                                                {getSnarkyComment(calcNet(s, simVol) >= (currentMetrics?.net || 0))}
+                                            </div>
+                                        )}
                                         <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>Net Yield (at {simVol}M)</div>
                                         <div style={{ fontSize: '1.6rem', fontWeight: 800, color: calcNet(s, simVol) < 0 ? 'var(--accent-rose)' : 'var(--accent-emerald)' }}>
                                             {formatCurrency(calcNet(s, simVol))}

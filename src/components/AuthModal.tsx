@@ -5,82 +5,78 @@ interface Props {
 }
 
 export function AuthModal({ onClose }: Props) {
-    const [accessKey, setAccessKey] = useState('');
+    const [answer, setAnswer] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const keyMap: Record<string, { role: 'admin' | 'agency' | 'hunter' | 'partner', email: string, id: string }> = {
-        'BRAIN-ADMIN-777': { role: 'admin', email: 'jerryszymon@gmail.com', id: 'szymon-admin-999' },
-        'STORM-OPS-888': { role: 'agency', email: 'mateusz.storm@example.com', id: 'mateusz-storm-001' },
-        'BLUE-CHART-999': { role: 'partner', email: 'mateusz.blue@example.com', id: 'mateusz-blue-002' },
-        'SHIKHA-SCOUT-101': { role: 'hunter', email: 'shikha@example.com', id: 'shikha-003' },
-        'KRITIK-ALPHA-202': { role: 'hunter', email: 'kritik@example.com', id: 'kritik-004' },
-        'REMSUA-STREAM-303': { role: 'partner', email: 'remsua@example.com', id: 'remsua-005' }
+    const riddle = {
+        question: "Who is the ghost that started it all in 2008? (First Name only)",
+        answer: "satoshi"
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
         setError(null);
+        setLoading(true);
 
-        const normalizedKey = accessKey.trim().toUpperCase();
-        const access = keyMap[normalizedKey as keyof typeof keyMap];
+        // Fun delay for "verifying"
+        await new Promise(r => setTimeout(r, 1000));
 
-        if (access) {
-            // Simulate a session for the App to consume
-            // In a real app we'd use a service role to fetch/sign in, 
-            // but for this request we'll just trigger the onClose and let the parent handle the "simulated" role if needed.
-            // Actually, we need to bypass Supabase Auth in App.tsx too.
-
-            // For now, we will use a "Hack": use a common password in Supabase for all these accounts
-            // or just mock the session entirely if the user prefers.
-            // Given "jebac emaile", I will mock the session in App.tsx.
-
-            const sessionData = {
-                user: { email: access.email, id: access.id },
-                role: access.role
+        if (answer.toLowerCase().trim() === riddle.answer) {
+            const guestSession = {
+                user: { email: 'guest@brain.os', id: 'guest-user-001' },
+                role: 'admin' // Give full access since it's a team-only secret gate
             };
-            localStorage.setItem('sb_mock_session', JSON.stringify(sessionData));
-
-            setLoading(false);
+            localStorage.setItem('sb_mock_session', JSON.stringify(guestSession));
             onClose();
             window.location.reload();
         } else {
-            setError('Invalid Access Key. Contact Szymon for credentials.');
+            setError("WRONG. Access Denied. You are not a true degen.");
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
-            <div className="glass-panel" style={{ width: '400px', padding: '40px', position: 'relative', border: '1px solid var(--border-light)', boxShadow: '0 0 40px rgba(0,0,0,0.5)' }}>
-                <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.5rem' }}>×</button>
-                <h2 style={{ marginBottom: '8px', letterSpacing: '2px' }}>TERMINAL ACCESS</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '32px' }}>
-                    Enter your professional access key to unlock your workspace.
-                </p>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '20px' }} className="fade-in">
+            <div className="glass-panel" style={{ maxWidth: '450px', width: '100%', position: 'relative', border: '1px solid var(--accent-blue)', boxShadow: '0 0 40px rgba(59, 130, 246, 0.2)' }}>
+                <button
+                    onClick={onClose}
+                    style={{ position: 'absolute', top: '20px', right: '20px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.2rem' }}
+                >✕</button>
 
-                {error && <div style={{ background: 'rgba(244, 63, 94, 0.1)', color: 'var(--accent-rose)', padding: '12px', borderRadius: '8px', marginBottom: '24px', fontSize: '0.85rem', border: '1px solid var(--accent-rose)' }}>{error}</div>}
+                <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🧩</div>
+                    <h2 style={{ fontSize: '1.5rem', letterSpacing: '2px', color: 'white', textTransform: 'uppercase', margin: 0 }}>DEGEN PROOF</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '8px' }}>
+                        Solve the riddle to unlock the operating system.
+                    </p>
+                </div>
 
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <div className="input-group">
-                        <label className="input-label" style={{ letterSpacing: '1px' }}>SECRET ACCESS KEY</label>
-                        <input
-                            type="password"
-                            required
-                            value={accessKey}
-                            onChange={e => setAccessKey(e.target.value)}
-                            placeholder="Enter Key..."
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', borderRadius: '12px', color: 'white', fontSize: '1.1rem', textAlign: 'center', letterSpacing: '4px' }}
-                        />
-                    </div>
-                    <button type="submit" disabled={loading} style={{ background: 'var(--accent-blue)', color: 'white', padding: '16px', borderRadius: '12px', border: 'none', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', fontSize: '1.1rem', boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)' }}>
-                        {loading ? 'UNCORRECTING...' : 'INITIATE SESSION'}
+                <div style={{ background: 'rgba(0,0,0,0.3)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-light)', marginBottom: '24px' }}>
+                    <p style={{ margin: 0, fontSize: '1.1rem', color: 'var(--accent-blue)', fontWeight: 'bold', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.4 }}>
+                        "{riddle.question}"
+                    </p>
+                </div>
+
+                {error && <div className="shake" style={{ background: 'rgba(244, 63, 94, 0.1)', color: 'var(--accent-rose)', padding: '12px', borderRadius: '8px', marginBottom: '24px', fontSize: '0.85rem', border: '1px solid var(--accent-rose)', textAlign: 'center' }}>{error}</div>}
+
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <input
+                        type="text"
+                        required
+                        autoFocus
+                        value={answer}
+                        onChange={e => setAnswer(e.target.value)}
+                        placeholder="Type answer here..."
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-light)', padding: '16px', borderRadius: '12px', color: 'white', fontSize: '1.1rem', textAlign: 'center', outline: 'none' }}
+                    />
+                    <button type="submit" disabled={loading} style={{ background: 'var(--accent-blue)', color: 'white', padding: '16px', borderRadius: '12px', border: 'none', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', fontSize: '1.1rem' }}>
+                        {loading ? 'VERIFYING...' : 'UNLOCK TERMINAL'}
                     </button>
                 </form>
 
-                <div style={{ marginTop: '32px', textAlign: 'center', fontSize: '0.75rem', opacity: 0.4, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                    Level 4 encryption enabled • Terminal ID: {Math.random().toString(36).substring(7).toUpperCase()}
+                <div style={{ marginTop: '32px', textAlign: 'center', fontSize: '0.7rem', opacity: 0.3, textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    SZYMON CRYPTO BRAIN • NO ACCOUNTS REQUIRED
                 </div>
             </div>
         </div>

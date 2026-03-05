@@ -48,7 +48,10 @@ export function useDealSimulator(initialParams: Partial<DealParams> = {}) {
         ...urlParams
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     const updateParam = <K extends keyof DealParams>(key: K, value: DealParams[K]) => {
+        setError(null);
         setParams(prev => {
             const nextParams = { ...prev, [key]: value };
 
@@ -56,8 +59,7 @@ export function useDealSimulator(initialParams: Partial<DealParams> = {}) {
             if (nextParams.requireMarginLock) {
                 const dryRunMetrics = calculateDealMetrics(nextParams);
                 if (!dryRunMetrics.isSafe) {
-                    // Block the change
-                    alert("GUARDRAIL ENGAGED: Cannot apply change. Safety Margin drops below 15%.");
+                    setError("Safety Margin below 15% threshold.");
                     return prev;
                 }
             }
@@ -81,6 +83,7 @@ export function useDealSimulator(initialParams: Partial<DealParams> = {}) {
     return {
         params,
         metrics,
+        error,
         updateParam,
         setParams,
         generateShareLink

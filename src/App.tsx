@@ -32,77 +32,36 @@ import { DealBattle } from './components/DealBattle';
 import { StreamerMode } from './components/StreamerMode';
 import { AffiliateLinkBuilder } from './components/AffiliateLinkBuilder';
 import { MinimalCharts } from './components/MinimalCharts';
-import { AuthModal } from './components/AuthModal';
 import { ShareLinkView } from './components/ShareLinkView';
 import { AdminConsole } from './components/AdminConsole';
 import { MyScenarios } from './components/MyScenarios';
+import { KnowledgeBase } from './components/KnowledgeBase';
+import { translations, type Language } from './lib/translations';
 import './index.css';
 
 export default function App() {
-  const [session, setSession] = useState<any>(null);
-  const [role, setRole] = useState<string>('partner'); // default to lowest perms
-  const [showAuth, setShowAuth] = useState(false);
+  const [role, setRole] = useState<string>('admin');
+  const [lang, setLang] = useState<Language>('en');
+  const t = translations[lang];
 
-  useEffect(() => {
-    // Priority 1: Check for Mock Session (Simple Key Access)
-    const storedMock = localStorage.getItem('sb_mock_session');
-    if (storedMock) {
-      const parsed = JSON.parse(storedMock);
-      setSession(parsed);
-      setRole(parsed.role);
-      return;
-    }
+  // Mock session for local storage features that still expect it
+  const mockSession = { user: { id: 'szymon_admin', email: 'admin@stormmedia.ai' } };
 
-    // Priority 2: Supabase Auth
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setSession(session);
-        fetchRole(session.user.id);
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setSession(session);
-        fetchRole(session.user.id);
-      } else {
-        // Only clear if not in mock mode
-        if (!localStorage.getItem('sb_mock_session')) {
-          setSession(null);
-          setRole('partner');
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogout = async () => {
-    localStorage.removeItem('sb_mock_session');
-    await supabase.auth.signOut();
-    setSession(null);
-    setRole('partner');
-    window.location.reload();
-  };
-
-  const fetchRole = async (userId: string) => {
-    const { data } = await supabase.from('profiles').select('role').eq('user_id', userId).single();
-    if (data) setRole(data.role);
-  };
-
-  const { params, metrics, updateParam, setParams } = useDealSimulator();
-  const [activeTab, setActiveTab] = useState<'ARCHITECT' | 'HUNTER' | 'PITCH' | 'AGENCY' | 'BD_OS' | 'SAVES' | 'ADMIN'>('BD_OS');
+  const { params, metrics, updateParam, setParams, error: simulatorError } = useDealSimulator();
+  const [activeTab, setActiveTab] = useState<'ARCHITECT' | 'HUNTER' | 'PITCH' | 'AGENCY' | 'BD_OS' | 'SAVES' | 'ADMIN' | 'KNOWLEDGE'>('BD_OS');
+  const [roastMode, setRoastMode] = useState(false);
 
   // Role-based Navigation logic
   const tabs = [
-    { id: 'BD_OS', label: 'BD OS', roles: ['admin', 'agency', 'partner', 'hunter'] },
-    { id: 'ARCHITECT', label: 'Architect', roles: ['admin', 'agency', 'partner'] },
-    { id: 'HUNTER', label: 'Hunter Panel', roles: ['admin', 'agency', 'partner', 'hunter'] },
-    { id: 'PITCH', label: 'Pitch Mode', roles: ['admin', 'agency', 'partner', 'hunter'] },
-    { id: 'AGENCY', label: 'Agency Ops', roles: ['admin', 'agency', 'partner'] },
-    { id: 'SAVES', label: 'Library', roles: ['admin', 'agency', 'partner', 'hunter'] },
-    { id: 'ADMIN', label: 'Admin', roles: ['admin'] },
-  ].filter(t => t.roles.includes(role));
+    { id: 'BD_OS', label: t.tabs.BD_OS, roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'KNOWLEDGE', label: t.tabs.KNOWLEDGE, roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'ARCHITECT', label: t.tabs.ARCHITECT, roles: ['admin', 'agency', 'partner'] },
+    { id: 'HUNTER', label: t.tabs.HUNTER, roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'PITCH', label: t.tabs.PITCH, roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'AGENCY', label: t.tabs.AGENCY, roles: ['admin', 'agency', 'partner'] },
+    { id: 'SAVES', label: t.tabs.SAVES, roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'ADMIN', label: t.tabs.ADMIN, roles: ['admin'] },
+  ].filter(t_obj => t_obj.roles.includes(role));
 
   useEffect(() => {
     // If current tab is not allowed for new role, fallback to first available
@@ -131,18 +90,12 @@ export default function App() {
   };
 
   const handleShareSetup = async () => {
-    if (!session) {
-      alert("You must be logged in to save and share deal structures.");
-      setShowAuth(true);
-      return;
-    }
-
     try {
       // 1. Create a Scenario Record
       const { data: scenarioArray, error: scenarioError } = await supabase
         .from('scenarios')
         .insert({
-          owner_user_id: session.user.id,
+          owner_user_id: mockSession.user.id,
           name: `Shared Deal - ${new Date().toLocaleDateString()}`,
           state_json: params
         })
@@ -159,7 +112,7 @@ export default function App() {
         .from('share_links')
         .insert({
           scenario_id: newScenario.id,
-          created_by_user_id: session.user.id,
+          created_by_user_id: mockSession.user.id,
           token: token,
           mode: 'read_only'
         });
@@ -172,27 +125,18 @@ export default function App() {
 
       // 5. Audit Log (Async)
       supabase.from('audit_log').insert({
-        owner_user_id: session.user.id,
+        owner_user_id: mockSession.user.id,
         scenario_id: newScenario.id,
         event: 'SHARE_LINK_GENERATED',
         payload_json: { token, mode: 'read_only' }
       }).then();
 
-      alert('Read-Only Pitch Link Copied to Clipboard!\n\nMetrics are hidden from the viewer.');
+      alert('🚀 DEAL ARCHITECTURE SYNCED!\n\nPitch Link Copied to Clipboard!\n\nGo secure that volume. 📈💎');
 
     } catch (e: any) {
       alert(`Error generating share link: ${e.message}`);
     }
   };
-
-  if (!session) {
-    return (
-      <>
-        <LandingPage onAuth={() => setShowAuth(true)} />
-        {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
-      </>
-    );
-  }
 
   return (
     <>
@@ -202,24 +146,52 @@ export default function App() {
           <div>
             <h1>SZYMON CRYPTO BRAIN</h1>
             <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              Business Development Operating System
+              {t.subtitle}
             </p>
           </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            {session ? (
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span>{session.user.email}</span>
-                <span style={{ padding: '2px 8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', textTransform: 'uppercase', fontSize: '0.7rem' }}>{role}</span>
-                <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>Log Out</button>
-              </div>
-            ) : (
-              <button onClick={() => setShowAuth(true)} style={{ background: 'var(--accent-blue)', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}>
-                Access Terminal
-              </button>
-            )}
+
+            <button
+              onClick={() => setLang(lang === 'en' ? 'pl' : 'en')}
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid var(--border-light)',
+                color: 'white',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              {lang === 'en' ? '🇵🇱 PL' : '🇺🇸 EN'}
+            </button>
+
+            <button
+              onClick={() => setRoastMode(!roastMode)}
+              style={{
+                background: roastMode ? 'rgba(236, 72, 153, 0.2)' : 'rgba(255,255,255,0.05)',
+                border: `1px solid ${roastMode ? 'var(--accent-pink)' : 'var(--border-light)'}`,
+                color: roastMode ? 'var(--accent-pink)' : 'var(--text-secondary)',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              {roastMode ? t.roastOn : t.roastOff}
+            </button>
 
             <button onClick={handleShareSetup} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              🔗 Share Setup
+              {t.shareSetup}
             </button>
             <button onClick={() => window.print()} style={{ background: 'var(--accent-blue)', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
               🖨️ Export PDF
@@ -227,7 +199,6 @@ export default function App() {
           </div>
         </header>
 
-        {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
         <Routes>
           <Route path="/" element={
@@ -265,8 +236,11 @@ export default function App() {
 
                     <CommunitySelector applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
 
-                    <div className="input-group">
-                      <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, fontSize: '0.85rem' }}>Volume (USD)</label>
+                    <div className={`input-group ${simulatorError ? 'shake' : ''}`}>
+                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 500, fontSize: '0.85rem' }}>
+                        <span>{t.variables.volume}</span>
+                        {simulatorError && <span className="error-tag">{t.variables.locked}</span>}
+                      </label>
                       <input
                         type="number"
                         value={params.V}
@@ -291,43 +265,49 @@ export default function App() {
                       </select>
                     </div>
 
-                    <div className="input-group">
-                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Partner Payout Share (P)</span>
-                        <span style={{ color: 'var(--accent-blue)', fontWeight: 'bold' }}>{params.P}%</span>
+                    <div className={`input-group ${simulatorError ? 'shake' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
+                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                        <span style={{ fontWeight: 600 }}>{t.variables.payout}</span>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          {simulatorError && <span className="error-tag" style={{ margin: 0 }}>{t.variables.locked}</span>}
+                          <span style={{ color: 'var(--accent-blue)', fontWeight: '800', fontSize: '1rem' }}>{params.P}%</span>
+                        </div>
                       </label>
                       <input
                         type="range"
                         min="0" max="100" step="1"
                         value={params.P}
                         onChange={e => updateParam('P', Number(e.target.value))}
-                        style={{ width: '100%', accentColor: 'var(--accent-blue)', cursor: 'pointer' }}
+                        style={{ width: '100%', accentColor: 'var(--accent-blue)', cursor: 'pointer', marginBottom: '8px' }}
                       />
                       <input
                         type="number"
                         className="glass-input"
-                        style={{ marginTop: '8px' }}
+                        style={{ width: '100%', textAlign: 'right', fontSize: '0.85rem' }}
                         value={params.P}
                         onChange={e => updateParam('P', Number(e.target.value))}
                       />
                     </div>
 
-                    <div className="input-group">
-                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Sub Split (S)</span>
-                        <span style={{ color: 'var(--accent-purple)', fontWeight: 'bold' }}>{params.S}%</span>
+                    <div className={`input-group ${simulatorError ? 'shake' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
+                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                        <span style={{ fontWeight: 600 }}>{t.variables.subSplit}</span>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          {simulatorError && <span className="error-tag" style={{ margin: 0 }}>{t.variables.locked}</span>}
+                          <span style={{ color: 'var(--accent-purple)', fontWeight: '800', fontSize: '1rem' }}>{params.S}%</span>
+                        </div>
                       </label>
                       <input
                         type="range"
                         min="0" max="100" step="1"
                         value={params.S}
                         onChange={e => updateParam('S', Number(e.target.value))}
-                        style={{ width: '100%', accentColor: 'var(--accent-purple)', cursor: 'pointer' }}
+                        style={{ width: '100%', accentColor: 'var(--accent-purple)', cursor: 'pointer', marginBottom: '8px' }}
                       />
                       <input
                         type="number"
                         className="glass-input"
-                        style={{ marginTop: '8px' }}
+                        style={{ width: '100%', textAlign: 'right', fontSize: '0.85rem' }}
                         value={params.S}
                         onChange={e => updateParam('S', Number(e.target.value))}
                       />
@@ -442,7 +422,7 @@ export default function App() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }} className="dashboard-grid">
                           <DealBuilder />
-                          <DealScore metrics={metrics} />
+                          <DealScore metrics={metrics} forcedRoastMode={roastMode} />
                         </div>
 
                         <PartnerRevenueSim />
@@ -469,6 +449,12 @@ export default function App() {
                     </>
                   )}
 
+                  {activeTab === 'KNOWLEDGE' && (
+                    <div className="tab-pane active fade-in">
+                      <KnowledgeBase />
+                    </div>
+                  )}
+
                   {activeTab === 'PITCH' && (
                     <div className="tab-pane active fade-in">
                       <DealPitchMode params={params} metrics={metrics} userRole={role} />
@@ -487,7 +473,7 @@ export default function App() {
                       <div className="grid-layout grid-cols-3">
                         <PartnerCRM />
                         <SimulatorPro />
-                        <DealBattle currentParams={params} currentMetrics={metrics} />
+                        <DealBattle currentParams={params} currentMetrics={metrics} globalRoastMode={roastMode} />
                       </div>
                       <div className="grid-layout grid-cols-3">
                         <StreamerMode />
@@ -504,7 +490,7 @@ export default function App() {
 
                   {activeTab === 'SAVES' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                      <MyScenarios session={session} onLoadScenario={(loadedParams) => {
+                      <MyScenarios session={mockSession} onLoadScenario={(loadedParams) => {
                         setParams(prev => ({ ...prev, ...loadedParams }));
                         setActiveTab('ARCHITECT');
                         alert('Scenario loaded successfully!');
@@ -514,7 +500,7 @@ export default function App() {
 
                   {activeTab === 'ADMIN' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                      <AdminConsole session={session} role={role} />
+                      <AdminConsole session={mockSession} role={role} />
                     </div>
                   )}
                 </main>
@@ -524,31 +510,6 @@ export default function App() {
           <Route path="/share/:token" element={<ShareLinkView />} />
         </Routes>
       </div>
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </>
-  );
-}
-
-function LandingPage({ onAuth }: { onAuth: () => void }) {
-  return (
-    <div className="landing-page" style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-dark)', color: 'var(--text-primary)', textAlign: 'center', padding: '20px' }}>
-      <div className="glass-panel" style={{ maxWidth: '600px', padding: '60px', border: '1px solid var(--border-light)', background: 'rgba(255,255,255,0.03)' }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '16px', letterSpacing: '2px' }}>SZYMON CRYPTO BRAIN</h1>
-        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '40px', lineHeight: '1.6' }}>
-          The production-grade Business Development Operating System for the crypto ecosystem.
-          Standardize deal structures, automate revenue modelling, and secure partner acquisitions.
-        </p>
-        <button
-          onClick={onAuth}
-          className="glass-btn"
-          style={{ padding: '16px 48px', fontSize: '1.2rem', background: 'var(--accent-blue)', color: 'white', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)' }}
-        >
-          ENTER TERMINAL
-        </button>
-      </div>
-      <div style={{ marginTop: '40px', fontSize: '0.8rem', color: 'var(--text-secondary)', opacity: 0.5 }}>
-        v2.0.0-PROD • TERMINAL ACCESS RESTRICTED
-      </div>
-    </div>
   );
 }

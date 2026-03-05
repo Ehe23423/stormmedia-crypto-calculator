@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { formatPct } from '../lib/safeMath';
 import type { DealResult } from '../model/DealModel';
 
-export function DealScore({ metrics }: { metrics: DealResult }) {
-    const [roastMode, setRoastMode] = useState(false);
+export function DealScore({ metrics, forcedRoastMode }: { metrics: DealResult, forcedRoastMode?: boolean }) {
+    const [localRoastMode, setLocalRoastMode] = useState(false);
+    const roastMode = forcedRoastMode || localRoastMode;
 
     // Use pre-computed, safe percentage from DealModel (or fallback to 0 if missing)
     const safetyBufferVal = metrics.safetyBufferPct ?? 0;
@@ -47,7 +48,7 @@ export function DealScore({ metrics }: { metrics: DealResult }) {
             <div style={{ position: 'absolute', top: 0, right: 0, padding: '12px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.8rem', color: roastMode ? 'var(--accent-pink)' : 'var(--text-secondary)', fontWeight: 'bold' }}>
                     🔥 ROAST MODE
-                    <input type="checkbox" checked={roastMode} onChange={(e) => setRoastMode(e.target.checked)} style={{ width: 'auto', margin: 0 }} />
+                    <input type="checkbox" checked={roastMode} onChange={(e) => setLocalRoastMode(e.target.checked)} style={{ width: 'auto', margin: 0 }} />
                 </label>
             </div>
 
