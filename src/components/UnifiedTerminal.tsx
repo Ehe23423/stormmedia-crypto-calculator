@@ -110,7 +110,7 @@ export const UnifiedTerminal: React.FC = () => {
                 borderBottom: '1px solid rgba(255,255,255,0.07)',
                 background: 'linear-gradient(135deg,rgba(139,92,246,0.05) 0%,rgba(0,0,0,0.3) 100%)',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap',
-            }}>
+            }} className="terminal-header">
                 <div>
                     <h1 style={{ margin: 0, fontSize: '1rem', fontWeight: 900, letterSpacing: '0.08em' }}>
                         SZYMON{' '}
@@ -166,7 +166,7 @@ export const UnifiedTerminal: React.FC = () => {
             </div>
 
             {/* ══ BODY ══ */}
-            <div style={{ flex: 1, display: 'flex', minHeight: 0, overflow: 'hidden' }}>
+            <div style={{ flex: 1, display: 'flex', minHeight: 0, overflow: 'hidden' }} className="terminal-content">
 
                 {/* LEFT SIDEBAR */}
                 <div style={{
@@ -179,7 +179,7 @@ export const UnifiedTerminal: React.FC = () => {
                     flexDirection: 'column',
                     gap: '12px',
                     background: 'rgba(0,0,0,0.12)',
-                }}>
+                }} className="layout-sidebar">
                     <Panel title="🎚️ Parameters">
                         <DealSimulator params={params} updateParam={updateParam} />
                     </Panel>
@@ -215,7 +215,7 @@ export const UnifiedTerminal: React.FC = () => {
                 </div>
 
                 {/* RIGHT CONTENT */}
-                <div style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '14px' }}>
+                <div style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '14px' }} className="layout-main">
 
                     {/* ─── HUNTER TAB ─── */}
                     {activeTab === 'hunter' && (

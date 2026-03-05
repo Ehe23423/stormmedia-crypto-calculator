@@ -91,7 +91,7 @@ export function DealSimulator({ params, updateParam }: Props) {
             </div>
 
             {/* FIXED COSTS GRID */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }} className="vars-grid">
                 <div className="control-group">
                     <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, marginBottom: '6px', color: 'var(--text-secondary)' }}>Retainer (USD)</label>
                     <input
