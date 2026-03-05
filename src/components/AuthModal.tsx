@@ -12,7 +12,8 @@ export function AuthModal({ onClose }: Props) {
 
     const keyMap: Record<string, { role: 'admin' | 'agency' | 'hunter' | 'partner', email: string }> = {
         'SZYMON_ADMIN': { role: 'admin', email: 'jerryszymon@gmail.com' },
-        'MATEUS_AGENCY': { role: 'agency', email: 'mateus@example.com' },
+        'MATEUSZ-STORMMEDIA': { role: 'agency', email: 'mateusz.storm@example.com' },
+        'MATEUSZ-BLUE': { role: 'agency', email: 'mateusz.blue@example.com' },
         'SHIKHA_HUNTER': { role: 'hunter', email: 'shikha@example.com' },
         'KRITIK_HUNTER': { role: 'hunter', email: 'kritik@example.com' },
         'REMSUA_STREAMER': { role: 'partner', email: 'remsua@example.com' }
