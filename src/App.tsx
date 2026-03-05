@@ -44,19 +44,46 @@ export default function App() {
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
+    // Priority 1: Check for Mock Session (Simple Key Access)
+    const storedMock = localStorage.getItem('sb_mock_session');
+    if (storedMock) {
+      const parsed = JSON.parse(storedMock);
+      setSession(parsed);
+      setRole(parsed.role);
+      return;
+    }
+
+    // Priority 2: Supabase Auth
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session?.user) fetchRole(session.user.id);
+      if (session) {
+        setSession(session);
+        fetchRole(session.user.id);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session?.user) fetchRole(session.user.id);
-      else setRole('partner');
+      if (session) {
+        setSession(session);
+        fetchRole(session.user.id);
+      } else {
+        // Only clear if not in mock mode
+        if (!localStorage.getItem('sb_mock_session')) {
+          setSession(null);
+          setRole('partner');
+        }
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const handleLogout = async () => {
+    localStorage.removeItem('sb_mock_session');
+    await supabase.auth.signOut();
+    setSession(null);
+    setRole('partner');
+    window.location.reload();
+  };
 
   const fetchRole = async (userId: string) => {
     const { data } = await supabase.from('profiles').select('role').eq('user_id', userId).single();
@@ -183,11 +210,11 @@ export default function App() {
               <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <span>{session.user.email}</span>
                 <span style={{ padding: '2px 8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', textTransform: 'uppercase', fontSize: '0.7rem' }}>{role}</span>
-                <button onClick={() => supabase.auth.signOut()} style={{ background: 'transparent', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>Log Out</button>
+                <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>Log Out</button>
               </div>
             ) : (
               <button onClick={() => setShowAuth(true)} style={{ background: 'var(--accent-blue)', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}>
-                Sign In
+                Access Terminal
               </button>
             )}
 
