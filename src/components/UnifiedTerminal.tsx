@@ -18,7 +18,7 @@ import { PartnerRevenueSim } from './PartnerRevenueSim';
 import { DealRoast } from './DealRoast';
 import { DealAssistant } from './DealAssistant';
 import { WhaleEffect } from './WhaleEffect';
-import { useSolanaRain } from './SolanaRain';
+import { useCryptoRain, type CoinType } from './SolanaRain';
 
 type TabId = 'hunter' | 'agency' | 'roast';
 
@@ -69,7 +69,8 @@ export const UnifiedTerminal: React.FC = () => {
     const [activeTab, setActiveTab] = useState<TabId>('hunter');
 
     const metrics = useMemo(() => calculateDealMetrics(params), [params]);
-    const { RainComponent, triggerRain } = useSolanaRain();
+    const { RainComponent, triggerRain } = useCryptoRain();
+    const [selectedRainCoin, setSelectedRainCoin] = useState<CoinType>('SOL');
 
     const dealScore = useMemo(() => {
         const buf = metrics.marginBuffer * 100;
@@ -127,20 +128,26 @@ export const UnifiedTerminal: React.FC = () => {
                         TELEGRAM: @ostryopos
                     </div>
                 </div>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch' }}>
+                    <select
+                        value={selectedRainCoin}
+                        onChange={(e) => setSelectedRainCoin(e.target.value as CoinType)}
+                        className="storm-btn"
+                        style={{ fontSize: '0.65rem', padding: '0 8px', background: 'rgba(0,0,0,0.4)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', color: 'white', outline: 'none', cursor: 'pointer' }}
+                    >
+                        <option value="SOL">SOL</option>
+                        <option value="BTC">BTC</option>
+                        <option value="ETH">ETH</option>
+                        <option value="DOGE">DOGE</option>
+                        <option value="XRP">XRP</option>
+                    </select>
                     <button
                         className="storm-btn"
                         data-variant="hunter"
                         style={{ fontSize: '0.65rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-                        onClick={triggerRain}
+                        onClick={() => triggerRain(selectedRainCoin)}
                     >
-                        <svg width="18" height="18" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="none">
-                                <circle fill="#14F195" cx="16" cy="16" r="16" />
-                                <path d="M9.925 19.687a.59.59 0 01.415-.17h14.366a.29.29 0 01.207.497l-2.838 2.815a.59.59 0 01-.415.171H7.294a.291.291 0 01-.207-.498l2.838-2.815zm0-10.517A.59.59 0 0110.34 9h14.366c.261 0 .392.314.207.498l-2.838 2.815a.59.59 0 01-.415.17H7.294a.291.291 0 01-.207-.497L9.925 9.17zm12.15 5.225a.59.59 0 00-.415-.17H7.294a.291.291 0 00-.207.498l2.838 2.815c.11.109.26.17.415.17h14.366a.291.291 0 00.207-.498l-2.838-2.815z" fill="#FFF" />
-                            </g>
-                        </svg>
-                        MAKE IT RAIN SOL
+                        MAKE IT RAIN {selectedRainCoin}
                     </button>
                     <div style={{ display: 'flex', gap: '6px' }} className="header-chips">
                         {[
@@ -332,6 +339,6 @@ export const UnifiedTerminal: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
