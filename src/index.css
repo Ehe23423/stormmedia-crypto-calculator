@@ -1,39 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;700&display=swap');
 
 :root {
-  /* === PREMIUM DARK THEME === */
-  --bg-dark: #0B0F19;
-  --bg-card: #111827;
-  --bg-card-hover: rgba(17, 24, 39, 0.85);
+  /* === PRO GLASS THEME === */
+  --bg-dark: #05070a;
+  --bg-glass: rgba(17, 24, 39, 0.45);
+  --bg-glass-hover: rgba(17, 24, 39, 0.6);
 
-  /* Neon Accents */
-  --accent-blue: #3B82F6;
-  --accent-purple: #8B5CF6;
-  --accent-pink: #EC4899;
-  --accent-emerald: #22C55E;
-  --accent-rose: #EF4444;
-  --accent-amber: #F97316;
-  --danger-deep: #EF4444;
-  /* Changed to target red */
-  --accent-cyan: #06B6D4;
+  /* Accents - Compact & Sharp */
+  --accent-blue: #3b82f6;
+  --accent-cyan: #22d3ee;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+  --accent-amber: #fbbf24;
 
-  --text-primary: #f0f4ff;
-  --text-secondary: rgba(180, 195, 230, 0.65);
+  --text-primary: #f8fafc;
+  --text-secondary: rgba(148, 163, 184, 0.7);
 
-  /* Glass Borders */
-  --border-light: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(100, 160, 255, 0.25);
-  --border-focus: rgba(61, 155, 255, 0.45);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glass-hover: rgba(59, 130, 246, 0.3);
 
-  /* Glow Shadows */
-  --glow-blue: 0 0 24px rgba(61, 155, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.7);
-  --glow-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
-  --glass-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 40px rgba(0, 0, 0, 0.6);
-
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-scifi: 'Oswald', sans-serif;
-
-  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, sans-serif;
+  --transition-fast: all 0.15s ease-out;
 }
 
 * {
@@ -48,17 +35,39 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
-  font-size: 12px;
-  /* Reduced from 13px */
-  line-height: 1.4;
-  /* Tighter line height */
-
-  /* Animated multi-layer radial gradient mesh */
+  font-size: 11.5px;
+  /* Ultra-compact */
+  line-height: 1.35;
   background-image:
-    radial-gradient(ellipse 80% 50% at 10% 15%, rgba(61, 155, 255, 0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0, transparent 50%);
   background-attachment: fixed;
+}
+
+.bento-item {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 16px;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.bento-item:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-glass-hover);
+  transform: translateY(-1px);
+}
+
+.module-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  opacity: 0.9;
 }
 
 /* Neon scrollbar */
