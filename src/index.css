@@ -48,13 +48,15 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 12px;
+  /* Reduced from 13px */
+  line-height: 1.4;
+  /* Tighter line height */
 
   /* Animated multi-layer radial gradient mesh */
   background-image:
-    radial-gradient(ellipse 80% 50% at 10% 15%, rgba(61, 155, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(168, 85, 247, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 10% 15%, rgba(61, 155, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 55%),
     radial-gradient(ellipse 50% 60% at 50% 50%, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
   background-attachment: fixed;
 }

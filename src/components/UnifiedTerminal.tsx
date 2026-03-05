@@ -45,16 +45,16 @@ export const UnifiedTerminal: React.FC = () => {
 
             {/* 2. HERO HEADER */}
             <div style={{
-                padding: '40px 32px',
+                padding: '16px 24px',
                 borderBottom: '1px solid var(--border-light)',
                 background: 'linear-gradient(180deg, rgba(59,130,246,0.05) 0%, transparent 100%)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                     <div>
-                        <h1 style={{ fontSize: '2.5rem', fontWeight: 900, letterSpacing: '-0.02em', margin: 0 }}>
+                        <h1 style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.02em', margin: 0 }}>
                             SZYMON <span style={{ color: 'var(--accent-blue)' }}>CRYPTO</span> BRAIN
                         </h1>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', letterSpacing: '0.1em', marginTop: '4px', textTransform: 'uppercase' }}>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', letterSpacing: '0.05em', marginTop: '2px', textTransform: 'uppercase' }}>
                             Institutional Deal Structure & Margin Engine
                         </p>
                     </div>
@@ -69,8 +69,8 @@ export const UnifiedTerminal: React.FC = () => {
             </div>
 
             {/* 3. CORE DASHBOARD BENTO */}
-            <main style={{ padding: '32px', maxWidth: '1800px', margin: '0 auto' }}>
-                <div className="bento-grid" style={{ gap: '24px' }}>
+            <main style={{ padding: '20px', maxWidth: '1800px', margin: '0 auto' }}>
+                <div className="bento-grid" style={{ gap: '16px' }}>
 
                     {/* INPUT SECTION - THE BRAIN */}
                     <div className="bento-item" style={{ gridColumn: 'span 4', gridRow: 'span 5', minHeight: '600px' }}>

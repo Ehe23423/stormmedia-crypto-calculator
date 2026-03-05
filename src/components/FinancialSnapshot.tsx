@@ -16,34 +16,34 @@ export function FinancialSnapshot({ metrics }: Props) {
             <div style={{
                 flex: 1,
                 background: 'rgba(0,0,0,0.3)',
-                borderRadius: '16px',
-                border: `2px solid ${metrics.netProfit > 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)'}`,
-                padding: '32px',
+                borderRadius: '12px',
+                border: `1px solid ${metrics.netProfit > 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)'}`,
+                padding: '20px',
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 boxShadow: metrics.netProfit > 0
-                    ? '0 0 30px rgba(16, 185, 129, 0.1)'
-                    : '0 0 30px rgba(239, 68, 68, 0.1)'
+                    ? '0 0 20px rgba(16, 185, 129, 0.05)'
+                    : '0 0 20px rgba(239, 68, 68, 0.05)'
             }}>
                 <div style={{
                     color: 'var(--text-secondary)',
-                    fontSize: '0.8rem',
+                    fontSize: '0.65rem',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.3em',
-                    marginBottom: '12px',
+                    letterSpacing: '0.2em',
+                    marginBottom: '8px',
                     fontWeight: 700
                 }}>
                     Net Monthly Profit
                 </div>
                 <div style={{
-                    fontSize: '4.8rem',
+                    fontSize: '2.8rem', /* Was 4.8rem */
                     fontWeight: 900,
                     color: metrics.netProfit > 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)',
-                    textShadow: '0 4px 30px rgba(0,0,0,0.6)',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.4)',
                     lineHeight: 1,
-                    letterSpacing: '-0.04em'
+                    letterSpacing: '-0.02em'
                 }}>
                     {formatUSD(metrics.netProfit)}
                 </div>
@@ -55,17 +55,17 @@ export function FinancialSnapshot({ metrics }: Props) {
                 gridTemplateColumns: 'repeat(4, 1fr)',
                 gap: '12px'
             }}>
-                <div className="metric-card" style={{ padding: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.65rem' }}>Gross Fees</span>
-                    <span className="value" style={{ fontSize: '1.2rem' }}>{formatUSD(metrics.grossFees)}</span>
+                <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
+                    <span className="label" style={{ fontSize: '0.6rem' }}>Gross Fees</span>
+                    <span className="value" style={{ fontSize: '1rem' }}>{formatUSD(metrics.grossFees)}</span>
                 </div>
-                <div className="metric-card" style={{ padding: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.65rem' }}>Partner Pool</span>
-                    <span className="value" style={{ fontSize: '1.2rem', color: 'var(--accent-blue)' }}>{formatUSD(metrics.partnerPool)}</span>
+                <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
+                    <span className="label" style={{ fontSize: '0.6rem' }}>Partner Pool</span>
+                    <span className="value" style={{ fontSize: '1rem', color: 'var(--accent-blue)' }}>{formatUSD(metrics.partnerPool)}</span>
                 </div>
-                <div className="metric-card" style={{ padding: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.65rem' }}>Retained</span>
-                    <span className="value" style={{ fontSize: '1.2rem' }}>{formatUSD(metrics.exchangeRetained)}</span>
+                <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
+                    <span className="label" style={{ fontSize: '0.6rem' }}>Retained</span>
+                    <span className="value" style={{ fontSize: '1rem' }}>{formatUSD(metrics.exchangeRetained)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '16px', background: 'rgba(255,255,255,0.02)' }}>
                     <span className="label" style={{ fontSize: '0.65rem' }}>Margin Buffer</span>

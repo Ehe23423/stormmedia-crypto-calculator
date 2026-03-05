@@ -29,7 +29,7 @@ export function DealScore({ metrics }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', height: '100%', justifyContent: 'center' }}>
             <div style={{ textAlign: 'center' }}>
                 <div style={{
-                    fontSize: '5rem',
+                    fontSize: '3.5rem', /* Was 5rem */
                     fontWeight: 900,
                     color: getStatusColor(),
                     lineHeight: 1,
@@ -38,12 +38,12 @@ export function DealScore({ metrics }: Props) {
                     {scoreValue < 10 ? `0${scoreValue}` : scoreValue}
                 </div>
                 <div style={{
-                    fontSize: '1rem',
+                    fontSize: '0.8rem', /* Was 1rem */
                     fontWeight: 800,
                     color: getStatusColor(),
                     textTransform: 'uppercase',
-                    letterSpacing: '0.2em',
-                    marginTop: '8px'
+                    letterSpacing: '0.15em',
+                    marginTop: '4px'
                 }}>
                     {metrics.status} STATUS
                 </div>

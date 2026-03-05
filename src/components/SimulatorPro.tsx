@@ -10,13 +10,13 @@ export function DealSimulator({ params, updateParam }: Props) {
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Math.round(val));
 
     return (
-        <div className="simulator-controls" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="simulator-controls" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
             {/* 1. VOLUME */}
             <div className="control-group">
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>MONTHLY VOLUME (USD)</label>
-                    <span style={{ color: 'var(--accent-blue)', fontWeight: 900, fontSize: '1.2rem' }}>{formatUSD(params.V)}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>MONTHLY VOLUME (USD)</label>
+                    <span style={{ color: 'var(--accent-blue)', fontWeight: 900, fontSize: '1rem' }}>{formatUSD(params.V)}</span>
                 </div>
                 <input
                     className="styled-range range-blue"
