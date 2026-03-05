@@ -8,7 +8,29 @@ interface Props {
 
 export function ExecutiveSummary({ params, metrics }: Props) {
     const copyToClipboard = () => {
-        alert('Report copied to clipboard! (Ready to send to partner)');
+        const report = [
+            '======================================',
+            'DEAL STRUCTURE PROPOSAL — SZYMON CRYPTO BRAIN',
+            '======================================',
+            `Volume Target: ${(params.V / 1_000_000).toFixed(1)}M USD`,
+            `Base Retainer: ${formatCurrency(params.R)}`,
+            `Blended Fee: ${params.F}%`,
+            `Partner Share: ${params.P}%`,
+            `Sub-split (S): ${params.S}%`,
+            '',
+            'FINANCIAL MODEL:',
+            `Break-even Volume: ${metrics.breakEvenVolume !== null ? formatCurrency(metrics.breakEvenVolume) : '—'}`,
+            `Safety Check: ${metrics.isSafe ? 'PASSED ✓' : 'FAILED ✗'}`,
+            `Monthly Net Revenue: ${metrics.net !== null ? formatCurrency(metrics.net) : '—'}`,
+            '',
+            'RISK ANALYSIS:',
+            `Margin Buffer: ${formatCurrency(metrics.net)}`,
+            `Margin Collapse Risk: ${(metrics.safetyBufferPct || 0) < 5 ? 'DETECTED ⚠️' : 'NONE ✓'}`,
+            '======================================',
+            'Confidential — Internal Use Only',
+        ].join('\n');
+        navigator.clipboard.writeText(report);
+        alert('📋 Executive Summary copied to clipboard!');
     };
 
     const formatCurrency = (val: number) => {
