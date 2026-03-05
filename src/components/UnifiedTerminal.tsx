@@ -45,18 +45,18 @@ export const UnifiedTerminal: React.FC = () => {
 
             {/* 2. HERO HEADER */}
             <div style={{
-                padding: '12px 20px',
-                borderBottom: '1px solid var(--border-glass)',
-                background: 'rgba(255,255,255,0.02)',
-                backdropFilter: 'blur(10px)'
+                padding: '16px 24px',
+                borderBottom: '1px solid var(--border-light)',
+                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%)',
+                backdropFilter: 'blur(20px)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                         <h1 style={{ fontSize: '1.2rem', fontWeight: 900, letterSpacing: '1px', margin: 0 }}>
-                            SZYMON <span style={{ color: 'var(--accent-blue)' }}>CRYPTO</span> BRAIN
+                            SZYMON <span style={{ background: 'linear-gradient(90deg, var(--accent-blue), var(--accent-purple))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>CRYPTO</span> BRAIN
                         </h1>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', letterSpacing: '0.05em', marginTop: '1px', textTransform: 'uppercase' }}>
-                            Analytical Terminal V3.0
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', letterSpacing: '0.1em', marginTop: '2px', textTransform: 'uppercase', fontWeight: 600 }}>
+                            Institutional Analytical Terminal
                         </p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -146,14 +146,15 @@ export const UnifiedTerminal: React.FC = () => {
 
             {/* 4. FOOTER */}
             <footer style={{
-                padding: '24px 32px',
+                padding: '16px 32px',
                 borderTop: '1px solid var(--border-light)',
                 textAlign: 'center',
                 color: 'var(--text-secondary)',
-                fontSize: '0.8rem',
-                letterSpacing: '0.05em'
+                fontSize: '0.6rem',
+                letterSpacing: '0.2em',
+                background: 'rgba(0,0,0,0.2)'
             }}>
-                STORMMEDIA ANALYTICAL TERMINAL V3.0 // NO AUTH // NO PERSISTENCE // PURE MATH
+                STORMMEDIA BD ENGINE // NO PERSISTENCE // COMPACT PRO V3.2
             </footer>
         </div>
     );

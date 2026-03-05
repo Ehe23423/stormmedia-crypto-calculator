@@ -11,19 +11,20 @@ export function FinancialSnapshot({ metrics }: Props) {
     const formatPct = (val: number) => `${(val * 100).toFixed(1)}%`;
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '16px' }}>
             {/* PRIMARY PROFIT FIGURE */}
             <div style={{
                 flex: 1,
-                background: 'rgba(255,255,255,0.03)',
+                background: 'rgba(10, 15, 25, 0.4)',
                 borderRadius: '8px',
-                border: `1px solid ${metrics.netProfit > 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)'}`,
+                border: `1px solid ${metrics.netProfit > 0 ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}`,
                 padding: '16px',
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                backdropFilter: 'blur(5px)'
+                boxShadow: metrics.netProfit > 0 ? '0 0 20px rgba(16, 185, 129, 0.08)' : '0 0 20px rgba(239, 68, 68, 0.08)',
+                backdropFilter: 'blur(10px)'
             }}>
                 <div style={{
                     color: 'var(--text-secondary)',
