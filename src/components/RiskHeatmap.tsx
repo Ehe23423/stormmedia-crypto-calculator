@@ -20,8 +20,8 @@ export function RiskHeatmap({ baseParams }: Props) {
                         <tr>
                             <th style={{ padding: '8px', borderBottom: '1px solid var(--border-light)' }}>V \ S</th>
                             {sList.map(s => (
-                                <th key={s} style={{ padding: '8px', borderBottom: '1px solid var(--border-light)', color: '#8b5cf6' }}>
-                                    {(s * 100).toFixed(0)}%
+                                <th key={s} style={{ padding: '8px', borderBottom: '1px solid var(--border-light)', color: 'var(--accent-purple)' }}>
+                                    {s}%
                                 </th>
                             ))}
                         </tr>
