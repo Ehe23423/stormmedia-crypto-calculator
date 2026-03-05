@@ -151,8 +151,9 @@ export const UnifiedTerminal: React.FC = () => {
                                 fontWeight: 800,
                                 color: chip.color,
                                 whiteSpace: 'nowrap',
-                                boxShadow: `0 0 15px ${chip.glow}15`,
-                                textShadow: `0 0 8px ${chip.glow}44`
+                                boxShadow: `0 0 20px ${chip.glow}44, inset 0 0 10px ${chip.glow}22`,
+                                textShadow: `0 0 10px ${chip.glow}aa`,
+                                border: `1px solid ${chip.glow}66`
                             }}>
                                 {chip.label}
                             </div>
@@ -191,13 +192,14 @@ export const UnifiedTerminal: React.FC = () => {
                 <div style={{
                     width: '290px',
                     flexShrink: 0,
-                    borderRight: '1px solid rgba(255,255,255,0.06)',
-                    overflowY: 'auto',
+                    overflowY: 'visible',
                     padding: '14px',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '12px',
-                    background: 'rgba(0,0,0,0.12)',
+                    background: 'rgba(0,0,0,0.15)',
+                    height: 'auto',
+                    minHeight: '100%'
                 }} className="layout-sidebar">
                     <Panel title="🎚️ Parameters">
                         <DealSimulator params={params} updateParam={updateParam} />
