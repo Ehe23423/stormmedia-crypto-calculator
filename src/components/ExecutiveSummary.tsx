@@ -1,5 +1,4 @@
-import type { DealParams, DealResult } from '../model/DealModel';
-import { formatPct } from '../lib/safeMath';
+import { type DealParams, type DealResult } from '../model/DealModel';
 
 interface Props {
     params: DealParams;
@@ -7,68 +6,75 @@ interface Props {
 }
 
 export function ExecutiveSummary({ params, metrics }: Props) {
-    const copyToClipboard = () => {
-        const report = [
-            '======================================',
-            'DEAL STRUCTURE PROPOSAL — SZYMON CRYPTO BRAIN',
-            '======================================',
-            `Volume Target: ${(params.V / 1_000_000).toFixed(1)}M USD`,
-            `Base Retainer: ${formatCurrency(params.R)}`,
-            `Blended Fee: ${params.F}%`,
-            `Partner Share: ${params.P}%`,
-            `Sub-split (S): ${params.S}%`,
-            '',
-            'FINANCIAL MODEL:',
-            `Break-even Volume: ${metrics.breakEvenVolume !== null ? formatCurrency(metrics.breakEvenVolume) : '—'}`,
-            `Safety Check: ${metrics.isSafe ? 'PASSED ✓' : 'FAILED ✗'}`,
-            `Monthly Net Revenue: ${metrics.net !== null ? formatCurrency(metrics.net) : '—'}`,
-            '',
-            'RISK ANALYSIS:',
-            `Margin Buffer: ${formatCurrency(metrics.net)}`,
-            `Margin Collapse Risk: ${(metrics.safetyBufferPct || 0) < 5 ? 'DETECTED ⚠️' : 'NONE ✓'}`,
-            '======================================',
-            'Confidential — Internal Use Only',
-        ].join('\n');
-        navigator.clipboard.writeText(report);
-        alert('📋 Executive Summary copied to clipboard!');
-    };
-
-    const formatCurrency = (val: number) => {
+    const formatUSD = (val: number | null | undefined) => {
+        if (val === null || val === undefined || Number.isNaN(val)) return '—';
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
     };
 
+    const generateReport = () => {
+        return `======================================
+SZYMON CRYPTO BRAIN — DEAL VERDICT
+======================================
+
+STRATEGY: ${(params.V / 1_000_000).toFixed(1)}M Monthly Volume
+FEE TIER: ${params.F}%
+SAFETY THRESHOLD: ${metrics.safetyThreshold}%
+REVENUE SHARE: ${params.P}%
+--------------------------------------
+OUTCOME: ${metrics.isBlocked ? 'BLOCKED - SAFETY VIOLATED' : metrics.netProfit > 0 ? 'PROFITABLE' : 'UNSUSTAINABLE'}
+MONTHLY NET: ${formatUSD(metrics.netProfit)}
+BREAK-EVEN: ${formatUSD(metrics.breakEvenVolume)}
+MARGIN BUFFER: ${(metrics.marginBuffer * 100).toFixed(1)}%
+
+RISK VERDICT: ${metrics.status}
+--------------------------------------
+PROPOSAL SUMMARY:
+This structure yields ${formatUSD(metrics.partnerPool)} in partner revenue. 
+The deal remains sustainable for the exchange while maintaining 
+competitive upside for the partner at current fee compression levels.
+======================================`;
+    };
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(generateReport());
+        alert('📋 Executive Summary copied to clipboard!');
+    };
+
     return (
-        <div className="glass-panel print-panel" style={{ marginTop: '24px', border: '1px solid var(--border-hover)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ color: 'var(--text-secondary)' }}>EXECUTIVE SUMMARY (READY TO SEND)</h3>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                    <button onClick={copyToClipboard} style={{ padding: '12px 24px', background: 'var(--accent-blue)', color: 'var(--bg-dark)', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Copy Text
-                    </button>
-                    <button onClick={() => window.print()} style={{ padding: '12px 24px', background: 'var(--accent-emerald)', color: 'var(--bg-dark)', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Save PDF
-                    </button>
-                </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
+            <div style={{
+                flex: 1,
+                background: 'rgba(0,0,0,0.3)',
+                borderRadius: '12px',
+                padding: '20px',
+                fontFamily: 'monospace',
+                fontSize: '0.9rem',
+                color: 'var(--accent-blue)',
+                whiteSpace: 'pre-wrap',
+                border: '1px solid var(--border-light)',
+                overflowY: 'auto',
+                lineHeight: '1.5'
+            }}>
+                {generateReport()}
             </div>
-            <div style={{ marginTop: '16px', padding: '24px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '12px', fontFamily: 'monospace', fontSize: '0.9rem', lineHeight: '1.6', color: 'var(--text-primary)' }}>
-                ========================================<br />
-                <strong style={{ color: '#3b82f6', fontSize: '1.1rem' }}>DEAL STRUCTURE PROPOSAL (SZYMON CRYPTO BRAIN)</strong><br />
-                ========================================<br />
-                Volume Target: ${(params.V / 1_000_000).toFixed(1)}M USD<br />
-                Base Retainer: {formatCurrency(params.R)}<br />
-                Sub-split (S): {formatPct(params.S)}<br />
-                {params.useTiers && `Tier Structure: Active\n`}
-                {params.useMilestones && `Retainer Milestones: Active\n`}
-                <br />
-                FINANCIAL MODEL:<br />
-                Break-even Volume: {metrics.breakEvenVolume !== null ? formatCurrency(metrics.breakEvenVolume) : '—'}<br />
-                Safety Condition: <span style={{ color: metrics.isSafe ? '#10b981' : '#f43f5e' }}>{metrics.isSafe ? 'PASSED' : 'FAILED'}</span><br />
-                Monthly Net Revenue Est.: {metrics.net !== null ? formatCurrency(metrics.net) : '—'}<br />
-                <br />
-                RISK ANALYSIS:<br />
-                Margin Buffer: {metrics.net !== null ? formatCurrency(metrics.net) : '—'}<br />
-                Margin Collapse Risk: {(metrics.safetyBufferPct || 0) < 5 ? 'DETECTED' : 'NONE'}<br />
-                ========================================
+
+            <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                    onClick={copyToClipboard}
+                    style={{
+                        flex: 1,
+                        padding: '12px',
+                        background: 'var(--accent-blue)',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        transition: 'var(--transition-smooth)'
+                    }}
+                >
+                    Copy Text Summary
+                </button>
             </div>
         </div>
     );
