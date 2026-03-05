@@ -1,11 +1,11 @@
-import { type DealParams, type DealResult } from '../model/DealModel';
+import type { DealParams, DealResult } from '../model/DealModel';
 
 interface Props {
     params: DealParams;
     metrics: DealResult;
 }
 
-export function StructuralWarnings({ params, metrics }: Props) {
+export function StructuralWarnings({ params, metrics }: Props): JSX.Element {
     const warnings = [];
 
     if (params.R > metrics.netProfit && metrics.netProfit > 0) {

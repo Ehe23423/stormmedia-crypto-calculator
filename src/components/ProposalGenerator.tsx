@@ -1,10 +1,11 @@
-import { type DealParams, calculateDealMetrics } from '../model/DealModel';
+import type { DealParams } from '../model/DealModel';
+import { calculateDealMetrics } from '../model/DealModel';
 
 interface Props {
     params: DealParams;
 }
 
-export function ProposalGenerator({ params }: Props) {
+export function ProposalGenerator({ params }: Props): JSX.Element {
     const m = calculateDealMetrics(params);
     const formatUSD = (val: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Math.round(val));

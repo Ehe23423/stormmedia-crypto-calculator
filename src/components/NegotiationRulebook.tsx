@@ -1,4 +1,4 @@
-export function NegotiationRulebook() {
+export function NegotiationRulebook(): JSX.Element {
     const rules = [
         { id: 1, title: 'Retainer First', desc: 'Adjust/lower fixed retainer to lower initial break-even exposure.' },
         { id: 2, title: 'Tier Efficiency', desc: 'Use tiered fee structures instead of flat share to protect variable margin.' },

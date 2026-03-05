@@ -1,11 +1,11 @@
-import { type DealParams, type DealResult } from '../model/DealModel';
+import type { DealParams, DealResult } from '../model/DealModel';
 
 interface Props {
     params: DealParams;
     metrics: DealResult;
 }
 
-export function PartnerRevenueSim({ params, metrics }: Props) {
+export function PartnerRevenueSim({ params, metrics }: Props): JSX.Element {
     const formatUSD = (val: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 

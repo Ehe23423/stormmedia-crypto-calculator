@@ -4,7 +4,7 @@ interface Props {
     onChange: (val: number) => void;
 }
 
-export function MarginSafetyLock({ value, onChange }: Props) {
+export function MarginSafetyLock({ value, onChange }: Props): JSX.Element {
     const steps = [0, 5, 10, 15, 20, 25, 30, 40];
 
     return (

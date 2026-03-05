@@ -5,7 +5,7 @@ interface Props {
     params: DealParams;
 }
 
-export function MinimalCharts({ params }: Props) {
+export function MinimalCharts({ params }: Props): JSX.Element {
     // Chart A Data: Net Profit vs Volume (1M to 50M)
     const volPoints = [1, 5, 10, 20, 30, 40, 50];
     const chartAData = volPoints.map(vM => {

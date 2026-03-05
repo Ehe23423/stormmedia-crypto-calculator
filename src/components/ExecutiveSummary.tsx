@@ -1,11 +1,11 @@
-import { type DealParams, type DealResult } from '../model/DealModel';
+import type { DealParams, DealResult } from '../model/DealModel';
 
 interface Props {
     params: DealParams;
     metrics: DealResult;
 }
 
-export function ExecutiveSummary({ params, metrics }: Props) {
+export function ExecutiveSummary({ params, metrics }: Props): JSX.Element {
     const formatUSD = (val: number | null | undefined) => {
         if (val === null || val === undefined || Number.isNaN(val)) return '—';
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);

@@ -5,7 +5,7 @@ interface Props {
     forcedRoastMode?: boolean;
 }
 
-export function DealScore({ metrics, forcedRoastMode }: Props) {
+export function DealScore({ metrics, forcedRoastMode = false }: Props): JSX.Element {
     const bufferPct = metrics.marginBuffer * 100;
 
     const getStatusConfig = () => {

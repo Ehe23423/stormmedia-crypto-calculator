@@ -5,7 +5,7 @@ interface Props {
     baseParams: DealParams;
 }
 
-export function StressTests({ baseParams }: Props) {
+export function StressTests({ baseParams }: Props): JSX.Element {
     const formatUSD = (val: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Math.round(val));
 
