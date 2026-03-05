@@ -4,24 +4,13 @@ import { calculateDealMetrics } from '../model/DealModel';
 
 const DEFAULT_PARAMS: DealParams = {
     V: 10_000_000,
-    F: 0.035,   // 0.035%
-    P: 40,      // 40%
-    S: 30,      // 30%
+    F: 0.035,
+    P: 50,
+    S: 30,
     R: 0,
     I: 0,
-    bonusPer1M: 0,
-    useTiers: false,
-    tiers: [
-        { threshold: 20_000_000, s: 40 },
-        { threshold: 35_000_000, s: 50 }
-    ],
-    useMilestones: false,
-    milestones: [
-        { threshold: 0, r: 1000 },
-        { threshold: 25_000_000, r: 1000 },
-        { threshold: 40_000_000, r: 1000 }
-    ],
-    requireMarginLock: false
+    B: 0,
+    safetyThreshold: 15
 };
 
 export function useDealSimulator(initialParams: Partial<DealParams> = {}) {
@@ -48,24 +37,11 @@ export function useDealSimulator(initialParams: Partial<DealParams> = {}) {
         ...urlParams
     });
 
-    const [error, setError] = useState<string | null>(null);
-
     const updateParam = <K extends keyof DealParams>(key: K, value: DealParams[K]) => {
-        setError(null);
-        setParams(prev => {
-            const nextParams = { ...prev, [key]: value };
-
-            // Safety Guardrail Interceptor
-            if (nextParams.requireMarginLock) {
-                const dryRunMetrics = calculateDealMetrics(nextParams);
-                if (!dryRunMetrics.isSafe) {
-                    setError("Safety Margin below 15% threshold.");
-                    return prev;
-                }
-            }
-
-            return nextParams;
-        });
+        setParams(prev => ({
+            ...prev,
+            [key]: value
+        }));
     };
 
     const generateShareLink = () => {
@@ -83,7 +59,6 @@ export function useDealSimulator(initialParams: Partial<DealParams> = {}) {
     return {
         params,
         metrics,
-        error,
         updateParam,
         setParams,
         generateShareLink
