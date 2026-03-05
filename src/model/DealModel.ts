@@ -1,19 +1,19 @@
 import { toNum, safeDiv, validateMetricsSafe } from '../lib/safeMath';
 
 /**
- * SZYMON CRYPTO BRAIN - CANONICAL CALCULATION ENGINE
- * Pure stateless math logic based on the Bloomberg Terminal specification.
+ * SZYMON CRYPTO BRAIN V3 - CANONICAL UNIFIED ENGINE
+ * Consolidation of all BD logic: Blended Fees, Partner Shares, Sub-splits, and Safety Locks.
  */
 
 export interface DealParams {
     V: number;  // Volume (USD)
-    F: number;  // Fee Percentage (e.g. 0.035 for 0.035%) -> internally 0.00035
-    P: number;  // Partner Share Percentage (0-80) -> internally 0.50
-    S: number;  // Sub Split Percentage (0-50) -> internally 0.30
-    R: number;  // Retainer (USD)
-    I: number;  // Operational Cost (USD)
-    B: number;  // Bonus per 1M (USD)
-    safetyThreshold: number; // Percentage (0-40)
+    F: number;  // Blended Fee Percentage (e.g. 0.035 for 0.035%)
+    P: number;  // Partner Share Percentage (0-100)
+    S: number;  // Sub Split Percentage (0-100)
+    R: number;  // Fixed Retainer (USD)
+    I: number;  // Infrastructure/Op Cost (USD)
+    B: number;  // Bonus per 1M Volume (USD)
+    safetyThreshold: number; // Minimum Margin Buffer %
 }
 
 export interface DealResult {
@@ -26,57 +26,49 @@ export interface DealResult {
     breakEvenVolume: number;
     isSafe: boolean;
     isBlocked: boolean;
-    safetyThreshold: number;
-    status: 'SAFE' | 'WARNING' | 'CRITICAL' | 'SUICIDAL' | 'BLOCKED';
+    status: 'SAFE' | 'WARNING' | 'CRITICAL' | 'BLOCKED';
 }
 
-export function calculateDealMetrics(rawParams: DealParams): DealResult {
-    // 1. Sanitize & Normalize
-    const volume = Math.max(0, toNum(rawParams.V));
-    const feeDec = Math.max(0, toNum(rawParams.F)) / 100; // 0.035 -> 0.00035
-    const partnerShareDec = Math.max(0, toNum(rawParams.P)) / 100; // 50 -> 0.5
-    const subSplitDec = Math.max(0, toNum(rawParams.S)) / 100; // 30 -> 0.3
-    const retainer = Math.max(0, toNum(rawParams.R));
-    const opCost = Math.max(0, toNum(rawParams.I));
-    const bonusPer1M = Math.max(0, toNum(rawParams.B));
-    const safetyThreshold = Math.max(0, toNum(rawParams.safetyThreshold || 15));
+export function calculateDealMetrics(p: DealParams): DealResult {
+    const volume = toNum(p.V);
+    const feeDec = toNum(p.F) / 100;           // 0.035 -> 0.00035
+    const partnerShareDec = toNum(p.P) / 100;   // 40 -> 0.4
+    const subSplitDec = toNum(p.S) / 100;       // 30 -> 0.3
+    const retainer = toNum(p.R);
+    const opCost = toNum(p.I);
+    const bonusPer1M = toNum(p.B);
+    const safetyThreshold = toNum(p.safetyThreshold || 15);
 
-    // 2. Core P&L Formulas
+    // 1. Calculations
     const grossFees = volume * feeDec;
     const partnerPool = grossFees * partnerShareDec;
     const subRevenue = partnerPool * subSplitDec;
 
-    // Bonus logic: only if profitable? User prompt implies it's a cost. 
-    // We treat it as an additional cost per 1M volume.
+    // Total variable costs
     const totalBonus = (volume / 1_000_000) * bonusPer1M;
 
+    // Exchange Bottom Line
     const exchangeRetained = grossFees - partnerPool;
     const netProfit = exchangeRetained - retainer - opCost - totalBonus;
 
-    // 3. Margin & Break-even
+    // 2. Metrics
     const marginBuffer = safeDiv(netProfit, grossFees, 0);
-
-    // breakEvenVolume = (retainer + operationalCost) / (fee * (1 - partnerShare))
-    const feeCapture = feeDec * (1 - partnerShareDec);
-    const totalFixedCosts = retainer + opCost;
-    // Note: bonusPer1M also affects break-even. 
-    // netProfit = (V * feeDec * (1 - partnerShareDec)) - (V/1M * bonus) - fixed = 0
-    // V * (feeCapture - bonus/1M - fixed/V) = 0? 
-    // V = fixed / (feeCapture - bonusPer1M/1M)
-    const effectiveVariableReturn = feeCapture - (bonusPer1M / 1_000_000);
-    const breakEvenVolume = safeDiv(totalFixedCosts, effectiveVariableReturn, 0);
-
-    // 4. Status Determination
     const bufferPct = marginBuffer * 100;
-    const isBlocked = bufferPct < safetyThreshold;
 
-    let status: DealResult['status'] = 'SUICIDAL';
+    // Break-even: Fixed Costs / (FeeCapture - BonusCapture)
+    const feeCapture = feeDec * (1 - partnerShareDec);
+    const bonusCapture = bonusPer1M / 1_000_000;
+    const effectiveMargin = feeCapture - bonusCapture;
+    const breakEvenVolume = safeDiv(retainer + opCost, effectiveMargin, 0);
+
+    // 3. Status
+    const isBlocked = bufferPct < safetyThreshold;
+    let status: DealResult['status'] = 'CRITICAL';
 
     if (isBlocked) status = 'BLOCKED';
-    else if (bufferPct > 30) status = 'SAFE';
-    else if (bufferPct > 15) status = 'WARNING';
-    else if (bufferPct > 5) status = 'CRITICAL';
-    else status = 'SUICIDAL';
+    else if (bufferPct >= 30) status = 'SAFE';
+    else if (bufferPct >= 15) status = 'WARNING';
+    else status = 'CRITICAL';
 
     const result: DealResult = {
         grossFees,
@@ -86,12 +78,11 @@ export function calculateDealMetrics(rawParams: DealParams): DealResult {
         netProfit,
         marginBuffer,
         breakEvenVolume,
-        isSafe: bufferPct >= safetyThreshold && bufferPct > 15,
+        isSafe: !isBlocked && bufferPct >= 15,
         isBlocked,
-        safetyThreshold,
         status
     };
 
-    validateMetricsSafe(result, "CanonicalDealEngine");
+    validateMetricsSafe(result, "V3UnifiedEngine");
     return result;
 }

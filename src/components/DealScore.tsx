@@ -2,94 +2,77 @@ import type { DealResult } from '../model/DealModel';
 
 interface Props {
     metrics: DealResult;
-    forcedRoastMode?: boolean;
 }
 
-export function DealScore({ metrics, forcedRoastMode = false }: Props) {
-    const bufferPct = metrics.marginBuffer * 100;
-
-    const getStatusConfig = () => {
-        if (metrics.status === 'BLOCKED') return {
-            color: 'var(--accent-rose)',
-            status: 'BLOCKED',
-            comment: 'Margin safety violated. Adjust partner share, fee or retainer.',
-            roast: 'You can technically run this deal. You can also technically juggle chainsaws.'
-        };
-        if (bufferPct > 30) return {
-            color: 'var(--accent-emerald)',
-            status: 'SAFE',
-            comment: 'Sustainable. Healthy retained margin.',
-            roast: 'This partnership makes sense. Unlike most influencer deals which are financially brain-dead.'
-        };
-        if (bufferPct > 15) return {
-            color: 'var(--accent-amber)',
-            status: 'WARNING',
-            comment: 'Payout is getting spicy. Fee compression can hurt.',
-            roast: 'Partner asking for this much? Admirable confidence. Financially questionable.'
-        };
-        if (bufferPct > 5) return {
-            color: 'var(--accent-rose)',
-            status: 'CRITICAL',
-            comment: 'Thin margin. One bad month flips this negative.',
-            roast: 'You are burning money. Either you re-negotiate this or prepare your resume for McDonald\'s.'
-        };
-        return {
-            color: '#7f1d1d',
-            status: 'SUICIDAL',
-            comment: 'This deal burns margin faster than a degen with 150x leverage.',
-            roast: 'ABSOLUTE DISASTER. This deal destroys your margin faster than a degen trader with 150x leverage.'
-        };
+export function DealScore({ metrics }: Props) {
+    const getStatusColor = () => {
+        switch (metrics.status) {
+            case 'SAFE': return 'var(--accent-emerald)';
+            case 'WARNING': return 'var(--accent-amber)';
+            case 'CRITICAL': return 'var(--accent-rose)';
+            case 'BLOCKED': return '#ff0000';
+            default: return 'var(--text-secondary)';
+        }
     };
 
-    const config = getStatusConfig();
+    const getScoreDescription = () => {
+        if (metrics.status === 'BLOCKED') return 'VIOLATION: Margin below safety threshold.';
+        if (metrics.status === 'SAFE') return 'OPTIMAL: Strong margin buffer, scalable structure.';
+        if (metrics.status === 'WARNING') return 'SUB-OPTIMAL: Respectable, but vulnerable to volume dips.';
+        if (metrics.status === 'CRITICAL') return 'DANGEROUS: Margin collapse imminent. Renegotiate.';
+        return 'CALCULATING...';
+    };
+
+    const scoreValue = Math.min(100, Math.max(0, Math.round(metrics.marginBuffer * 333))); // Arbitrary 0-100 score based on 30% margin target
 
     return (
-        <div style={{
-            padding: '24px',
-            background: `color-mix(in srgb, ${config.status === 'BLOCKED' || config.status === 'SUICIDAL' ? 'red' : config.color} 5%, var(--bg-card))`,
-            border: `2px solid ${config.status === 'BLOCKED' ? 'var(--accent-rose)' : metrics.isSafe ? 'var(--accent-emerald)' : 'transparent'}`,
-            borderRadius: '12px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px',
-            height: '100%',
-            justifyContent: 'center'
-        }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', height: '100%', justifyContent: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
                 <div style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '50%',
-                    background: config.color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: `0 0 20px ${config.color}44`
+                    fontSize: '5rem',
+                    fontWeight: 900,
+                    color: getStatusColor(),
+                    lineHeight: 1,
+                    letterSpacing: '-0.05em'
                 }}>
-                    <span style={{ fontSize: '2rem' }}>{metrics.isSafe ? '✔️' : '⚠️'}</span>
+                    {scoreValue < 10 ? `0${scoreValue}` : scoreValue}
                 </div>
-                <div>
-                    <h3 style={{ margin: 0, color: config.color, fontSize: '1.8rem', fontWeight: 900, letterSpacing: '0.1em' }}>
-                        {config.status}
-                    </h3>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                        Margin Buffer: <strong style={{ color: config.color }}>{bufferPct.toFixed(1)}%</strong>
-                    </div>
+                <div style={{
+                    fontSize: '1rem',
+                    fontWeight: 800,
+                    color: getStatusColor(),
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.2em',
+                    marginTop: '8px'
+                }}>
+                    {metrics.status} STATUS
                 </div>
             </div>
 
+            <div style={{
+                height: '6px',
+                background: 'rgba(255,255,255,0.05)',
+                borderRadius: '3px',
+                overflow: 'hidden',
+                marginTop: '10px'
+            }}>
+                <div style={{
+                    width: `${scoreValue}%`,
+                    height: '100%',
+                    background: getStatusColor(),
+                    boxShadow: `0 0 15px ${getStatusColor()}`
+                }} />
+            </div>
+
             <p style={{
-                margin: 0,
-                fontSize: '1rem',
-                color: 'var(--text-primary)',
+                color: 'var(--text-secondary)',
+                fontSize: '0.8rem',
                 lineHeight: 1.5,
-                padding: '16px',
-                background: 'rgba(0,0,0,0.2)',
-                borderRadius: '8px',
-                borderLeft: `4px solid ${config.color}`,
+                textAlign: 'center',
+                margin: 0,
                 fontStyle: 'italic'
             }}>
-                {forcedRoastMode ? config.roast : config.comment}
+                "{getScoreDescription()}"
             </p>
         </div>
     );
