@@ -131,8 +131,13 @@ export const UnifiedTerminal: React.FC = () => {
                         <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '4px' }}>
                             First Ever Exchange deal calculator for Crypto Business developers - one to help us all
                         </div>
-                        <div style={{ fontSize: '0.55rem', color: 'var(--accent-emerald)', fontWeight: 700, marginTop: '2px', opacity: 0.8 }}>
-                            TELEGRAM: @ostryopos
+                        <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                            <a href="https://t.me/ostryopos" target="_blank" rel="noreferrer" className="storm-btn" style={{ fontSize: '0.55rem', padding: '4px 10px', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', borderColor: 'rgba(56, 189, 248, 0.3)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                ✈️ DM @ostryopos
+                            </a>
+                            <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert('App URL copied to clipboard!'); }} className="storm-btn" style={{ fontSize: '0.55rem', padding: '4px 10px', background: 'rgba(255, 255, 255, 0.05)', color: 'white', borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                🔗 Share App
+                            </button>
                         </div>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch', flexWrap: 'wrap' }}>
