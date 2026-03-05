@@ -9,7 +9,10 @@ interface Props {
 export function DealBattle({ currentParams, currentMetrics }: Props) {
     interface ScenarioPayload {
         retainedPer1M: number;
-        breakEvenVolume: number;
+        breakEvenVolume: number | null;
+        baseCosts: number;
+        net: number;
+        grossRetained: number;
     }
     interface Scenario {
         name: string;
@@ -40,17 +43,21 @@ export function DealBattle({ currentParams, currentMetrics }: Props) {
 
     const calcNet = (s: any, volM: number) => {
         if (!s.params) return 0;
-        const gross = volM * 1_000_000 * s.params.F;
-        const partnerCut = (gross * s.params.P * (1 - s.params.S)) + s.params.R + (volM >= 10 ? s.params.bonusPer1M * volM : 0);
-        return gross - partnerCut - s.params.I;
+        const feePer1M = 1_000_000 * (s.params.F / 100);
+        const retainedPer1M = feePer1M * (s.params.P / 100) * (1 - (s.params.S / 100));
+        const baseCosts = s.params.R + s.params.I;
+        const grossRetained = volM * retainedPer1M;
+        // Simplified bonus check for battle mode
+        const bonusCost = (grossRetained > baseCosts) ? (volM * s.params.bonusPer1M) : 0;
+        return grossRetained - baseCosts - bonusCost;
     };
 
     const copySummary = (s: any) => {
         if (!s.params) return;
         const txt = `DEAL SUMMARY: ${s.name}\n` +
-            `Fee: ${(s.params.F * 100).toFixed(3)}%\n` +
-            `Partner Share: ${s.params.P * 100}%\n` +
-            `Sub-split: ${s.params.S * 100}%\n` +
+            `Fee: {s.params.F}%\n` +
+            `Partner Share: ${s.params.P}%\n` +
+            `Sub-split: ${s.params.S}%\n` +
             `Retainer: $${s.params.R}\n` +
             `Base Net @ 10M Vol: ${formatCurrency(calcNet(s, 10))}\n` +
             `Base Net @ 50M Vol: ${formatCurrency(calcNet(s, 50))}\n`;
@@ -94,12 +101,12 @@ export function DealBattle({ currentParams, currentMetrics }: Props) {
                                         <span style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>{formatCurrency(s.payload.retainedPer1M)} / 1M</span>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <span style={{ color: 'var(--text-secondary)' }}>Fixed Liability:</span>
-                                        <span style={{ color: 'var(--accent-rose)', fontWeight: 'bold' }}>-${s.params.R + s.params.I}</span>
+                                        <span style={{ color: 'var(--text-secondary)' }}>Fixed Costs (R+I):</span>
+                                        <span style={{ color: 'var(--accent-rose)', fontWeight: 'bold' }}>-${s.payload.baseCosts}</span>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <span style={{ color: 'var(--text-secondary)' }}>Break-even:</span>
-                                        <span style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>{formatCurrency(s.payload.breakEvenVolume)}</span>
+                                        <span style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>{s.payload.breakEvenVolume !== null ? formatCurrency(s.payload.breakEvenVolume) : '—'}</span>
                                     </div>
 
                                     <div style={{ background: 'var(--bg-dark)', padding: '12px', borderRadius: '8px', textAlign: 'center', marginTop: '12px', border: '1px solid var(--border-light)' }}>

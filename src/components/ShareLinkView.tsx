@@ -80,7 +80,7 @@ export function ShareLinkView() {
             </div>
 
             {/* The Pitch Mode component inherently hides the internal margin/risk metrics */}
-            <DealPitchMode params={scenarioData} metrics={metrics} />
+            <DealPitchMode params={scenarioData} metrics={metrics} userRole="guest" />
         </div>
     );
 }

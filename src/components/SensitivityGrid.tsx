@@ -6,10 +6,11 @@ interface Props {
 }
 
 export function SensitivityGrid({ baseParams }: Props) {
-    const pVals = [0.40, 0.50, 0.60];
-    const sVals = [0.30, 0.40, 0.50];
+    const pVals = [40, 50, 60];
+    const sVals = [30, 40, 50];
 
-    const formatNum = (val: number) => {
+    const formatNum = (val: number | null) => {
+        if (val === null) return '—';
         if (!isFinite(val)) return '∞';
         if (val >= 1_000_000) return (val / 1_000_000).toFixed(1) + 'M';
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
@@ -25,7 +26,7 @@ export function SensitivityGrid({ baseParams }: Props) {
                             <th style={{ padding: '12px', borderBottom: '1px solid var(--border-light)' }}>S / P</th>
                             {pVals.map(p => (
                                 <th key={p} style={{ padding: '12px', borderBottom: '1px solid var(--border-light)', color: '#3b82f6' }}>
-                                    P = {Math.round(p * 100)}%
+                                    P = {p}%
                                 </th>
                             ))}
                         </tr>
@@ -34,12 +35,12 @@ export function SensitivityGrid({ baseParams }: Props) {
                         {sVals.map(s => (
                             <tr key={s}>
                                 <td style={{ padding: '12px', borderBottom: '1px solid var(--border-light)', fontWeight: 'bold', color: '#8b5cf6' }}>
-                                    S = {Math.round(s * 100)}%
+                                    S = {s}%
                                 </td>
                                 {pVals.map(p => {
-                                    const metrics = calculateDealMetrics({ ...baseParams, P: p, S: s });
+                                    const metrics = calculateDealMetrics({ ...baseParams, P: p, S: s, useTiers: false });
                                     return (
-                                        <td key={p} style={{ padding: '12px', borderBottom: '1px solid var(--border-light)', color: 'var(--text-primary)' }}>
+                                        <td key={p} style={{ padding: '12px', borderBottom: '1px solid var(--border-light)', color: metrics.isSustainable ? 'var(--text-primary)' : 'var(--accent-rose)' }}>
                                             {formatNum(metrics.breakEvenVolume)}
                                         </td>
                                     );

@@ -46,13 +46,13 @@ export function PortfolioDashboard({ currentParams, currentMetrics }: Props) {
         setPartners(partners.filter(p => p.id !== id));
     };
 
-    const totalRetained = partners.reduce((sum, p) => sum + p.metrics.totalRetained, 0);
+    const totalRetained = partners.reduce((sum, p) => sum + p.metrics.grossRetained, 0);
     const totalBonusCost = partners.reduce((sum, p) => sum + p.metrics.bonusCost, 0);
     const totalBaseRetainer = partners.reduce((sum, p) => sum + p.params.R, 0);
     const totalNet = partners.reduce((sum, p) => sum + p.metrics.net, 0);
 
     // Multi-partner Alerts
-    const hasDangerMargin = partners.some(p => p.metrics.safetyMarginBuffer < 500);
+    const hasDangerMargin = partners.some(p => p.metrics.net < 500);
     const totalCostOfCommitments = totalBonusCost + totalBaseRetainer;
 
     return (

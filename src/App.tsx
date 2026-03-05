@@ -11,6 +11,7 @@ import { RiskHeatmap } from './components/RiskHeatmap';
 import { DealOptimizer } from './components/DealOptimizer';
 import { CryptoTicker } from './components/CryptoTicker';
 import { DealScore } from './components/DealScore';
+import { safeDiv } from './lib/safeMath';
 import { SensitivityGrid } from './components/SensitivityGrid';
 import { StressTests } from './components/StressTests';
 import { DealTemplates } from './components/DealTemplates';
@@ -64,6 +65,24 @@ export default function App() {
 
   const { params, metrics, updateParam, setParams } = useDealSimulator();
   const [activeTab, setActiveTab] = useState<'ARCHITECT' | 'HUNTER' | 'PITCH' | 'AGENCY' | 'BD_OS' | 'SAVES' | 'ADMIN'>('BD_OS');
+
+  // Role-based Navigation logic
+  const tabs = [
+    { id: 'BD_OS', label: 'BD OS', roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'ARCHITECT', label: 'Architect', roles: ['admin', 'agency', 'partner'] },
+    { id: 'HUNTER', label: 'Hunter Panel', roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'PITCH', label: 'Pitch Mode', roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'AGENCY', label: 'Agency Ops', roles: ['admin', 'agency', 'partner'] },
+    { id: 'SAVES', label: 'Library', roles: ['admin', 'agency', 'partner', 'hunter'] },
+    { id: 'ADMIN', label: 'Admin', roles: ['admin'] },
+  ].filter(t => t.roles.includes(role));
+
+  useEffect(() => {
+    // If current tab is not allowed for new role, fallback to first available
+    if (!tabs.find(t => t.id === activeTab)) {
+      setActiveTab(tabs[0]?.id as any || 'BD_OS');
+    }
+  }, [role]);
 
   const applyPreset = (presetName: string) => {
     switch (presetName) {
@@ -139,6 +158,10 @@ export default function App() {
     }
   };
 
+  if (!session) {
+    return <LandingPage onAuth={() => setShowAuth(true)} />;
+  }
+
   return (
     <>
       <div className="app-container">
@@ -176,307 +199,320 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={
-            <div className="layout-split">
+            <>
               <CryptoTicker />
-              {/* SIDEBAR: Inputs */}
-              <aside className="sidebar">
-                <div className="glass-panel sidebar">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <h2 className="header-title" style={{ margin: 0 }}>
-                      <span style={{ fontSize: '1.2em' }}>📐</span> VARIABLES
-                    </h2>
-                    {/* The share button was moved to the header */}
-                  </div>
-
-                  <div style={{ marginBottom: '24px', padding: '12px', background: params.requireMarginLock ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.05)', border: `1px solid ${params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--border-light)'}`, borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => updateParam('requireMarginLock', !params.requireMarginLock)}>
-                    <div style={{ width: '40px', height: '20px', background: params.requireMarginLock ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.1)', borderRadius: '10px', position: 'relative', transition: 'var(--transition-smooth)' }}>
-                      <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '2px', left: params.requireMarginLock ? '22px' : '2px', transition: 'var(--transition-smooth)' }} />
+              <div className="grid-layout grid-cols-sidebar" style={{ marginTop: '24px' }}>
+                {/* SIDEBAR: Inputs */}
+                <aside className="sidebar">
+                  <div className="glass-panel sidebar">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                      <h2 className="header-title" style={{ margin: 0 }}>
+                        <span style={{ fontSize: '1.2em' }}>📐</span> VARIABLES
+                      </h2>
+                      {/* The share button was moved to the header */}
                     </div>
-                    <div>
-                      <strong style={{ display: 'block', color: params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 500 }}>Prevent terrible deals (15% Lock)</strong>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>You can technically do this deal. You can also technically juggle chainsaws.</span>
+
+                    <div style={{ marginBottom: '24px', padding: '12px', background: params.requireMarginLock ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.05)', border: `1px solid ${params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--border-light)'}`, borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => updateParam('requireMarginLock', !params.requireMarginLock)}>
+                      <div style={{ width: '40px', height: '20px', background: params.requireMarginLock ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.1)', borderRadius: '10px', position: 'relative', transition: 'var(--transition-smooth)' }}>
+                        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '2px', left: params.requireMarginLock ? '22px' : '2px', transition: 'var(--transition-smooth)' }} />
+                      </div>
+                      <div>
+                        <strong style={{ display: 'block', color: params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 500 }}>Prevent terrible deals (15% Lock)</strong>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>You can technically do this deal. You can also technically juggle chainsaws.</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div style={{ padding: '16px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border-light)', marginBottom: '16px' }}>
-                    <h4 style={{ marginBottom: '12px', color: 'var(--text-primary)', fontSize: '0.9rem' }}>Quick Templates</h4>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button onClick={() => applyPreset('SAFE_START')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>Safe Start</button>
-                      <button onClick={() => applyPreset('HYBRID_GROWTH')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>Hybrid Growth</button>
-                      <button onClick={() => applyPreset('HIGH_ROLLER')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>High Roller</button>
+                    <div style={{ padding: '16px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border-light)', marginBottom: '16px' }}>
+                      <h4 style={{ marginBottom: '12px', color: 'var(--text-primary)', fontSize: '0.9rem' }}>Quick Templates</h4>
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <button onClick={() => applyPreset('SAFE_START')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>Safe Start</button>
+                        <button onClick={() => applyPreset('HYBRID_GROWTH')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>Hybrid Growth</button>
+                        <button onClick={() => applyPreset('HIGH_ROLLER')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>High Roller</button>
+                      </div>
                     </div>
-                  </div>
 
-                  <CommunitySelector applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
+                    <CommunitySelector applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
 
-                  <div className="input-group">
-                    <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, fontSize: '0.85rem' }}>Volume (USD)</label>
-                    <input
-                      type="number"
-                      value={params.V}
-                      onChange={e => updateParam('V', Number(e.target.value))}
-                    />
-                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '8px' }}>
-                      {[1, 5, 10, 20, 50].map(v => (
-                        <button key={v} onClick={() => updateParam('V', v * 1_000_000)} style={{ flex: 1, padding: '4px', fontSize: '0.7rem', background: 'var(--bg-card)', color: 'var(--text-secondary)', border: '1px solid var(--border-light)', borderRadius: '4px', cursor: 'pointer' }}>{v}M</button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Blended Fee</label>
-                    <select
-                      value={params.F}
-                      onChange={e => updateParam('F', Number(e.target.value))}
-                    >
-                      <option value={0.00035}>0.035%</option>
-                      <option value={0.00030}>0.030%</option>
-                      <option value={0.00028}>0.028%</option>
-                    </select>
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Partner Payout Share (%)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={params.P}
-                      onChange={e => updateParam('P', Number(e.target.value))}
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Sub Split (S)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={params.S}
-                      onChange={e => updateParam('S', Number(e.target.value))}
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Fixed Retainer (USD)</label>
-                    <input
-                      type="number"
-                      value={params.R}
-                      onChange={e => updateParam('R', Number(e.target.value))}
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Operational Cost (I)</label>
-                    <input
-                      type="number"
-                      value={params.I}
-                      onChange={e => updateParam('I', Number(e.target.value))}
-                    />
-                    <small style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginTop: '4px', fontStyle: 'italic', display: 'block' }}>
-                      Operational cost is evaluated manually by Szymon.<br />Guessing it is a brave but dangerous hobby.
-                    </small>
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Bonus per 1M Volume Increment (USD)</label>
-                    <input
-                      type="number"
-                      value={params.bonusPer1M}
-                      onChange={e => updateParam('bonusPer1M', Number(e.target.value))}
-                    />
-                    {params.bonusPer1M > 0 && (
-                      <div style={{ marginTop: '8px', fontSize: '0.8rem', color: 'var(--accent-pink)', background: 'rgba(236, 72, 153, 0.1)', padding: '8px', borderRadius: '6px', border: '1px solid var(--accent-pink)' }}>
-                        Equivalent Cost: <strong>+{(params.bonusPer1M / (params.F * 1_000_000) * 100).toFixed(1)}%</strong> of gross revenue
-                      </div>
-                    )}
-                  </div>
-
-                  <TierConfigurator params={params} updateParam={updateParam} />
-
-                </div>
-              </aside>
-
-              {/* MAIN CONTENT: Dashboards */}
-              <main className="main-content">
-                <FeatureHighlights />
-
-                {/* TAB NAVIGATION */}
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                  <button
-                    onClick={() => setActiveTab('ARCHITECT')}
-                    style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'ARCHITECT' ? '#3b82f6' : 'var(--border-light)'), background: activeTab === 'ARCHITECT' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'ARCHITECT' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                  >
-                    DEAL ARCHITECT
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('PITCH')}
-                    style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'PITCH' ? '#ec4899' : 'var(--border-light)'), background: activeTab === 'PITCH' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'PITCH' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                  >
-                    DEAL PITCH (LIVE)
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('HUNTER')}
-                    style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'HUNTER' ? '#8b5cf6' : 'var(--border-light)'), background: activeTab === 'HUNTER' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'HUNTER' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                  >
-                    HUNTER PANEL
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('AGENCY')}
-                    style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'AGENCY' ? '#10b981' : 'var(--border-light)'), background: activeTab === 'AGENCY' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'AGENCY' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                  >
-                    AGENCY TOOLS
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('BD_OS')}
-                    style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'BD_OS' ? '#f59e0b' : 'var(--border-light)'), background: activeTab === 'BD_OS' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'BD_OS' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                  >
-                    🧠 BD OS
-                  </button>
-                  {session && (
-                    <button
-                      onClick={() => setActiveTab('SAVES')}
-                      style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'SAVES' ? '#06b6d4' : 'var(--border-light)'), background: activeTab === 'SAVES' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'SAVES' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                    >
-                      💾 SAVES
-                    </button>
-                  )}
-                  {role === 'admin' && (
-                    <button
-                      onClick={() => setActiveTab('ADMIN')}
-                      style={{ padding: '12px 24px', flex: 1, borderRadius: '12px', border: '1px solid ' + (activeTab === 'ADMIN' ? '#f43f5e' : 'var(--border-light)'), background: activeTab === 'ADMIN' ? 'rgba(255, 255, 255, 0.05)' : 'var(--bg-card)', color: activeTab === 'ADMIN' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'var(--transition-smooth)' }}
-                    >
-                      🛡️ ADMIN
-                    </button>
-                  )}
-                </div>
-
-                {activeTab === 'ARCHITECT' && (
-                  <>
-                    <DealTemplates applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
-
-                    <div className="glass-panel" style={{ marginTop: '24px' }}>
-                      <h3 style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>DEAL METRICS DASHBOARD</h3>
-
-                      <div className="metric-grid">
-                        <div className={`metric-card ${metrics.net > 0 ? 'positive-border' : 'negative-border'}`}>
-                          <span className="label">Monthly Net</span>
-                          <span className={`value ${metrics.net > 0 ? 'positive' : 'negative'}`}>
-                            {formatCurrency(metrics.net)}
-                          </span>
-                        </div>
-
-                        <div className="metric-card">
-                          <span className="label">Break-even Volume</span>
-                          <span className="value">{formatCurrency(metrics.breakEvenVolume)}</span>
-                        </div>
-
-                        <div className="metric-card">
-                          <span className="label">Retained per 1M</span>
-                          <span className={`value ${metrics.marginCollapseRisk ? 'negative' : 'positive'}`}>
-                            {formatCurrency(metrics.retainedPer1M)}
-                          </span>
-                        </div>
-
-                        <div className="metric-card">
-                          <span className="label">Margin Buffer</span>
-                          <span className={`value ${metrics.safetyMarginBuffer > 0 ? 'positive' : 'negative'}`}>
-                            {formatCurrency(metrics.safetyMarginBuffer)}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div style={{ marginTop: '32px', display: 'flex', gap: '16px' }}>
-                        <div style={{ padding: '16px', borderRadius: '12px', background: metrics.isSustainable ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.05)', color: metrics.isSustainable ? '#10b981' : '#f43f5e', flex: 1 }}>
-                          <h4 style={{ marginBottom: '8px' }}>Sustainability Condition</h4>
-                          <p style={{ fontSize: '0.875rem' }}>{metrics.isSustainable ? '✅ Net is positive' : '❌ Net is negative'}</p>
-                        </div>
-
-                        <div style={{ padding: '16px', borderRadius: '12px', background: metrics.isSafe ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.05)', color: metrics.isSafe ? '#10b981' : '#f43f5e', flex: 1 }}>
-                          <h4 style={{ marginBottom: '8px' }}>Safety Condition</h4>
-                          <p style={{ fontSize: '0.875rem' }}>{metrics.isSafe ? '✅ Retained is >= 15% above fixed base' : '❌ Retained is too low compared to fixed base'}</p>
-                        </div>
-                      </div>
-
-                      <MinimalCharts params={params} />
-
-                      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }} className="dashboard-grid">
-                        <DealBuilder />
-                        <DealScore metrics={metrics} />
-                      </div>
-
-                      <PartnerRevenueSim />
-                      <VIPFeeComparison />
-
-                      <DealOptimizer
-                        baseParams={params}
-                        onApplyOptimization={(newParams) => {
-                          setParams(prev => ({ ...prev, ...newParams }));
-                        }}
+                    <div className="input-group">
+                      <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, fontSize: '0.85rem' }}>Volume (USD)</label>
+                      <input
+                        type="number"
+                        value={params.V}
+                        onChange={e => updateParam('V', Number(e.target.value))}
                       />
-
-                      <NegotiationAssistant
-                        params={params}
-                        onApplyCounterOffer={newParams => setParams(prev => ({ ...prev, ...newParams }))}
-                      />
-                      <RiskHeatmap baseParams={params} />
-                      <SensitivityGrid baseParams={params} />
-                      <StressTests baseParams={params} />
-                      <ExecutiveSummary params={params} metrics={metrics} />
-                      <PortfolioDashboard currentParams={params} currentMetrics={metrics} />
-                      <ComplianceWarning />
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '8px' }}>
+                        {[1, 5, 10, 20, 50].map(v => (
+                          <button key={v} onClick={() => updateParam('V', v * 1_000_000)} style={{ flex: 1, padding: '4px', fontSize: '0.7rem', background: 'var(--bg-card)', color: 'var(--text-secondary)', border: '1px solid var(--border-light)', borderRadius: '4px', cursor: 'pointer' }}>{v}M</button>
+                        ))}
+                      </div>
                     </div>
-                  </>
-                )}
 
-                {activeTab === 'PITCH' && (
-                  <div className="tab-pane active fade-in">
-                    <DealPitchMode params={params} metrics={metrics} />
+                    <div className="input-group">
+                      <label className="input-label">Blended Fee</label>
+                      <select
+                        value={params.F}
+                        onChange={e => updateParam('F', Number(e.target.value))}
+                      >
+                        <option value={0.00035}>0.035%</option>
+                        <option value={0.00030}>0.030%</option>
+                        <option value={0.00028}>0.028%</option>
+                      </select>
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Partner Payout Share (P)</span>
+                        <span style={{ color: 'var(--accent-blue)', fontWeight: 'bold' }}>{params.P}%</span>
+                      </label>
+                      <input
+                        type="range"
+                        min="0" max="100" step="1"
+                        value={params.P}
+                        onChange={e => updateParam('P', Number(e.target.value))}
+                        style={{ width: '100%', accentColor: 'var(--accent-blue)', cursor: 'pointer' }}
+                      />
+                      <input
+                        type="number"
+                        className="glass-input"
+                        style={{ marginTop: '8px' }}
+                        value={params.P}
+                        onChange={e => updateParam('P', Number(e.target.value))}
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Sub Split (S)</span>
+                        <span style={{ color: 'var(--accent-purple)', fontWeight: 'bold' }}>{params.S}%</span>
+                      </label>
+                      <input
+                        type="range"
+                        min="0" max="100" step="1"
+                        value={params.S}
+                        onChange={e => updateParam('S', Number(e.target.value))}
+                        style={{ width: '100%', accentColor: 'var(--accent-purple)', cursor: 'pointer' }}
+                      />
+                      <input
+                        type="number"
+                        className="glass-input"
+                        style={{ marginTop: '8px' }}
+                        value={params.S}
+                        onChange={e => updateParam('S', Number(e.target.value))}
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Fixed Retainer (USD)</label>
+                      <input
+                        type="number"
+                        value={params.R}
+                        onChange={e => updateParam('R', Number(e.target.value))}
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label">Operational Cost (I) — paid to Szymon</label>
+                      <input
+                        type="number"
+                        value={params.I}
+                        onChange={e => updateParam('I', Number(e.target.value))}
+                      />
+                      <small style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginTop: '4px', fontStyle: 'italic', display: 'block' }}>
+                        Operational cost is evaluated manually by Szymon.
+                      </small>
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Bonus per 1M Volume Increment (USD)</label>
+                      <input
+                        type="number"
+                        value={params.bonusPer1M}
+                        onChange={e => updateParam('bonusPer1M', Number(e.target.value))}
+                      />
+                      {params.bonusPer1M > 0 && (
+                        <div style={{ marginTop: '8px', fontSize: '0.8rem', color: 'var(--accent-pink)', background: 'rgba(236, 72, 153, 0.1)', padding: '8px', borderRadius: '6px', border: '1px solid var(--accent-pink)' }}>
+                          Equivalent Cost: <strong>+{(safeDiv(params.bonusPer1M, (params.F * 1_000_000), 0) * 100).toFixed(1)}%</strong> of gross revenue
+                        </div>
+                      )}
+                    </div>
+
+                    <TierConfigurator params={params} updateParam={updateParam} />
+
                   </div>
-                )}
+                </aside>
 
-                {activeTab === 'AGENCY' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <BatchBuilder />
-                    <ActivationBuilder />
+                {/* MAIN CONTENT: Dashboards */}
+                <main className="main-content">
+                  <FeatureHighlights />
+
+                  {/* TAB NAVIGATION */}
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                    {tabs.map(tab => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id as any)}
+                        className={`glass-btn ${activeTab === tab.id ? 'active' : ''}`}
+                        style={{ flex: 1, border: activeTab === tab.id ? '1px solid var(--accent-blue)' : undefined, minWidth: '100px' }}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
                   </div>
-                )}
 
-                {activeTab === 'BD_OS' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <PartnerCRM />
-                    <SimulatorPro />
-                    <DealBattle currentParams={params} currentMetrics={metrics} />
-                    <StreamerMode />
-                    <AIAssistant />
-                    <IntelligenceScout />
-                    <AffiliateLinkBuilder />
-                  </div>
-                )}
+                  {activeTab === 'ARCHITECT' && (
+                    <>
+                      <DealTemplates applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
 
-                {activeTab === 'HUNTER' && (
-                  <HunterPanel />
-                )}
+                      <div className="glass-panel" style={{ marginTop: '24px' }}>
+                        <h3 style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>DEAL METRICS DASHBOARD</h3>
 
-                {activeTab === 'SAVES' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <MyScenarios session={session} onLoadScenario={(loadedParams) => {
-                      setParams(prev => ({ ...prev, ...loadedParams }));
-                      setActiveTab('ARCHITECT');
-                      alert('Scenario loaded successfully!');
-                    }} />
-                  </div>
-                )}
+                        <div className="metric-grid">
+                          <div className={`metric-card ${metrics.net > 0 ? 'positive-border' : 'negative-border'}`}>
+                            <span className="label">Monthly Net</span>
+                            <span className={`value ${metrics.net > 0 ? 'positive' : 'negative'}`}>
+                              {formatCurrency(metrics.net)}
+                            </span>
+                          </div>
 
-                {activeTab === 'ADMIN' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <AdminConsole session={session} role={role} />
-                  </div>
-                )}
-              </main>
-            </div>
+                          <div className="metric-card">
+                            <span className="label">Break-even Volume</span>
+                            <span className="value">{metrics.breakEvenVolume !== null ? formatCurrency(metrics.breakEvenVolume) : '—'}</span>
+                          </div>
+
+                          <div className="metric-card">
+                            <span className="label">Retained per 1M</span>
+                            <span className={`value ${(metrics.safetyBufferPct || 0) < 5 ? 'negative' : 'positive'}`}>
+                              {formatCurrency(metrics.retainedPer1M)}
+                            </span>
+                          </div>
+
+                          <div className="metric-card">
+                            <span className="label">Margin Buffer</span>
+                            <span className={`value ${metrics.net > 0 ? 'positive' : 'negative'}`}>
+                              {metrics.net !== null ? formatCurrency(metrics.net) : '—'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div style={{ marginTop: '32px', display: 'flex', gap: '16px' }}>
+                          <div style={{ padding: '16px', borderRadius: '12px', background: metrics.isSustainable ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.05)', color: metrics.isSustainable ? '#10b981' : '#f43f5e', flex: 1 }}>
+                            <h4 style={{ marginBottom: '8px' }}>Sustainability Condition</h4>
+                            <p style={{ fontSize: '0.875rem' }}>{metrics.isSustainable ? '✅ Net is positive' : '❌ Net is negative'}</p>
+                          </div>
+
+                          <div style={{ padding: '16px', borderRadius: '12px', background: metrics.isSafe ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.05)', color: metrics.isSafe ? '#10b981' : '#f43f5e', flex: 1 }}>
+                            <h4 style={{ marginBottom: '8px' }}>Safety Condition</h4>
+                            <p style={{ fontSize: '0.875rem' }}>{metrics.isSafe ? '✅ Retained is >= 15% above fixed base' : '❌ Retained is too low compared to fixed base'}</p>
+                          </div>
+                        </div>
+
+                        <MinimalCharts params={params} />
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }} className="dashboard-grid">
+                          <DealBuilder />
+                          <DealScore metrics={metrics} />
+                        </div>
+
+                        <PartnerRevenueSim />
+                        <VIPFeeComparison />
+
+                        <DealOptimizer
+                          baseParams={params}
+                          onApplyOptimization={(newParams) => {
+                            setParams(prev => ({ ...prev, ...newParams }));
+                          }}
+                        />
+
+                        <NegotiationAssistant
+                          params={params}
+                          onApplyCounterOffer={newParams => setParams(prev => ({ ...prev, ...newParams }))}
+                        />
+                        <RiskHeatmap baseParams={params} />
+                        <SensitivityGrid baseParams={params} />
+                        <StressTests baseParams={params} />
+                        <ExecutiveSummary params={params} metrics={metrics} />
+                        <PortfolioDashboard currentParams={params} currentMetrics={metrics} />
+                        <ComplianceWarning />
+                      </div>
+                    </>
+                  )}
+
+                  {activeTab === 'PITCH' && (
+                    <div className="tab-pane active fade-in">
+                      <DealPitchMode params={params} metrics={metrics} userRole={role} />
+                    </div>
+                  )}
+
+                  {activeTab === 'AGENCY' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                      <BatchBuilder />
+                      <ActivationBuilder />
+                    </div>
+                  )}
+
+                  {activeTab === 'BD_OS' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                      <PartnerCRM />
+                      <SimulatorPro />
+                      <DealBattle currentParams={params} currentMetrics={metrics} />
+                      <StreamerMode />
+                      <AIAssistant />
+                      <IntelligenceScout />
+                      <AffiliateLinkBuilder />
+                    </div>
+                  )}
+
+                  {activeTab === 'HUNTER' && (
+                    <HunterPanel />
+                  )}
+
+                  {activeTab === 'SAVES' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                      <MyScenarios session={session} onLoadScenario={(loadedParams) => {
+                        setParams(prev => ({ ...prev, ...loadedParams }));
+                        setActiveTab('ARCHITECT');
+                        alert('Scenario loaded successfully!');
+                      }} />
+                    </div>
+                  )}
+
+                  {activeTab === 'ADMIN' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                      <AdminConsole session={session} role={role} />
+                    </div>
+                  )}
+                </main>
+              </div>
+            </>
           } />
           <Route path="/share/:token" element={<ShareLinkView />} />
         </Routes>
       </div>
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </>
+  );
+}
+
+function LandingPage({ onAuth }: { onAuth: () => void }) {
+  return (
+    <div className="landing-page" style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-dark)', color: 'var(--text-primary)', textAlign: 'center', padding: '20px' }}>
+      <div className="glass-panel" style={{ maxWidth: '600px', padding: '60px', border: '1px solid var(--border-light)', background: 'rgba(255,255,255,0.03)' }}>
+        <h1 style={{ fontSize: '3rem', marginBottom: '16px', letterSpacing: '2px' }}>SZYMON CRYPTO BRAIN</h1>
+        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '40px', lineHeight: '1.6' }}>
+          The production-grade Business Development Operating System for the crypto ecosystem.
+          Standardize deal structures, automate revenue modelling, and secure partner acquisitions.
+        </p>
+        <button
+          onClick={onAuth}
+          className="glass-btn"
+          style={{ padding: '16px 48px', fontSize: '1.2rem', background: 'var(--accent-blue)', color: 'white', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)' }}
+        >
+          ENTER TERMINAL
+        </button>
+      </div>
+      <div style={{ marginTop: '40px', fontSize: '0.8rem', color: 'var(--text-secondary)', opacity: 0.5 }}>
+        v2.0.0-PROD • TERMINAL ACCESS RESTRICTED
+      </div>
+    </div>
   );
 }

@@ -3,12 +3,17 @@ import type { DealParams, DealResult } from '../model/DealModel';
 interface Props {
     params: DealParams;
     metrics: DealResult;
+    userRole: string;
 }
 
-export function DealPitchMode({ params, metrics }: Props) {
+export function DealPitchMode({ params, metrics, userRole }: Props) {
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
     };
+
+    // Hunters shouldn't see sensitive internal P and F details if possible, 
+    // but the user said "Hunter: see hunter panel, cannot edit partner economics".
+    // So in PITCH mode, we show the results.
 
     return (
         <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
@@ -31,16 +36,16 @@ export function DealPitchMode({ params, metrics }: Props) {
                             Standard taker fees are 0.05%. By pushing your volume through our optimized structure, you immediately unlock structural savings.
                         </p>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid var(--border-hover)' }}>
-                            <span style={{ color: 'var(--text-secondary)' }}>Standard Fees</span>
+                            <span style={{ color: 'var(--text-secondary)' }}>Standard Fees (0.05%)</span>
                             <span style={{ color: '#f43f5e' }}>{formatCurrency(params.V * 0.0005)}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid var(--border-hover)' }}>
-                            <span style={{ color: 'var(--text-secondary)' }}>Optimized Fees</span>
-                            <span style={{ color: 'var(--accent-emerald)' }}>{formatCurrency(params.V * params.F)}</span>
+                            <span style={{ color: 'var(--text-secondary)' }}>Optimized Fees ({params.F}%)</span>
+                            <span style={{ color: 'var(--accent-emerald)' }}>{formatCurrency(params.V * (params.F / 100))}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', fontWeight: 'bold' }}>
                             <span style={{ color: 'var(--text-primary)' }}>Client Savings</span>
-                            <span style={{ color: 'var(--accent-blue)', fontSize: '1.2rem' }}>{formatCurrency((params.V * 0.0005) - (params.V * params.F))}</span>
+                            <span style={{ color: 'var(--accent-blue)', fontSize: '1.2rem' }}>{formatCurrency((params.V * 0.0005) - (params.V * (params.F / 100)))}</span>
                         </div>
                     </div>
 
@@ -52,7 +57,7 @@ export function DealPitchMode({ params, metrics }: Props) {
                         </p>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid var(--border-hover)' }}>
                             <span style={{ color: 'var(--text-secondary)' }}>Commission Yield</span>
-                            <span style={{ color: 'var(--text-primary)' }}>{formatCurrency(params.V * params.F * params.P)}</span>
+                            <span style={{ color: 'var(--text-primary)' }}>{formatCurrency(params.V * (params.F / 100) * (params.P / 100))}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid var(--border-hover)' }}>
                             <span style={{ color: 'var(--text-secondary)' }}>Fixed Base / Retainer</span>
@@ -65,7 +70,7 @@ export function DealPitchMode({ params, metrics }: Props) {
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', fontWeight: 'bold' }}>
                             <span style={{ color: 'var(--text-primary)' }}>Total Partner Pool</span>
-                            <span style={{ color: 'var(--accent-emerald)', fontSize: '1.2rem' }}>{formatCurrency((params.V * params.F * params.P) + params.R + metrics.bonusCost)}</span>
+                            <span style={{ color: 'var(--accent-emerald)', fontSize: '1.2rem' }}>{formatCurrency((params.V * (params.F / 100) * (params.P / 100)) + params.R + metrics.bonusCost)}</span>
                         </div>
                     </div>
                 </div>
@@ -81,7 +86,7 @@ export function DealPitchMode({ params, metrics }: Props) {
                                 {params.tiers.map((t, idx) => (
                                     <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '6px', marginBottom: '4px' }}>
                                         <span style={{ color: 'var(--text-primary)' }}>Reach {(t.threshold / 1_000_000).toFixed(1)}M Volume</span>
-                                        <span style={{ color: 'var(--accent-pink)', fontWeight: 'bold' }}>Unlock {(t.s * 100).toFixed(1)}% Sub-Split</span>
+                                        <span style={{ color: 'var(--accent-pink)', fontWeight: 'bold' }}>Unlock {t.s}% Sub-Split</span>
                                     </div>
                                 ))}
                             </div>
@@ -103,7 +108,7 @@ export function DealPitchMode({ params, metrics }: Props) {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '32px', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-                CONFIDENTIAL DEAL STRUCTURE PROPOSAL • SZYMON CRYPTO BRAIN
+                CONFIDENTIAL DEAL STRUCTURE PROPOSAL {userRole === 'admin' ? '(ADMIN VIEW)' : ''} • SZYMON CRYPTO BRAIN
             </div>
         </div>
     );

@@ -92,15 +92,16 @@ export function HunterPanel() {
                 </button>
             </div>
 
-            <div className="app-container" style={{ padding: 0, gap: '24px', gridTemplateColumns: '1fr 1fr' }}>
+            <div className="grid-layout grid-cols-2" style={{ padding: 0 }}>
 
                 {/* INPUTS COLUMN */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: 'rgba(255, 255, 255, 0.03)', padding: '24px', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
+                <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: 'rgba(255, 255, 255, 0.03)', padding: '24px', border: '1px solid var(--border-light)' }}>
                     {mode === 'A' ? (
                         <div className="input-group">
                             <label className="input-label">Partner Monthly Payout (USD)</label>
                             <input
                                 type="number"
+                                className="glass-input"
                                 value={partnerMonthlyPayout}
                                 onChange={e => setPartnerMonthlyPayout(Number(e.target.value))}
                             />
@@ -112,6 +113,7 @@ export function HunterPanel() {
                                 <label className="input-label">Partner Payout Per 1M (USD)</label>
                                 <input
                                     type="number"
+                                    className="glass-input"
                                     value={partnerPayoutPer1M}
                                     onChange={e => setPartnerPayoutPer1M(Number(e.target.value))}
                                 />
@@ -120,6 +122,7 @@ export function HunterPanel() {
                                 <label className="input-label">Volume (USD)</label>
                                 <input
                                     type="number"
+                                    className="glass-input"
                                     value={volume}
                                     onChange={e => setVolume(Number(e.target.value))}
                                 />
@@ -147,6 +150,7 @@ export function HunterPanel() {
                         <label className="input-label">Duration (Months)</label>
                         <input
                             type="number"
+                            className="glass-input"
                             min="1"
                             value={durationMonths}
                             onChange={e => setDurationMonths(Number(e.target.value))}
@@ -161,7 +165,7 @@ export function HunterPanel() {
                         </label>
                         {hasCap && (
                             <div className="input-group" style={{ marginBottom: 0 }}>
-                                <input type="number" value={monthlyCap} onChange={e => setMonthlyCap(Number(e.target.value))} placeholder="Cap (USD)" />
+                                <input type="number" className="glass-input" value={monthlyCap} onChange={e => setMonthlyCap(Number(e.target.value))} placeholder="Cap (USD)" />
                             </div>
                         )}
                     </div>
@@ -176,19 +180,19 @@ export function HunterPanel() {
                                 <div>
                                     {milestones.map((m, idx) => (
                                         <div key={idx} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                                            <input type="number" value={m.threshold} onChange={e => {
+                                            <input type="number" className="glass-input" value={m.threshold} onChange={e => {
                                                 const newM = [...milestones];
                                                 newM[idx].threshold = Number(e.target.value);
                                                 setMilestones(newM);
                                             }} placeholder="Threshold USD" style={{ flex: 1 }} />
-                                            <input type="number" value={m.bonus} onChange={e => {
+                                            <input type="number" className="glass-input" value={m.bonus} onChange={e => {
                                                 const newM = [...milestones];
                                                 newM[idx].bonus = Number(e.target.value);
                                                 setMilestones(newM);
                                             }} placeholder="Bonus USD" style={{ width: '100px' }} />
                                         </div>
                                     ))}
-                                    <button onClick={() => setMilestones([...milestones, { threshold: 30000000, bonus: 500 }])} style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-light)', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}>+ Add Row</button>
+                                    <button onClick={() => setMilestones([...milestones, { threshold: 30000000, bonus: 500 }])} className="glass-btn" style={{ padding: '4px 8px', fontSize: '0.75rem' }}>+ Add Row</button>
                                 </div>
                             )}
                         </div>

@@ -11,13 +11,13 @@ export function StressTests({ baseParams }: Props) {
     };
 
     // Fee Compression Test
-    const feeVals = [0.00035, 0.00030, 0.00028];
+    const feeVals = [0.035, 0.030, 0.028];
 
     // Bear Market Stress (Volume -40%, Fee 0.028%)
     const bearMarketParams: DealParams = {
         ...baseParams,
         V: baseParams.V * 0.60,
-        F: 0.00028
+        F: 0.028
     };
 
     const bearMetrics = calculateDealMetrics(bearMarketParams);
@@ -32,7 +32,7 @@ export function StressTests({ baseParams }: Props) {
                     const m = calculateDealMetrics({ ...baseParams, F: f });
                     return (
                         <div key={f} className="metric-card" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                            <div className="label">F = {(f * 100).toFixed(3)}%</div>
+                            <div className="label">F = {f}%</div>
                             <div style={{ marginTop: '8px', fontSize: '1rem', color: 'var(--text-primary)' }}>
                                 Retained: {formatCurrency(m.retainedPer1M)} / 1M
                             </div>

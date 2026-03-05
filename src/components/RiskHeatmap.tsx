@@ -7,7 +7,7 @@ interface Props {
 
 export function RiskHeatmap({ baseParams }: Props) {
     const vList = [5_000_000, 15_000_000, 30_000_000, 50_000_000, 80_000_000];
-    const sList = [0.20, 0.30, 0.40, 0.50, 0.60];
+    const sList = [20, 30, 40, 50, 60];
 
     return (
         <div className="glass-panel" style={{ marginTop: '24px' }}>
@@ -37,7 +37,7 @@ export function RiskHeatmap({ baseParams }: Props) {
                                     let bgColor = 'rgba(48, 30, 20, 0.2)'; // Loss (red)
                                     let color = '#f43f5e';
 
-                                    if (m.net > 0 && m.safetyMarginBuffer < 200) {
+                                    if (m.net > 0 && m.net < 200) {
                                         bgColor = 'rgba(188, 108, 37, 0.2)'; // Near break-even (yellow)
                                         color = '#f59e0b';
                                     } else if (m.net > 0) {

@@ -35,7 +35,7 @@ export function DealBuilder() {
                 Select the structural components of the partnership to generate the framework.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+            <div className="grid-layout grid-cols-2">
 
                 <label style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', background: isFlat ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255,255,255,0.03)', border: `1px solid ${isFlat ? 'var(--accent-blue)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '12px', cursor: 'pointer', transition: 'var(--transition-smooth)' }}>
                     <input type="checkbox" checked={isFlat} onChange={() => handleCheck('FLAT')} style={{ width: '20px', height: '20px', accentColor: 'var(--accent-blue)' }} />

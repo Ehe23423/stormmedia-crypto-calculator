@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { formatPct } from '../lib/safeMath';
+import type { DealResult } from '../model/DealModel';
 
-export function DealScore({ metrics }: { metrics: any }) {
+export function DealScore({ metrics }: { metrics: DealResult }) {
     const [roastMode, setRoastMode] = useState(false);
 
-    // Safety score calculation
-    const safetyBuffer = (metrics.finalNet / metrics.grossMargin) * 100;
+    // Use pre-computed, safe percentage from DealModel (or fallback to 0 if missing)
+    const safetyBufferVal = metrics.safetyBufferPct ?? 0;
+    const safetyBufferDisplay = formatPct(safetyBufferVal);
+    const safetyBufferPctNum = safetyBufferVal * 100;
 
     let color = 'var(--text-primary)';
     let badge = '🟢';
@@ -13,14 +17,14 @@ export function DealScore({ metrics }: { metrics: any }) {
     let comment = 'This structure leaves ample margin for operations and profitability.';
     let roastComment = 'Yes, this deal works. Miracles happen. Don\'t screw it up during onboarding.';
 
-    if (safetyBuffer < 10) {
+    if (safetyBufferPctNum < 10) {
         color = 'var(--accent-rose)';
         badge = '🔴';
         profStatus = 'CRITICAL RISK';
         roastStatus = 'FINANCIALLY QUESTIONABLE';
         comment = 'Safety buffer is dangerously low. Deal is highly likely to lose money.';
         roastComment = 'This structure destroys your margin faster than a degenerate trader with 150x leverage. Try therapy instead of Business Development.';
-    } else if (safetyBuffer < 25) {
+    } else if (safetyBufferPctNum < 25) {
         color = '#f59e0b'; // amber
         badge = '🟡';
         profStatus = 'MARGINAL';
@@ -29,7 +33,7 @@ export function DealScore({ metrics }: { metrics: any }) {
         roastComment = 'Partner asking for this much? Admirable confidence. Financially questionable, but emotionally entertaining.';
     }
 
-    if (metrics.finalNet < 0) {
+    if (metrics.net < 0) {
         color = 'var(--danger-deep)';
         badge = '☠️';
         profStatus = 'NEGATIVE NET';
@@ -53,7 +57,7 @@ export function DealScore({ metrics }: { metrics: any }) {
                     <h3 style={{ margin: 0, color: color, fontSize: '1.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                         {roastMode ? roastStatus : profStatus}
                     </h3>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Safety Buffer: <strong style={{ color: color }}>{safetyBuffer.toFixed(1)}%</strong></div>
+                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Safety Buffer: <strong style={{ color: color }}>{safetyBufferDisplay}</strong></div>
                 </div>
             </div>
 

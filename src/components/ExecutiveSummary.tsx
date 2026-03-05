@@ -1,4 +1,5 @@
 import type { DealParams, DealResult } from '../model/DealModel';
+import { formatPct } from '../lib/safeMath';
 
 interface Props {
     params: DealParams;
@@ -33,18 +34,18 @@ export function ExecutiveSummary({ params, metrics }: Props) {
                 ========================================<br />
                 Volume Target: ${(params.V / 1_000_000).toFixed(1)}M USD<br />
                 Base Retainer: {formatCurrency(params.R)}<br />
-                Sub-split (S): {(params.S * 100).toFixed(1)}%<br />
+                Sub-split (S): {formatPct(params.S)}<br />
                 {params.useTiers && `Tier Structure: Active\n`}
                 {params.useMilestones && `Retainer Milestones: Active\n`}
                 <br />
                 FINANCIAL MODEL:<br />
-                Break-even Volume: {formatCurrency(metrics.breakEvenVolume)}<br />
+                Break-even Volume: {metrics.breakEvenVolume !== null ? formatCurrency(metrics.breakEvenVolume) : '—'}<br />
                 Safety Condition: <span style={{ color: metrics.isSafe ? '#10b981' : '#f43f5e' }}>{metrics.isSafe ? 'PASSED' : 'FAILED'}</span><br />
-                Monthly Net Revenue Est.: {formatCurrency(metrics.net)}<br />
+                Monthly Net Revenue Est.: {metrics.net !== null ? formatCurrency(metrics.net) : '—'}<br />
                 <br />
                 RISK ANALYSIS:<br />
-                Margin Buffer: {formatCurrency(metrics.safetyMarginBuffer)}<br />
-                Margin Collapse Risk: {metrics.marginCollapseRisk ? 'DETECTED' : 'NONE'}<br />
+                Margin Buffer: {metrics.net !== null ? formatCurrency(metrics.net) : '—'}<br />
+                Margin Collapse Risk: {(metrics.safetyBufferPct || 0) < 5 ? 'DETECTED' : 'NONE'}<br />
                 ========================================
             </div>
         </div>

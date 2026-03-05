@@ -4,16 +4,16 @@ import { calculateDealMetrics } from '../model/DealModel';
 
 const DEFAULT_PARAMS: DealParams = {
     V: 10_000_000,
-    F: 0.00035, // 0.035%
-    P: 0.40,    // 40%
-    S: 0.30,    // 30%
+    F: 0.035,   // 0.035%
+    P: 40,      // 40%
+    S: 30,      // 30%
     R: 0,
     I: 0,
     bonusPer1M: 0,
     useTiers: false,
     tiers: [
-        { threshold: 20_000_000, s: 0.40 },
-        { threshold: 35_000_000, s: 0.50 }
+        { threshold: 20_000_000, s: 40 },
+        { threshold: 35_000_000, s: 50 }
     ],
     useMilestones: false,
     milestones: [
