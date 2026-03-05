@@ -1,11 +1,11 @@
-import { DealResult } from '../model/DealModel';
+import type { DealResult } from '../model/DealModel';
 
 interface Props {
     metrics: DealResult;
     forcedRoastMode?: boolean;
 }
 
-export function DealScore({ metrics, forcedRoastMode = false }: Props): JSX.Element {
+export function DealScore({ metrics, forcedRoastMode = false }: Props) {
     const bufferPct = metrics.marginBuffer * 100;
 
     const getStatusConfig = () => {

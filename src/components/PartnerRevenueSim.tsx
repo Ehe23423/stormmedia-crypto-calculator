@@ -5,7 +5,7 @@ interface Props {
     metrics: DealResult;
 }
 
-export function PartnerRevenueSim({ params, metrics }: Props): JSX.Element {
+export function PartnerRevenueSim({ params, metrics }: Props) {
     const formatUSD = (val: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 

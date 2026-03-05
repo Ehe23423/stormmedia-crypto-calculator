@@ -5,7 +5,7 @@ interface Props {
     params: DealParams;
 }
 
-export function ProposalGenerator({ params }: Props): JSX.Element {
+export function ProposalGenerator({ params }: Props) {
     const m = calculateDealMetrics(params);
     const formatUSD = (val: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Math.round(val));

@@ -5,7 +5,7 @@ interface Props {
     params: DealParams;
 }
 
-export function Heatmap({ params }: Props): JSX.Element {
+export function Heatmap({ params }: Props) {
     const volMultipliers = [0.6, 0.8, 1.0, 1.2, 1.5];
     const feeValues = [0.028, 0.030, 0.035, 0.040, 0.050];
 

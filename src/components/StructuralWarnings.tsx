@@ -5,7 +5,7 @@ interface Props {
     metrics: DealResult;
 }
 
-export function StructuralWarnings({ params, metrics }: Props): JSX.Element {
+export function StructuralWarnings({ params, metrics }: Props) {
     const warnings = [];
 
     if (params.R > metrics.netProfit && metrics.netProfit > 0) {

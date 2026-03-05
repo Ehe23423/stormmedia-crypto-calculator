@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDealSimulator } from './hooks/useDealSimulator';
 import { CryptoTicker } from './components/CryptoTicker';
