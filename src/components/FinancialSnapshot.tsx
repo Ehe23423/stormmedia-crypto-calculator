@@ -1,4 +1,5 @@
 import type { DealParams, DealResult } from '../model/DealModel';
+import { useLanguage } from '../lib/LanguageContext';
 
 interface Props {
     params: DealParams;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export function FinancialSnapshot({ params, metrics }: Props) {
+    const { t } = useLanguage();
     const grossPer1M = (params.F / 100) * 1_000_000;
     const bonusEquivalent = grossPer1M > 0 ? (params.B / grossPer1M) * 100 : 0;
     const formatUSD = (val: number) =>
@@ -37,7 +39,7 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                     marginBottom: '8px',
                     fontWeight: 800
                 }}>
-                    Net Monthly Profit
+                    {t('metrics.netProfit')}
                 </div>
                 <div className="mask-sensitive" style={{
                     fontSize: '3rem', /* Was 2.8rem */
@@ -58,20 +60,20 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                 gap: '12px'
             }}>
                 <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>Gross Fees</span>
+                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>{t('metrics.grossFees')}</span>
                     <span className="value mask-sensitive" style={{ fontSize: '1rem' }}>{formatUSD(metrics.grossFees)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>Partner Pool</span>
+                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>{t('metrics.partnerPool')}</span>
                     <span className="value mask-sensitive" style={{ fontSize: '1rem', color: 'var(--accent-blue)' }}>{formatUSD(metrics.partnerPool)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>Retained</span>
+                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>{t('metrics.retained')}</span>
                     <span className="value mask-sensitive" style={{ fontSize: '1rem' }}>{formatUSD(metrics.exchangeRetained)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', alignItems: 'stretch' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)', margin: 0 }}>Margin Buffer</span>
+                        <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)', margin: 0 }}>{t('metrics.marginBuffer')}</span>
                         <span className={`value ${metrics.isSafe ? 'positive' : 'negative'}`} style={{ fontSize: '1.2rem' }}>
                             {formatPct(metrics.marginBuffer)}
                         </span>
@@ -102,8 +104,8 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '6px' }}>
-                        <span>LIMIT: {params.safetyThreshold}%</span>
-                        <span style={{ color: (metrics.marginBuffer * 100) < params.safetyThreshold ? 'var(--accent-rose)' : 'inherit' }}>ACTUAL: {(metrics.marginBuffer * 100).toFixed(1)}%</span>
+                        <span>{t('metrics.limit')}: {params.safetyThreshold}%</span>
+                        <span style={{ color: (metrics.marginBuffer * 100) < params.safetyThreshold ? 'var(--accent-rose)' : 'inherit' }}>{t('metrics.actual')}: {(metrics.marginBuffer * 100).toFixed(1)}%</span>
                     </div>
                 </div>
             </div>
@@ -118,14 +120,14 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-blue)', letterSpacing: '0.1em' }}>BREAK-EVEN VOLUME</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-blue)', letterSpacing: '0.1em' }}>{t('metrics.breakEven')}</span>
                 <span className="mask-sensitive" style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff' }}>{formatUSD(metrics.breakEvenVolume)}</span>
             </div>
 
             {/* BONUS EQUIVALENT CONVERTER (Moduł 22) */}
             {params.B > 0 && (
                 <div style={{ padding: '8px 20px', background: 'rgba(249, 115, 22, 0.05)', border: '1px solid rgba(249, 115, 22, 0.1)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-orange)', letterSpacing: '0.1em' }}>BONUS EQUIVALENT</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-orange)', letterSpacing: '0.1em' }}>{t('metrics.bonusEquivalent')}</span>
                     <span style={{ fontSize: '1rem', fontWeight: 900, color: bonusEquivalent > 20 ? 'var(--accent-rose)' : 'var(--accent-orange)' }}>{bonusEquivalent.toFixed(1)}% of gross/1M</span>
                 </div>
             )}

@@ -303,19 +303,19 @@ export function UnifiedTerminal() {
                                         <StructuralWarnings params={params} metrics={metrics} />
                                     </Panel>
                                 </div>
-                                <Panel title="📊 Financial Snapshot">
+                                <Panel title={`📊 ${t('panels.financials')}`}>
                                     <FinancialSnapshot params={params} metrics={metrics} />
                                 </Panel>
-                                <Panel title="📈 Volume Projections">
+                                <Panel title={`📈 ${t('panels.projections')}`}>
                                     <MinimalCharts params={params} />
                                 </Panel>
                                 <Panel title="⛈️ Stress Tests" tint="danger">
                                     <StressTests baseParams={params} />
                                 </Panel>
-                                <Panel title="🌡️ Sensitivity Heatmap">
+                                <Panel title={`🌡️ ${t('panels.heatmap')}`}>
                                     <Heatmap params={params} />
                                 </Panel>
-                                <Panel title="🤖 BD Deal Assistant" tint="blue">
+                                <Panel title={`🤖 ${t('panels.assistant')}`} tint="blue">
                                     <DealAssistant params={params} metrics={metrics} dealScore={dealScore} />
                                 </Panel>
                             </div>
@@ -325,25 +325,25 @@ export function UnifiedTerminal() {
                         {activeTab === 'agency' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                    <Panel title="📊 Financial Snapshot" tint="blue">
+                                    <Panel title={`📊 ${t('panels.financials')}`} tint="blue">
                                         <FinancialSnapshot params={params} metrics={metrics} />
                                     </Panel>
-                                    <Panel title="🤝 Partner Side Economics">
+                                    <Panel title={`🤝 ${t('panels.partnerEcon')}`}>
                                         <PartnerRevenueSim params={params} metrics={metrics} />
                                     </Panel>
                                 </div>
-                                <Panel title="💬 Negotiation Proposal Generator" tint="purple">
+                                <Panel title={`💬 ${t('panels.proposal')}`} tint="purple">
                                     <ProposalGenerator params={params} />
                                 </Panel>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', minWidth: 0 }} className="terminal-grid">
-                                    <Panel title="📝 Executive Summary">
+                                    <Panel title={`📝 ${t('panels.executive')}`}>
                                         <ExecutiveSummary params={params} metrics={metrics} />
                                     </Panel>
-                                    <Panel title="📖 BD Rulebook" tint="purple">
+                                    <Panel title={`📖 ${t('panels.rulebook')}`} tint="purple">
                                         <NegotiationRulebook />
                                     </Panel>
                                 </div>
-                                <Panel title="🏅 Deal Score Breakdown">
+                                <Panel title={`🏅 ${t('panels.score')}`}>
                                     <DealScore params={params} metrics={metrics} />
                                 </Panel>
                             </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { DealParams, DealResult } from '../model/DealModel';
+import { useLanguage } from '../lib/LanguageContext';
 
 interface Props {
     params: DealParams;
@@ -8,14 +9,14 @@ interface Props {
 }
 
 interface QA {
-    question: string;
+    questionKey: string;
     emoji: string;
     getAnswer: (p: DealParams, m: DealResult, s: number) => string;
 }
 
 const QA_LIST: QA[] = [
     {
-        question: 'Is this deal safe?',
+        questionKey: 'assistantQs.qSafe',
         emoji: '🛡️',
         getAnswer: (p, m, s) => {
             if (m.status === 'BLOCKED') return `❌ BLOCKED. Margin buffer ${(m.marginBuffer * 100).toFixed(1)}% is below your safety threshold of ${p.safetyThreshold}%. This deal violates minimum safety protocol. Do not proceed.`;
@@ -25,7 +26,7 @@ const QA_LIST: QA[] = [
         }
     },
     {
-        question: 'What should I change first?',
+        questionKey: 'assistantQs.qChange',
         emoji: '🎯',
         getAnswer: (p, m) => {
             if (p.R > m.netProfit * 0.5 && p.R > 0)
@@ -40,7 +41,7 @@ const QA_LIST: QA[] = [
         }
     },
     {
-        question: 'Show me the break-even',
+        questionKey: 'assistantQs.qBreak',
         emoji: '📐',
         getAnswer: (p, m) => {
             const beM = m.breakEvenVolume / 1e6;
@@ -54,7 +55,7 @@ const QA_LIST: QA[] = [
         }
     },
     {
-        question: 'How risky is this bonus?',
+        questionKey: 'assistantQs.qRisk',
         emoji: '💣',
         getAnswer: (p) => {
             if (p.B === 0) return `🟢 No bonus structured. Zero stacking risk. Structure remains clean and predictable.`;
@@ -65,7 +66,7 @@ const QA_LIST: QA[] = [
         }
     },
     {
-        question: 'Best negotiation move?',
+        questionKey: 'assistantQs.qNegotiation',
         emoji: '♟️',
         getAnswer: (p, m) => {
             // Follow the 4-step PDF rulebook
@@ -79,7 +80,7 @@ const QA_LIST: QA[] = [
         }
     },
     {
-        question: 'Retained per $1M volume?',
+        questionKey: 'assistantQs.qRetained',
         emoji: '💰',
         getAnswer: (_p, m) => {
             const r1m = m.retainedPer1M;
@@ -91,12 +92,13 @@ const QA_LIST: QA[] = [
 ];
 
 export const DealAssistant: React.FC<Props> = ({ params, metrics, dealScore }) => {
+    const { t } = useLanguage();
     const [activeQ, setActiveQ] = useState<number | null>(null);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: '4px' }}>
-                🤖 Ask the BD Engine
+                🤖 {t('assistantQs.title')}
             </div>
             {QA_LIST.map((qa, i) => {
                 const isActive = activeQ === i;
@@ -127,7 +129,7 @@ export const DealAssistant: React.FC<Props> = ({ params, metrics, dealScore }) =
                             }}
                         >
                             <span style={{ fontSize: '1rem' }}>{qa.emoji}</span>
-                            <span style={{ flex: 1 }}>{qa.question}</span>
+                            <span style={{ flex: 1 }}>{t(qa.questionKey)}</span>
                             <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', flexShrink: 0 }}>{isActive ? '▲' : '▼'}</span>
                         </button>
                         {isActive && (
