@@ -42,6 +42,7 @@ export default function App() {
   const role = 'admin';
   const [lang, setLang] = useState<Language>('en');
   const t = translations[lang];
+  const [lightMode, setLightMode] = useState(false);
 
   // Mock session for local storage features that still expect it
   const mockSession = { user: { id: 'szymon_admin', email: 'admin@stormmedia.ai' } };
@@ -49,6 +50,7 @@ export default function App() {
   const { params, metrics, updateParam, setParams, error: simulatorError } = useDealSimulator();
   const [activeTab, setActiveTab] = useState<'ARCHITECT' | 'HUNTER' | 'PITCH' | 'AGENCY' | 'BD_OS' | 'SAVES' | 'KNOWLEDGE'>('BD_OS');
   const [roastMode, setRoastMode] = useState(false);
+  const [varsOpen, setVarsOpen] = useState(true);
 
   // Role-based Navigation logic
   const tabs = [
@@ -170,6 +172,27 @@ export default function App() {
             </button>
 
             <button
+              onClick={() => setLightMode(!lightMode)}
+              title="Toggle Light/Dark Mode"
+              style={{
+                background: lightMode ? 'rgba(255, 220, 50, 0.15)' : 'rgba(255,255,255,0.05)',
+                border: `1px solid ${lightMode ? '#fbbf24' : 'var(--border-light)'}`,
+                color: lightMode ? '#fbbf24' : 'var(--text-secondary)',
+                padding: '7px 12px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {lightMode ? '☀️' : '🌙'}
+            </button>
+
+            <button
               onClick={() => setRoastMode(!roastMode)}
               style={{
                 background: roastMode ? 'rgba(236, 72, 153, 0.15)' : 'rgba(255,255,255,0.05)',
@@ -201,175 +224,134 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={
-            <>
+            <div className={`${lightMode ? 'light-mode' : ''} ${roastMode ? 'roast-active' : ''}`}>
               <CryptoTicker />
-              <div className="grid-layout grid-cols-sidebar">
-                {/* SIDEBAR: Inputs */}
-                <aside className="sidebar">
-                  <div className="glass-panel sidebar">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                      <h2 className="header-title" style={{ margin: 0 }}>
-                        <span style={{ fontSize: '1.2em' }}>📐</span> VARIABLES
-                      </h2>
-                      {/* The share button was moved to the header */}
-                    </div>
+              <div className="page-layout">
 
-                    <div style={{ marginBottom: '24px', padding: '12px', background: params.requireMarginLock ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.05)', border: `1px solid ${params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--border-light)'}`, borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => updateParam('requireMarginLock', !params.requireMarginLock)}>
-                      <div style={{ width: '40px', height: '20px', background: params.requireMarginLock ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.1)', borderRadius: '10px', position: 'relative', transition: 'var(--transition-smooth)' }}>
-                        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '2px', left: params.requireMarginLock ? '22px' : '2px', transition: 'var(--transition-smooth)' }} />
-                      </div>
-                      <div>
-                        <strong style={{ display: 'block', color: params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 500 }}>Prevent terrible deals (15% Lock)</strong>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>You can technically do this deal. You can also technically juggle chainsaws.</span>
-                      </div>
-                    </div>
+                {/* ─── PREMIUM FEATURE CARDS ───────────────────── */}
+                <div className="page-section">
+                  <FeatureHighlights />
+                </div>
 
-                    <div style={{ padding: '16px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border-light)', marginBottom: '16px' }}>
-                      <h4 style={{ marginBottom: '12px', color: 'var(--text-primary)', fontSize: '0.9rem' }}>Quick Templates</h4>
-                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                        <button onClick={() => applyPreset('SAFE_START')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>Safe Start</button>
-                        <button onClick={() => applyPreset('HYBRID_GROWTH')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>Hybrid Growth</button>
-                        <button onClick={() => applyPreset('HIGH_ROLLER')} style={{ flex: 1, padding: '8px', fontSize: '0.75rem', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer' }}>High Roller</button>
-                      </div>
-                    </div>
-
-                    <CommunitySelector applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
-
-                    <div className={`input-group ${simulatorError ? 'shake' : ''}`}>
-                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 500, fontSize: '0.85rem' }}>
-                        <span>{t.variables.volume}</span>
-                        {simulatorError && <span className="error-tag">{t.variables.locked}</span>}
-                      </label>
-                      <input
-                        type="number"
-                        value={params.V}
-                        onChange={e => updateParam('V', Number(e.target.value))}
-                      />
-                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '8px' }}>
-                        {[1, 5, 10, 20, 50].map(v => (
-                          <button key={v} onClick={() => updateParam('V', v * 1_000_000)} style={{ flex: 1, padding: '4px', fontSize: '0.7rem', background: 'var(--bg-card)', color: 'var(--text-secondary)', border: '1px solid var(--border-light)', borderRadius: '4px', cursor: 'pointer' }}>{v}M</button>
+                {/* ─── VARIABLES PANEL (collapsible top bar) ────── */}
+                <div className="vars-panel glass-panel">
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', marginBottom: varsOpen ? '20px' : 0 }}
+                    onClick={() => setVarsOpen(v => !v)}
+                  >
+                    <h3 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span>📐</span> {t.variables ? 'Variables' : 'Variables'}
+                      {simulatorError && <span className="error-tag" style={{ fontSize: '0.7rem' }}>{t.variables?.locked || 'LOCKED'}</span>}
+                    </h3>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        {['SAFE_START', 'HYBRID_GROWTH', 'HIGH_ROLLER'].map((p, i) => (
+                          <button key={p} onClick={e => { e.stopPropagation(); applyPreset(p); }} style={{ padding: '4px 10px', fontSize: '0.7rem', background: 'rgba(255,255,255,0.06)', color: 'var(--text-secondary)', border: '1px solid var(--border-light)', borderRadius: '6px', cursor: 'pointer', whiteSpace: 'nowrap' }}>{['Safe', 'Hybrid', 'High Roller'][i]}</button>
                         ))}
                       </div>
+                      <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', transition: 'transform 0.2s', display: 'inline-block', transform: varsOpen ? 'rotate(0deg)' : 'rotate(-90deg)' }}>▾</span>
                     </div>
+                  </div>
 
-                    <div className="input-group">
-                      <label className="input-label">Blended Fee</label>
-                      <select
-                        value={params.F}
-                        onChange={e => updateParam('F', Number(e.target.value))}
-                      >
-                        <option value={0.00035}>0.035%</option>
-                        <option value={0.00030}>0.030%</option>
-                        <option value={0.00028}>0.028%</option>
-                      </select>
-                    </div>
+                  {varsOpen && (
+                    <div className="vars-grid">
 
-                    <div className={`input-group ${simulatorError ? 'shake' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
-                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                        <span style={{ fontWeight: 600 }}>{t.variables.payout}</span>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                          {simulatorError && <span className="error-tag" style={{ margin: 0 }}>{t.variables.locked}</span>}
-                          <span style={{ color: 'var(--accent-blue)', fontWeight: '800', fontSize: '1rem' }}>{params.P}%</span>
+                      {/* Volume */}
+                      <div className="var-block">
+                        <label className="input-label">Volume (USD)</label>
+                        <input type="number" value={params.V} onChange={e => updateParam('V', Number(e.target.value))} />
+                        <div style={{ display: 'flex', gap: '4px', marginTop: '6px', flexWrap: 'wrap' }}>
+                          {[1, 5, 10, 20, 50].map(v => (
+                            <button key={v} onClick={() => updateParam('V', v * 1_000_000)} style={{ flex: 1, padding: '3px', fontSize: '0.68rem', background: params.V === v * 1_000_000 ? 'rgba(61,155,255,0.2)' : 'rgba(255,255,255,0.04)', color: params.V === v * 1_000_000 ? 'var(--accent-blue)' : 'var(--text-secondary)', border: `1px solid ${params.V === v * 1_000_000 ? 'var(--accent-blue)' : 'var(--border-light)'}`, borderRadius: '4px', cursor: 'pointer', minWidth: '28px' }}>{v}M</button>
+                          ))}
                         </div>
-                      </label>
-                      <input
-                        type="range"
-                        min="0" max="100" step="1"
-                        value={params.P}
-                        onChange={e => updateParam('P', Number(e.target.value))}
-                        style={{ width: '100%', accentColor: 'var(--accent-blue)', cursor: 'pointer', marginBottom: '8px' }}
-                      />
-                      <input
-                        type="number"
-                        className="glass-input"
-                        style={{ width: '100%', textAlign: 'right', fontSize: '0.85rem' }}
-                        value={params.P}
-                        onChange={e => updateParam('P', Number(e.target.value))}
-                      />
-                    </div>
+                      </div>
 
-                    <div className={`input-group ${simulatorError ? 'shake' : ''}`} style={{ background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
-                      <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                        <span style={{ fontWeight: 600 }}>{t.variables.subSplit}</span>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                          {simulatorError && <span className="error-tag" style={{ margin: 0 }}>{t.variables.locked}</span>}
-                          <span style={{ color: 'var(--accent-purple)', fontWeight: '800', fontSize: '1rem' }}>{params.S}%</span>
+                      {/* Blended Fee */}
+                      <div className="var-block">
+                        <label className="input-label">Blended Fee</label>
+                        <select value={params.F} onChange={e => updateParam('F', Number(e.target.value))}>
+                          <option value={0.00035}>0.035%</option>
+                          <option value={0.00030}>0.030%</option>
+                          <option value={0.00028}>0.028%</option>
+                        </select>
+                      </div>
+
+                      {/* Partner Payout P */}
+                      <div className="var-block">
+                        <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Partner Share (P)</span>
+                          <span style={{ color: 'var(--accent-blue)', fontWeight: 800 }}>{params.P}%</span>
+                        </label>
+                        <input className="styled-range range-blue" type="range" min={0} max={100} step={1} value={params.P} onChange={e => updateParam('P', Number(e.target.value))} />
+                      </div>
+
+                      {/* Sub Split S */}
+                      <div className="var-block">
+                        <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Sub Split (S)</span>
+                          <span style={{ color: 'var(--accent-purple)', fontWeight: 800 }}>{params.S}%</span>
+                        </label>
+                        <input className="styled-range range-purple" type="range" min={0} max={100} step={1} value={params.S} onChange={e => updateParam('S', Number(e.target.value))} />
+                      </div>
+
+                      {/* Fixed Retainer */}
+                      <div className="var-block">
+                        <label className="input-label">Fixed Retainer (USD)</label>
+                        <input type="number" value={params.R} onChange={e => updateParam('R', Number(e.target.value))} />
+                      </div>
+
+                      {/* Operational Cost */}
+                      <div className="var-block">
+                        <label className="input-label">Operational Cost (I)</label>
+                        <input type="number" value={params.I} onChange={e => updateParam('I', Number(e.target.value))} />
+                      </div>
+
+                      {/* Bonus per 1M */}
+                      <div className="var-block">
+                        <label className="input-label">Bonus per 1M (USD)</label>
+                        <input type="number" value={params.bonusPer1M} onChange={e => updateParam('bonusPer1M', Number(e.target.value))} />
+                      </div>
+
+                      {/* Margin Lock */}
+                      <div className="var-block" style={{ display: 'flex', alignItems: 'flex-end' }}>
+                        <div
+                          style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', background: params.requireMarginLock ? 'rgba(16,217,138,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--border-light)'}`, borderRadius: '8px', cursor: 'pointer', width: '100%' }}
+                          onClick={() => updateParam('requireMarginLock', !params.requireMarginLock)}
+                        >
+                          <div style={{ width: '36px', height: '18px', background: params.requireMarginLock ? 'var(--accent-emerald)' : 'rgba(255,255,255,0.1)', borderRadius: '9px', position: 'relative', flexShrink: 0, transition: 'background 0.2s' }}>
+                            <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '2px', left: params.requireMarginLock ? '20px' : '2px', transition: 'left 0.2s' }} />
+                          </div>
+                          <span style={{ fontSize: '0.78rem', color: params.requireMarginLock ? 'var(--accent-emerald)' : 'var(--text-secondary)', fontWeight: 600 }}>15% Margin Lock</span>
                         </div>
-                      </label>
-                      <input
-                        type="range"
-                        min="0" max="100" step="1"
-                        value={params.S}
-                        onChange={e => updateParam('S', Number(e.target.value))}
-                        style={{ width: '100%', accentColor: 'var(--accent-purple)', cursor: 'pointer', marginBottom: '8px' }}
-                      />
-                      <input
-                        type="number"
-                        className="glass-input"
-                        style={{ width: '100%', textAlign: 'right', fontSize: '0.85rem' }}
-                        value={params.S}
-                        onChange={e => updateParam('S', Number(e.target.value))}
-                      />
-                    </div>
+                      </div>
 
-                    <div className="input-group">
-                      <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Fixed Retainer (USD)</label>
-                      <input
-                        type="number"
-                        value={params.R}
-                        onChange={e => updateParam('R', Number(e.target.value))}
-                      />
                     </div>
+                  )}
+                </div>
 
-                    <div className="input-group">
-                      <label className="input-label">Operational Cost (I) — paid to Szymon</label>
-                      <input
-                        type="number"
-                        value={params.I}
-                        onChange={e => updateParam('I', Number(e.target.value))}
-                      />
-                      <small style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginTop: '4px', fontStyle: 'italic', display: 'block' }}>
-                        Operational cost is evaluated manually by Szymon.
-                      </small>
-                    </div>
-
-                    <div className="input-group">
-                      <label className="input-label" style={{ fontWeight: 500, fontSize: '0.85rem' }}>Bonus per 1M Volume Increment (USD)</label>
-                      <input
-                        type="number"
-                        value={params.bonusPer1M}
-                        onChange={e => updateParam('bonusPer1M', Number(e.target.value))}
-                      />
-                      {params.bonusPer1M > 0 && (
-                        <div style={{ marginTop: '8px', fontSize: '0.8rem', color: 'var(--accent-pink)', background: 'rgba(236, 72, 153, 0.1)', padding: '8px', borderRadius: '6px', border: '1px solid var(--accent-pink)' }}>
-                          Equivalent Cost: <strong>+{(safeDiv(params.bonusPer1M, (params.F * 1_000_000), 0) * 100).toFixed(1)}%</strong> of gross revenue
-                        </div>
-                      )}
-                    </div>
-
+                {/* ─── TIER CONFIGURATOR ────────────────────────── */}
+                {varsOpen && (
+                  <div className="page-section">
                     <TierConfigurator params={params} updateParam={updateParam} />
-
                   </div>
-                </aside>
+                )}
 
-                {/* MAIN CONTENT: Dashboards */}
-                <main className="main-content">
-                  <FeatureHighlights />
+                {/* ─── TAB NAVIGATION ───────────────────────────── */}
+                <div className="tabs-row">
+                  {tabs.map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id as any)}
+                      className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
 
-                  {/* TAB NAVIGATION */}
-                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                    {tabs.map(tab => (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id as any)}
-                        className={`glass-btn ${activeTab === tab.id ? 'active' : ''}`}
-                        style={{ flex: 1, border: activeTab === tab.id ? '1px solid var(--accent-blue)' : undefined, minWidth: '100px' }}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-
+                {/* ─── TAB CONTENT ──────────────────────────────── */}
+                <div className="main-content">
                   {activeTab === 'ARCHITECT' && (
                     <>
                       <DealTemplates applyParams={(newParams) => setParams(prev => ({ ...prev, ...newParams }))} />
@@ -496,9 +478,10 @@ export default function App() {
                       }} />
                     </div>
                   )}
-                </main>
-              </div>
-            </>
+
+                </div> {/* end .main-content */}
+              </div> {/* end .page-layout */}
+            </div> {/* end light-mode wrapper */}
           } />
           <Route path="/share/:token" element={<ShareLinkView />} />
         </Routes>
