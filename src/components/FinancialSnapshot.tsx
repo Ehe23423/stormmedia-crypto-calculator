@@ -30,17 +30,17 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                 backdropFilter: 'blur(10px)'
             }}>
                 <div style={{
-                    color: 'var(--text-secondary)',
-                    fontSize: '0.65rem',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: '0.75rem',
                     textTransform: 'uppercase',
                     letterSpacing: '0.2em',
                     marginBottom: '8px',
-                    fontWeight: 700
+                    fontWeight: 800
                 }}>
                     Net Monthly Profit
                 </div>
                 <div className="mask-sensitive" style={{
-                    fontSize: '2.8rem', /* Was 4.8rem */
+                    fontSize: '3rem', /* Was 2.8rem */
                     fontWeight: 900,
                     color: metrics.netProfit > 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)',
                     textShadow: '0 2px 10px rgba(0,0,0,0.4)',
@@ -58,20 +58,20 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                 gap: '12px'
             }}>
                 <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.6rem' }}>Gross Fees</span>
+                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>Gross Fees</span>
                     <span className="value mask-sensitive" style={{ fontSize: '1rem' }}>{formatUSD(metrics.grossFees)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.6rem' }}>Partner Pool</span>
+                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>Partner Pool</span>
                     <span className="value mask-sensitive" style={{ fontSize: '1rem', color: 'var(--accent-blue)' }}>{formatUSD(metrics.partnerPool)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="label" style={{ fontSize: '0.6rem' }}>Retained</span>
+                    <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)' }}>Retained</span>
                     <span className="value mask-sensitive" style={{ fontSize: '1rem' }}>{formatUSD(metrics.exchangeRetained)}</span>
                 </div>
                 <div className="metric-card" style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', alignItems: 'stretch' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <span className="label" style={{ fontSize: '0.65rem', margin: 0 }}>Margin Buffer</span>
+                        <span className="label" style={{ fontSize: '0.7rem', fontWeight: 800, color: 'rgba(255, 255, 255, 0.6)', margin: 0 }}>Margin Buffer</span>
                         <span className={`value ${metrics.isSafe ? 'positive' : 'negative'}`} style={{ fontSize: '1.2rem' }}>
                             {formatPct(metrics.marginBuffer)}
                         </span>
@@ -101,9 +101,9 @@ export function FinancialSnapshot({ params, metrics }: Props) {
                         }} />
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        <span>Limit: {params.safetyThreshold}%</span>
-                        <span>Actual: {(metrics.marginBuffer * 100).toFixed(1)}%</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '6px' }}>
+                        <span>LIMIT: {params.safetyThreshold}%</span>
+                        <span style={{ color: (metrics.marginBuffer * 100) < params.safetyThreshold ? 'var(--accent-rose)' : 'inherit' }}>ACTUAL: {(metrics.marginBuffer * 100).toFixed(1)}%</span>
                     </div>
                 </div>
             </div>

@@ -60,9 +60,9 @@ function Panel({ title, children, tint, noPad }: { title: React.ReactNode; child
             display: 'flex',
             flexDirection: 'column'
         }}>
-            <div style={{ fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: noPad ? '10px' : '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <h3 style={{ margin: '0 0 12px 0', fontSize: '0.9rem', fontWeight: 800, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.85)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {title}
-            </div>
+            </h3>
             {children}
         </div>
     );
@@ -130,14 +130,14 @@ export const UnifiedTerminal: React.FC = () => {
                         <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, letterSpacing: '0.05em' }}>
                             BD <span style={{ color: 'var(--accent-purple)' }}>BRAIN</span>
                         </h1>
-                        <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '4px' }}>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--accent-purple)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '6px', opacity: 0.9 }}>
                             First Ever Exchange deal calculator for Crypto Business developers - one to help us all
                         </div>
-                        <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
-                            <a href="https://t.me/ostryopos" target="_blank" rel="noreferrer" className="storm-btn" style={{ fontSize: '0.55rem', padding: '4px 10px', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', borderColor: 'rgba(56, 189, 248, 0.3)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                            <a href="https://t.me/ostryopos" target="_blank" rel="noreferrer" className="storm-btn" style={{ fontSize: '0.7rem', fontWeight: 800, padding: '8px 16px', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', borderColor: 'rgba(56, 189, 248, 0.3)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', borderRadius: '8px' }}>
                                 ✈️ DM @ostryopos
                             </a>
-                            <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert('App URL copied to clipboard!'); }} className="storm-btn" style={{ fontSize: '0.55rem', padding: '4px 10px', background: 'rgba(255, 255, 255, 0.05)', color: 'white', borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert('App URL copied to clipboard!'); }} className="storm-btn" style={{ fontSize: '0.7rem', fontWeight: 800, padding: '8px 16px', background: 'rgba(255, 255, 255, 0.08)', color: 'white', borderColor: 'rgba(255, 255, 255, 0.15)', display: 'flex', alignItems: 'center', gap: '6px', borderRadius: '8px' }}>
                                 🔗 Share App
                             </button>
                         </div>
@@ -362,7 +362,7 @@ export const UnifiedTerminal: React.FC = () => {
                         )}
 
                         {/* Footer */}
-                        <div style={{ marginTop: '20px', paddingBottom: '12px', textAlign: 'center', color: 'rgba(255,255,255,0.15)', fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                        <div style={{ marginTop: '20px', paddingBottom: '12px', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                             SZYMON CRYPTO BRAIN ACTIVE · {tab.emoji} {tab.label} · V4.2 PRO · TERMINAL ACTIVE
                         </div>
                     </div>
