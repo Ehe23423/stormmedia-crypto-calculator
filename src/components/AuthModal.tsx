@@ -10,13 +10,13 @@ export function AuthModal({ onClose }: Props) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const keyMap: Record<string, { role: 'admin' | 'agency' | 'hunter' | 'partner', email: string }> = {
-        'SZYMON_ADMIN': { role: 'admin', email: 'jerryszymon@gmail.com' },
-        'MATEUSZ-STORMMEDIA': { role: 'agency', email: 'mateusz.storm@example.com' },
-        'MATEUSZ-BLUE': { role: 'agency', email: 'mateusz.blue@example.com' },
-        'SHIKHA_HUNTER': { role: 'hunter', email: 'shikha@example.com' },
-        'KRITIK_HUNTER': { role: 'hunter', email: 'kritik@example.com' },
-        'REMSUA_STREAMER': { role: 'partner', email: 'remsua@example.com' }
+    const keyMap: Record<string, { role: 'admin' | 'agency' | 'hunter' | 'partner', email: string, id: string }> = {
+        'SZYMON_ADMIN': { role: 'admin', email: 'jerryszymon@gmail.com', id: 'szymon-admin-999' },
+        'MATEUSZ-STORMMEDIA': { role: 'agency', email: 'mateusz.storm@example.com', id: 'mateusz-storm-001' },
+        'MATEUSZ-BLUE': { role: 'partner', email: 'mateusz.blue@example.com', id: 'mateusz-blue-002' },
+        'SHIKHA_HUNTER': { role: 'hunter', email: 'shikha@example.com', id: 'shikha-003' },
+        'KRITIK_HUNTER': { role: 'hunter', email: 'kritik@example.com', id: 'kritik-004' },
+        'REMSUA_STREAMER': { role: 'partner', email: 'remsua@example.com', id: 'remsua-005' }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -38,7 +38,7 @@ export function AuthModal({ onClose }: Props) {
             // Given "jebac emaile", I will mock the session in App.tsx.
 
             const sessionData = {
-                user: { email: access.email, id: 'mock-id' },
+                user: { email: access.email, id: access.id },
                 role: access.role
             };
             localStorage.setItem('sb_mock_session', JSON.stringify(sessionData));
