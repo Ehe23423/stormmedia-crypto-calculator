@@ -48,8 +48,11 @@ describe('Calculator Core Logic', () => {
         const metricsLowThreshold = calculateDealMetrics({ ...params, safetyThreshold: 5 });
         const metricsHighThreshold = calculateDealMetrics({ ...params, safetyThreshold: 20 });
 
-        // At 70% share, margin is low. High threshold should trigger BLOCKED.
-        if (metricsHighThreshold.marginBuffer < 0.2) {
+        // Low threshold should NOT be blocked
+        expect(metricsLowThreshold.status).not.toBe('BLOCKED');
+
+        // High threshold should trigger BLOCKED at this margin
+        if (metricsHighThreshold.marginBuffer * 100 < 20) {
             expect(metricsHighThreshold.status).toBe('BLOCKED');
         }
     });
