@@ -131,10 +131,19 @@ export const UnifiedTerminal: React.FC = () => {
                     <button
                         className="storm-btn"
                         data-variant="hunter"
-                        style={{ fontSize: '0.65rem' }}
+                        style={{ fontSize: '0.65rem', display: 'flex', alignItems: 'center', gap: '6px' }}
                         onClick={triggerRain}
                     >
-                        ☀️ MAKE IT RAIN SOL
+                        <svg width="14" height="14" viewBox="0 0 397 311" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M64.6 237.9c-4.2-4.2-10-6.6-15.9-6.6-5.9 0-11.7 2.3-15.9 6.6l-20.9 20.9c-8.8 8.8-8.8 23 0 31.8 4.2 4.2 10 6.6 15.9 6.6 5.9 0 11.7-2.3 15.9-6.6l239.1-239.1c4.2-4.2 10-6.6 15.9-6.6 5.9 0 11.7 2.3 15.9 6.6l20.9 20.9c8.8 8.8 8.8 23 0 31.8-4.2-4.2-10-6.6-15.9-6.6-5.9 0-11.7 2.3-15.9 6.6zm97.3-64.6l-50.6 50.6c-4.2 4.2-10 6.6-15.9 6.6s-11.7-2.3-15.9-6.6c-8.8-8.8-8.8-23 0-31.8l20.9-20.9c4.2-4.2 10-6.6 15.9-6.6s11.7 2.3 15.9 6.6l50.6 50.6c4.2 4.2 6.6 10 6.6 15.9s-2.3 11.7-6.6 15.9c-4.2 4.2-10 6.6-15.9 6.6s-11.7-2.3-15.9-6.6zm132.7-174.5c4.2-4.2 10-6.6 15.9-6.6 5.9 0 11.7 2.3 15.9 6.6l20.9 20.9c8.8 8.8 8.8 23 0 31.8-4.2 4.2-10 6.6-15.9 6.6-5.9 0-11.7-2.3-15.9-6.6l-239.1-239.1c-4.2-4.2-10-6.6-15.9-6.6-5.9 0-11.7 2.3-15.9 6.6L34.1 35.2c-8.8 8.8-8.8 23 0 31.8 4.2 4.2 10 6.6 15.9 6.6 5.9 0 11.7-2.3 15.9-6.6l239.1-239.1z" fill="url(#paint0_linear)" />
+                            <defs>
+                                <linearGradient id="paint0_linear" x1="0" y1="0" x2="397" y2="311" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#00FFA3" />
+                                    <stop offset="1" stop-color="#DC1FFF" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        MAKE IT RAIN SOL
                     </button>
                     <div style={{ display: 'flex', gap: '6px' }} className="header-chips">
                         {[
@@ -143,17 +152,16 @@ export const UnifiedTerminal: React.FC = () => {
                             { label: `V $${(params.V / 1e6).toFixed(1)}M`, color: 'var(--accent-blue)', glow: 'var(--accent-blue)' },
                         ].map(chip => (
                             <div key={chip.label} style={{
-                                background: 'rgba(255,255,255,0.04)',
-                                border: `1px solid ${chip.glow}44`,
-                                borderRadius: '6px',
+                                background: 'rgba(255,255,255,0.03)',
                                 padding: '4px 12px',
                                 fontSize: '0.7rem',
                                 fontWeight: 800,
                                 color: chip.color,
                                 whiteSpace: 'nowrap',
-                                boxShadow: `0 0 25px ${chip.glow}55, inset 0 0 15px ${chip.glow}22, 0 0 50px ${chip.glow}11`,
-                                textShadow: `0 0 12px ${chip.glow}, 0 0 4px #fff`,
-                                border: `1px solid ${chip.glow}aa`,
+                                boxShadow: `0 0 12px ${chip.glow}30, inset 0 0 8px ${chip.glow}20`,
+                                textShadow: `0 1px 3px rgba(0,0,0,0.9), 0 0 6px ${chip.glow}60`,
+                                border: `1px solid ${chip.glow}77`,
+                                borderRadius: '6px',
                                 position: 'relative'
                             }}>
                                 <div style={{ position: 'absolute', inset: 0, borderRadius: '6px', background: `linear-gradient(45deg, ${chip.glow}22, transparent)`, pointerEvents: 'none' }} />
