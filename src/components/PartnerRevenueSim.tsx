@@ -10,7 +10,7 @@ export function PartnerRevenueSim({ params, metrics }: Props) {
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', height: '100%', alignItems: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px', height: '100%', alignItems: 'center' }}>
             <div className="metric-box">
                 <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Partner Revenue</label>
                 <div className="mask-sensitive" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-emerald)' }}>{formatUSD(metrics.partnerPool)}</div>

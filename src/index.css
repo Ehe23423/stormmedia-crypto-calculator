@@ -1463,7 +1463,16 @@ table {
     flex-direction: column !important;
     align-items: flex-start !important;
     padding: 12px 16px !important;
-    gap: 12px !important;
+    gap: 8px !important;
+  }
+
+  .terminal-header h1 {
+    font-size: 0.9rem !important;
+  }
+
+  .header-credits {
+    font-size: 0.4rem !important;
+    line-height: 1.4 !important;
   }
 }
 
@@ -1478,18 +1487,29 @@ table {
   .tab-btn {
     padding: 6px 10px !important;
     font-size: 0.68rem !important;
+    flex: 1;
+    justify-content: center;
   }
 
   .tabs-row {
     padding: 8px 12px !important;
     overflow-x: auto !important;
     justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
   }
 }
 
 @media (max-width: 480px) {
   h1 {
+    font-size: 0.85rem !important;
+  }
+
+  .metric-card .value {
     font-size: 0.9rem !important;
+  }
+
+  .metric-box div {
+    font-size: 1.4rem !important;
   }
 }
 

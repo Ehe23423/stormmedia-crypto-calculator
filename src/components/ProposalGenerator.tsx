@@ -53,7 +53,7 @@ Next Step: Direct Custody & Settlement Call.`
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', height: '100%' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', height: '100%' }}>
                 {variants.map(v => (
                     <div key={v.id} style={{ display: 'flex', flexDirection: 'column', gap: '8px', minHeight: '200px' }}>
                         <h4 style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', margin: 0 }}>{v.title}</h4>
