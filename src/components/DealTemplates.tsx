@@ -34,7 +34,7 @@ export function DealTemplates({ applyParams }: Props) {
     ];
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px' }}>
             {templates.map(t => (
                 <button
                     key={t.name}

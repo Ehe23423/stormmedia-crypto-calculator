@@ -14,7 +14,7 @@ export function PartnerRevenueSim({ params, metrics }: Props) {
             <div className="metric-box">
                 <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Partner Revenue</label>
                 <div style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-emerald)' }}>{formatUSD(metrics.partnerPool)}</div>
-                <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{(metrics.partnerPool / (params.V / 1000000)).toFixed(1)} USD per 1M Vol</div>
+                <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{params.V > 0 ? (metrics.partnerPool / (params.V / 1000000)).toFixed(1) : '0'} USD per 1M Vol</div>
             </div>
 
             <div className="metric-box">

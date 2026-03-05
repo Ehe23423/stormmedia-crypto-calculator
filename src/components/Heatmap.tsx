@@ -14,7 +14,7 @@ export function Heatmap({ params }: Props) {
             case 'SAFE': return 'var(--accent-emerald)';
             case 'WARNING': return 'var(--accent-amber)';
             case 'CRITICAL': return 'var(--accent-rose)';
-            case 'SUICIDAL': return '#7f1d1d'; // Darker red
+            case 'BLOCKED': return '#7f1d1d';
             default: return 'var(--bg-card)';
         }
     };
@@ -67,7 +67,7 @@ export function Heatmap({ params }: Props) {
                 </table>
             </div>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-                {['SAFE', 'WARNING', 'CRITICAL', 'SUICIDAL'].map(s => (
+                {['SAFE', 'WARNING', 'CRITICAL', 'BLOCKED'].map(s => (
                     <div key={s} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <div style={{ width: '8px', height: '8px', background: getColor(s), borderRadius: '2px' }} />
                         <span style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>{s}</span>

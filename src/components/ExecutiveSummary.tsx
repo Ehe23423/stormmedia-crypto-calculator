@@ -18,7 +18,7 @@ SZYMON CRYPTO BRAIN — DEAL VERDICT
 
 STRATEGY: ${(params.V / 1_000_000).toFixed(1)}M Monthly Volume
 FEE TIER: ${params.F}%
-SAFETY THRESHOLD: ${metrics.safetyThreshold}%
+SAFETY THRESHOLD: ${params.safetyThreshold}%
 REVENUE SHARE: ${params.P}%
 --------------------------------------
 OUTCOME: ${metrics.isBlocked ? 'BLOCKED - SAFETY VIOLATED' : metrics.netProfit > 0 ? 'PROFITABLE' : 'UNSUSTAINABLE'}

@@ -28,7 +28,7 @@ export function StressTests({ baseParams }: Props) {
     ];
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px', height: '100%' }}>
             {scenarios.map(s => {
                 const m = calculateDealMetrics(s.params);
                 const survived = m.netProfit > 0;

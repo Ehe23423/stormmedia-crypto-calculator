@@ -1,30 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;700&display=swap');
 
 :root {
-  /* === V1 COLOR PALETTE (RESTORED) === */
-  --bg-dark: #0B0F19;
-  --bg-card: rgba(17, 24, 39, 0.7);
+  /* === PRO GLASS THEME === */
+  --bg-dark: #05070a;
+  --bg-glass: rgba(17, 24, 39, 0.45);
+  --bg-glass-hover: rgba(17, 24, 39, 0.6);
 
-  --accent-blue: #3B82F6;
-  --accent-purple: #8B5CF6;
-  --accent-pink: #EC4899;
-  --accent-emerald: #10B981;
-  --accent-rose: #EF4444;
-  --accent-amber: #F59E0B;
-  --accent-cyan: #06B6D4;
+  /* Accents - Compact & Sharp */
+  --accent-blue: #3b82f6;
+  --accent-cyan: #22d3ee;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+  --accent-amber: #fbbf24;
+  --accent-purple: #a855f7;
+  --accent-orange: #f97316;
 
   --text-primary: #f8fafc;
   --text-secondary: rgba(148, 163, 184, 0.7);
 
+  --bg-card: rgba(17, 24, 39, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glass-hover: rgba(59, 130, 246, 0.3);
   --border-light: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(59, 130, 246, 0.3);
 
-  /* Glows */
-  --glow-blue: 0 0 20px rgba(59, 130, 246, 0.15);
-  --glow-emerald: 0 0 20px rgba(16, 185, 129, 0.15);
-
   --font-main: 'Inter', system-ui, sans-serif;
-  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease-out;
+  --transition-smooth: all 0.25s ease;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -37,30 +40,32 @@ body {
   font-family: var(--font-main);
   background: var(--bg-dark);
   color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
   font-size: 11.5px;
-  /* Stay small */
-  line-height: 1.4;
+  /* Ultra-compact */
+  line-height: 1.35;
   background-image:
-    radial-gradient(ellipse 80% 50% at 10% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(139, 92, 246, 0.07) 0%, transparent 55%);
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0, transparent 50%);
   background-attachment: fixed;
 }
 
 .bento-item {
-  background: var(--bg-card);
+  background: var(--bg-glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-glass);
   border-radius: 12px;
   padding: 16px;
   transition: var(--transition-fast);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .bento-item:hover {
-  border-color: var(--border-hover);
-  background: rgba(31, 41, 55, 0.8);
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.05);
+  background: var(--bg-glass-hover);
+  border-color: var(--border-glass-hover);
+  transform: translateY(-1px);
 }
 
 .module-title {
