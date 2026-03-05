@@ -1778,3 +1778,27 @@ table {
   display: flex !important;
   flex-direction: column !important;
 }
+
+/* ============================================================
+   SOLANA RAIN EFFECT
+   ============================================================ */
+.sol-coin {
+  position: fixed;
+  top: -60px;
+  width: 44px;
+  height: 44px;
+  background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 397 311" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M64.6 237.9c-4.2-4.2-10-6.6-15.9-6.6-5.9 0-11.7 2.3-15.9 6.6l-20.9 20.9c-8.8 8.8-8.8 23 0 31.8 4.2 4.2 10 6.6 15.9 6.6 5.9 0 11.7-2.3 15.9-6.6l239.1-239.1c4.2-4.2 10-6.6 15.9-6.6 5.9 0 11.7 2.3 15.9 6.6l20.9 20.9c8.8 8.8 8.8 23 0 31.8-4.2-4.2-10-6.6-15.9-6.6-5.9 0-11.7 2.3-15.9 6.6zm97.3-64.6l-50.6 50.6c-4.2 4.2-10 6.6-15.9 6.6s-11.7-2.3-15.9-6.6c-8.8-8.8-8.8-23 0-31.8l20.9-20.9c4.2-4.2 10-6.6 15.9-6.6s11.7 2.3 15.9 6.6l50.6 50.6c4.2 4.2 6.6 10 6.6 15.9s-2.3 11.7-6.6 15.9c-4.2 4.2-10 6.6-15.9 6.6s-11.7-2.3-15.9-6.6zm132.7-174.5c4.2-4.2 10-6.6 15.9-6.6 5.9 0 11.7 2.3 15.9 6.6l20.9 20.9c8.8 8.8 8.8 23 0 31.8-4.2 4.2-10 6.6-15.9 6.6-5.9 0-11.7-2.3-15.9-6.6l-239.1-239.1c-4.2-4.2-10-6.6-15.9-6.6-5.9 0-11.7 2.3-15.9 6.6L34.1 35.2c-8.8 8.8-8.8 23 0 31.8 4.2 4.2 10 6.6 15.9 6.6 5.9 0 11.7-2.3 15.9-6.6l239.1-239.1z" fill="%2300FFA3"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 9999;
+  pointer-events: none;
+  animation-name: solRain;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-fill-mode: forwards;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 163, 0.9));
+}
+
+@keyframes solRain {
+  0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
+}
