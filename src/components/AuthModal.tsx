@@ -11,12 +11,12 @@ export function AuthModal({ onClose }: Props) {
     const [error, setError] = useState<string | null>(null);
 
     const keyMap: Record<string, { role: 'admin' | 'agency' | 'hunter' | 'partner', email: string, id: string }> = {
-        'SZYMON_ADMIN': { role: 'admin', email: 'jerryszymon@gmail.com', id: 'szymon-admin-999' },
-        'MATEUSZ-STORMMEDIA': { role: 'agency', email: 'mateusz.storm@example.com', id: 'mateusz-storm-001' },
-        'MATEUSZ-BLUE': { role: 'partner', email: 'mateusz.blue@example.com', id: 'mateusz-blue-002' },
-        'SHIKHA_HUNTER': { role: 'hunter', email: 'shikha@example.com', id: 'shikha-003' },
-        'KRITIK_HUNTER': { role: 'hunter', email: 'kritik@example.com', id: 'kritik-004' },
-        'REMSUA_STREAMER': { role: 'partner', email: 'remsua@example.com', id: 'remsua-005' }
+        'BRAIN-ADMIN-777': { role: 'admin', email: 'jerryszymon@gmail.com', id: 'szymon-admin-999' },
+        'STORM-OPS-888': { role: 'agency', email: 'mateusz.storm@example.com', id: 'mateusz-storm-001' },
+        'BLUE-CHART-999': { role: 'partner', email: 'mateusz.blue@example.com', id: 'mateusz-blue-002' },
+        'SHIKHA-SCOUT-101': { role: 'hunter', email: 'shikha@example.com', id: 'shikha-003' },
+        'KRITIK-ALPHA-202': { role: 'hunter', email: 'kritik@example.com', id: 'kritik-004' },
+        'REMSUA-STREAM-303': { role: 'partner', email: 'remsua@example.com', id: 'remsua-005' }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
