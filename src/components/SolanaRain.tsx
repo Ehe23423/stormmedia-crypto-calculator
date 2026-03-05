@@ -1,16 +1,18 @@
 import { useState, useCallback } from 'react';
 
 export function useSolanaRain() {
-    const [particles, setParticles] = useState<{ id: number; left: string; duration: string }[]>([]);
+    const [particles, setParticles] = useState<{ id: number; left: string; duration: string; delay: string; size: string }[]>([]);
 
     const triggerRain = useCallback(() => {
-        const newParticles = Array.from({ length: 40 }).map((_, i) => ({
+        const newParticles = Array.from({ length: 60 }).map((_, i) => ({
             id: Date.now() + i,
             left: Math.random() * 100 + 'vw',
-            duration: 2 + Math.random() * 2 + 's'
+            duration: 2 + Math.random() * 3 + 's',
+            delay: Math.random() * 2 + 's',
+            size: 20 + Math.random() * 40 + 'px'
         }));
         setParticles(newParticles);
-        setTimeout(() => setParticles([]), 4000);
+        setTimeout(() => setParticles([]), 6000);
     }, []);
 
     // Expose trigger globally for easier integration
@@ -24,7 +26,7 @@ export function useSolanaRain() {
                 <div
                     key={p.id}
                     className="sol-coin"
-                    style={{ left: p.left, animationDuration: p.duration }}
+                    style={{ left: p.left, animationDuration: p.duration, animationDelay: p.delay, width: p.size, height: p.size }}
                 />
             ))}
         </>
