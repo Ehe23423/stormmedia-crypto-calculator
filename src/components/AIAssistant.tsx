@@ -104,7 +104,7 @@ export function AIAssistant() {
                             <h4 style={{ color: 'var(--accent-emerald)', margin: '0 0 16px 0', fontSize: '1rem' }}>Instant Offer Pitch (Telegram)</h4>
                             <div style={{ padding: '12px', background: 'var(--bg-dark)', borderRadius: '8px', border: '1px solid var(--border-light)', whiteSpace: 'pre-wrap', fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5, position: 'relative' }}>
                                 {generateTelegramPitch()}
-                                <button onClick={() => alert('Offer copied selectively to clipboard!')} style={{ position: 'absolute', top: '8px', right: '8px', background: 'var(--accent-emerald)', color: '#000', border: 'none', padding: '4px 8px', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontWeight: 'bold' }}>Copy</button>
+                                <button onClick={() => { navigator.clipboard.writeText(generateTelegramPitch()); alert('✅ Pitch copied!'); }} style={{ position: 'absolute', top: '8px', right: '8px', background: 'var(--accent-emerald)', color: '#000', border: 'none', padding: '4px 8px', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontWeight: 'bold' }}>📋 Copy</button>
                             </div>
                         </div>
                     </div>
