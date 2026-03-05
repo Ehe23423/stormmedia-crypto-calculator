@@ -6,6 +6,8 @@ interface Props {
 }
 
 export function AuthModal({ onClose }: Props) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isSignUp, setIsSignUp] = useState(false);
