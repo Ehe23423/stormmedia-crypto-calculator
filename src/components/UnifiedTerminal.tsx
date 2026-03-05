@@ -132,7 +132,7 @@ export function UnifiedTerminal() {
                         <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, letterSpacing: '0.05em' }}>
                             {t('title').split(' ')[0]} <span style={{ color: 'var(--accent-purple)' }}>{t('title').split(' ').slice(1).join(' ')}</span>
                         </h1>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--accent-purple)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '6px', opacity: 0.9 }}>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--accent-purple)', letterSpacing: '0.15em', marginTop: '2px' }}>
                             {t('subtitle')}
                         </div>
                         <div style={{ display: 'flex', gap: '8px', marginTop: '10px', alignItems: 'center' }}>

@@ -1,11 +1,13 @@
 import type { DealParams } from '../model/DealModel';
 import { calculateDealMetrics } from '../model/DealModel';
+import { useLanguage } from '../lib/LanguageContext';
 
 interface Props {
     params: DealParams;
 }
 
 export function ProposalGenerator({ params }: Props) {
+    const { t } = useLanguage();
     const m = calculateDealMetrics(params);
     const formatUSD = (val: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Math.round(val));
@@ -13,36 +15,31 @@ export function ProposalGenerator({ params }: Props) {
     const variants = [
         {
             id: 'community',
-            title: 'Community / Group',
-            content: `SZYMON CRYPTO BRAIN Proposal — Community Hybrid
-Target Volume: $${(params.V / 1000000).toFixed(0)}M/mo
-Fee Tier: ${params.F}%
-Partner Revenue: ${formatUSD(m.partnerPool)}/mo
-
-Structure: $${params.R} Monthly Retainer + ${params.P}% Volume Share.
-Next Step: 14-day Trading Tournament Trial.`
+            title: t('prop.variant1Title'),
+            content: t('prop.variant1Content')
+                .replace('{vol}', (params.V / 1000000).toFixed(0))
+                .replace('{F}', params.F.toString())
+                .replace('{pool}', formatUSD(m.partnerPool))
+                .replace('{R}', params.R.toString())
+                .replace('{P}', params.P.toString())
         },
         {
             id: 'trader',
-            title: 'Trader / Desk',
-            content: `SZYMON CRYPTO BRAIN Proposal — VIP Trader
-Volume Committment: $${(params.V / 1000000).toFixed(0)}M/mo
-Net Fee: ${(params.F * (1 - params.P / 100)).toFixed(3)}%
-VIP Tier: Elite
-
-Structure: Direct fee rebate of ${params.P}% from baseline ${params.F}% fees.
-Next Step: Onboard to API VIP Node.`
+            title: t('prop.variant2Title'),
+            content: t('prop.variant2Content')
+                .replace('{vol}', (params.V / 1000000).toFixed(0))
+                .replace('{netFee}', (params.F * (1 - params.P / 100)).toFixed(3))
+                .replace('{P}', params.P.toString())
+                .replace('{F}', params.F.toString())
         },
         {
             id: 'whale',
-            title: 'Whale / Institutional',
-            content: `SZYMON CRYPTO BRAIN Proposal — Institutional
-Total Monthly Flow: $${(params.V / 1000000).toFixed(0)}M/mo
-Effective Discount: ${params.P}%
-Exchange Retained: ${formatUSD(m.exchangeRetained)}
-
-Structure: $${params.I} Op-Cost optimization + ${params.P}% performance split.
-Next Step: Direct Custody & Settlement Call.`
+            title: t('prop.variant3Title'),
+            content: t('prop.variant3Content')
+                .replace('{vol}', (params.V / 1000000).toFixed(0))
+                .replace('{P}', params.P.toString())
+                .replace('{retained}', formatUSD(m.exchangeRetained))
+                .replace('{I}', params.I.toString())
         }
     ];
 
@@ -76,7 +73,7 @@ Next Step: Direct Custody & Settlement Call.`
                             className="glass-btn"
                             style={{ width: '100%', padding: '8px', fontSize: '0.75rem', fontWeight: 'bold' }}
                         >
-                            Copy Proposal
+                            {t('prop.copyBtn')}
                         </button>
                     </div>
                 ))}

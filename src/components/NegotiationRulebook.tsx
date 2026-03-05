@@ -1,9 +1,12 @@
+import { useLanguage } from '../lib/LanguageContext';
+
 export function NegotiationRulebook() {
+    const { t } = useLanguage();
     const rules = [
-        { id: 1, title: 'Retainer First', desc: 'Adjust/lower fixed retainer to lower initial break-even exposure.' },
-        { id: 2, title: 'Tier Efficiency', desc: 'Use tiered fee structures instead of flat share to protect variable margin.' },
-        { id: 3, title: 'Bonus to Tier', desc: 'Convert one-time bonuses into high-volume tier unlocks to incentivize flow.' },
-        { id: 4, title: 'Sub-Split Floor', desc: 'Treat sub-split as the final flexibility lever; increase only after share is optimized.' }
+        { id: 1, title: t('rule.r1t'), desc: t('rule.r1d') },
+        { id: 2, title: t('rule.r2t'), desc: t('rule.r2d') },
+        { id: 3, title: t('rule.r3t'), desc: t('rule.r3d') },
+        { id: 4, title: t('rule.r4t'), desc: t('rule.r4d') }
     ];
 
     return (
@@ -41,7 +44,7 @@ export function NegotiationRulebook() {
                 fontStyle: 'italic',
                 textAlign: 'center'
             }}>
-                "Protect the baseline margin; scale the top-line volume."
+                {t('rule.quote')}
             </div>
         </div>
     );

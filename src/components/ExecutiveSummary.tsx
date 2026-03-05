@@ -1,4 +1,5 @@
 import type { DealParams, DealResult } from '../model/DealModel';
+import { useLanguage } from '../lib/LanguageContext';
 
 interface Props {
     params: DealParams;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export function ExecutiveSummary({ params, metrics }: Props) {
+    const { t } = useLanguage();
     const formatUSD = (val: number | null | undefined) => {
         if (val === null || val === undefined || Number.isNaN(val)) return '—';
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
@@ -13,25 +15,23 @@ export function ExecutiveSummary({ params, metrics }: Props) {
 
     const generateReport = () => {
         return `======================================
-SZYMON CRYPTO BRAIN — DEAL VERDICT
+SZYMON CRYPTO BRAIN — ${t('exec.verdict')}
 ======================================
 
-STRATEGY: ${(params.V / 1_000_000).toFixed(1)}M Monthly Volume
-FEE TIER: ${params.F}%
-SAFETY THRESHOLD: ${params.safetyThreshold}%
-REVENUE SHARE: ${params.P}%
+${t('exec.strategy').replace('{vol}', (params.V / 1_000_000).toFixed(1))}
+${t('exec.feeTier')}: ${params.F}%
+${t('exec.safety')}: ${params.safetyThreshold}%
+${t('exec.revShare')}: ${params.P}%
 --------------------------------------
-OUTCOME: ${metrics.isBlocked ? 'BLOCKED - SAFETY VIOLATED' : metrics.netProfit > 0 ? 'PROFITABLE' : 'UNSUSTAINABLE'}
-MONTHLY NET: ${formatUSD(metrics.netProfit)}
-BREAK-EVEN: ${formatUSD(metrics.breakEvenVolume)}
-MARGIN BUFFER: ${(metrics.marginBuffer * 100).toFixed(1)}%
+${t('exec.outcome')}: ${metrics.isBlocked ? t('exec.blocked') : metrics.netProfit > 0 ? t('exec.profitable') : t('exec.unsustainable')}
+${t('exec.monthlyNet')}: ${formatUSD(metrics.netProfit)}
+${t('exec.breakEven')}: ${formatUSD(metrics.breakEvenVolume)}
+${t('exec.marginBuffer')}: ${(metrics.marginBuffer * 100).toFixed(1)}%
 
-RISK VERDICT: ${metrics.status}
+${t('exec.riskVerdict')}: ${metrics.status}
 --------------------------------------
-PROPOSAL SUMMARY:
-This structure yields ${formatUSD(metrics.partnerPool)} in partner revenue. 
-The deal remains sustainable for the exchange while maintaining 
-competitive upside for the partner at current fee compression levels.
+${t('exec.summary')}
+${t('exec.summaryText').replace('{pool}', formatUSD(metrics.partnerPool))}
 ======================================`;
     };
 
@@ -69,7 +69,7 @@ competitive upside for the partner at current fee compression levels.
                         color: '#fff'
                     }}
                 >
-                    Copy Text Summary
+                    {t('exec.copyBtn')}
                 </button>
             </div>
         </div>

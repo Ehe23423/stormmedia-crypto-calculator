@@ -3,19 +3,24 @@ import { useEffect, useState } from 'react';
 export function WhaleEffect({ isWhale }: { isWhale: boolean }) {
     const [showAlert, setShowAlert] = useState(false);
 
-    const [hasPlayed, setHasPlayed] = useState(() => sessionStorage.getItem('whalePlayed') === 'true');
+    const [hasPlayed, setHasPlayed] = useState(false);
 
     useEffect(() => {
         if (isWhale && !hasPlayed) {
             setShowAlert(true);
             setHasPlayed(true);
-            sessionStorage.setItem('whalePlayed', 'true');
-            const timer = setTimeout(() => setShowAlert(false), 3000);
+            const timer = setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
             return () => clearTimeout(timer);
+        }
+        if (!isWhale) {
+            setHasPlayed(false); // Reset if they drop below whale level so it can trigger again
+            setShowAlert(false);
         }
     }, [isWhale, hasPlayed]);
 
-    if (!isWhale || (!showAlert && hasPlayed)) return null;
+    if (!isWhale && !showAlert) return null;
 
     return (
         <>
