@@ -33,14 +33,13 @@ import { StreamerMode } from './components/StreamerMode';
 import { AffiliateLinkBuilder } from './components/AffiliateLinkBuilder';
 import { MinimalCharts } from './components/MinimalCharts';
 import { ShareLinkView } from './components/ShareLinkView';
-import { AdminConsole } from './components/AdminConsole';
 import { MyScenarios } from './components/MyScenarios';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { translations, type Language } from './lib/translations';
 import './index.css';
 
 export default function App() {
-  const [role, setRole] = useState<string>('admin');
+  const role = 'admin';
   const [lang, setLang] = useState<Language>('en');
   const t = translations[lang];
 
@@ -48,7 +47,7 @@ export default function App() {
   const mockSession = { user: { id: 'szymon_admin', email: 'admin@stormmedia.ai' } };
 
   const { params, metrics, updateParam, setParams, error: simulatorError } = useDealSimulator();
-  const [activeTab, setActiveTab] = useState<'ARCHITECT' | 'HUNTER' | 'PITCH' | 'AGENCY' | 'BD_OS' | 'SAVES' | 'ADMIN' | 'KNOWLEDGE'>('BD_OS');
+  const [activeTab, setActiveTab] = useState<'ARCHITECT' | 'HUNTER' | 'PITCH' | 'AGENCY' | 'BD_OS' | 'SAVES' | 'KNOWLEDGE'>('BD_OS');
   const [roastMode, setRoastMode] = useState(false);
 
   // Role-based Navigation logic
@@ -60,15 +59,15 @@ export default function App() {
     { id: 'PITCH', label: t.tabs.PITCH, roles: ['admin', 'agency', 'partner', 'hunter'] },
     { id: 'AGENCY', label: t.tabs.AGENCY, roles: ['admin', 'agency', 'partner'] },
     { id: 'SAVES', label: t.tabs.SAVES, roles: ['admin', 'agency', 'partner', 'hunter'] },
-    { id: 'ADMIN', label: t.tabs.ADMIN, roles: ['admin'] },
   ].filter(t_obj => t_obj.roles.includes(role));
 
   useEffect(() => {
-    // If current tab is not allowed for new role, fallback to first available
+    // If current tab is not allowed for role, fallback to first available
     if (!tabs.find(t => t.id === activeTab)) {
       setActiveTab(tabs[0]?.id as any || 'BD_OS');
     }
-  }, [role]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const applyPreset = (presetName: string) => {
     switch (presetName) {
@@ -142,14 +141,14 @@ export default function App() {
     <>
       <div className="app-container">
 
-        <header className="brand-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <header className="brand-header">
           <div>
             <h1>SZYMON CRYPTO BRAIN</h1>
-            <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '2px' }}>
               {t.subtitle}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
 
             <button
               onClick={() => setLang(lang === 'en' ? 'pl' : 'en')}
@@ -157,10 +156,10 @@ export default function App() {
                 background: 'rgba(255,255,255,0.05)',
                 border: '1px solid var(--border-light)',
                 color: 'white',
-                padding: '8px 12px',
+                padding: '7px 12px',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: '0.85rem',
+                fontSize: '0.8rem',
                 fontWeight: 'bold',
                 display: 'flex',
                 alignItems: 'center',
@@ -173,13 +172,13 @@ export default function App() {
             <button
               onClick={() => setRoastMode(!roastMode)}
               style={{
-                background: roastMode ? 'rgba(236, 72, 153, 0.2)' : 'rgba(255,255,255,0.05)',
+                background: roastMode ? 'rgba(236, 72, 153, 0.15)' : 'rgba(255,255,255,0.05)',
                 border: `1px solid ${roastMode ? 'var(--accent-pink)' : 'var(--border-light)'}`,
                 color: roastMode ? 'var(--accent-pink)' : 'var(--text-secondary)',
-                padding: '8px 16px',
+                padding: '7px 14px',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: '0.85rem',
+                fontSize: '0.8rem',
                 fontWeight: 'bold',
                 display: 'flex',
                 alignItems: 'center',
@@ -190,11 +189,11 @@ export default function App() {
               {roastMode ? t.roastOn : t.roastOff}
             </button>
 
-            <button onClick={handleShareSetup} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <button onClick={handleShareSetup} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '7px 14px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
               {t.shareSetup}
             </button>
-            <button onClick={() => window.print()} style={{ background: 'var(--accent-blue)', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              🖨️ Export PDF
+            <button onClick={() => window.print()} style={{ background: 'var(--accent-blue)', border: 'none', color: '#fff', padding: '7px 14px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              🖨️ PDF
             </button>
           </div>
         </header>
@@ -204,7 +203,7 @@ export default function App() {
           <Route path="/" element={
             <>
               <CryptoTicker />
-              <div className="grid-layout grid-cols-sidebar" style={{ marginTop: '24px' }}>
+              <div className="grid-layout grid-cols-sidebar">
                 {/* SIDEBAR: Inputs */}
                 <aside className="sidebar">
                   <div className="glass-panel sidebar">
@@ -495,12 +494,6 @@ export default function App() {
                         setActiveTab('ARCHITECT');
                         alert('Scenario loaded successfully!');
                       }} />
-                    </div>
-                  )}
-
-                  {activeTab === 'ADMIN' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                      <AdminConsole session={mockSession} role={role} />
                     </div>
                   )}
                 </main>
