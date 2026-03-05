@@ -109,7 +109,7 @@ export function CryptoTicker() {
                     boxShadow: isLive ? '0 0 6px #10b981' : 'none',
                     animation: isLive ? 'pulse 2s infinite' : 'none',
                 }} />
-                {isLive ? '⚡ BingX LIVE' : 'DEMO'}
+                {isLive ? '⚡ EXCHANGE LIVE' : 'DEMO'}
                 {lastUpdate && (
                     <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}>
                         {lastUpdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

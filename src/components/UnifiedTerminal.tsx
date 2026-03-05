@@ -121,7 +121,7 @@ export const UnifiedTerminal: React.FC = () => {
                         Institutional BD Terminal · 64-Module Engine
                     </div>
                     <div style={{ fontSize: '0.45rem', color: 'var(--text-secondary)', letterSpacing: '0.05em', marginTop: '4px', textTransform: 'uppercase' }}>
-                        Stworzone przez Szymon Białek z pomocą Damian Siodłak · Strona niepowiązana z BingX
+                        Stworzone przez Szymon Białek z pomocą Damian Siodłak · Niezależny Terminal
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -298,7 +298,7 @@ export const UnifiedTerminal: React.FC = () => {
 
                     {/* Footer */}
                     <div style={{ marginTop: '20px', paddingBottom: '8px', textAlign: 'center', color: 'rgba(255,255,255,0.12)', fontSize: '0.52rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                        STORMMEDIA BD ENGINE · {tab.emoji} {tab.label} · V4.0 · BINGX
+                        STORMMEDIA BD ENGINE · {tab.emoji} {tab.label} · V4.0 · TERMINAL ACTIVE
                     </div>
                 </div>
             </div>
