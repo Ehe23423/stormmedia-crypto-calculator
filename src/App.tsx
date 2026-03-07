@@ -6,45 +6,43 @@ import './index.css';
 
 export default function App() {
   useEffect(() => {
-    const DEPLOY_VERSION = "v2.0_PRIME_FINAL_RECOVERY";
+    const DEPLOY_VERSION = "v3.0_MISSION_COMPLETE";
     console.log(`%c [SYSTEM] ${DEPLOY_VERSION} LOADED`, 'background: #00d2ff; color: #000; font-weight: bold;');
+
+    // Add visible marker to UI
+    const marker = document.createElement('div');
+    marker.style.cssText = "position:fixed;top:0;right:0;background:red;color:white;font-size:8px;z-index:999999;padding:2px;pointer-events:none;opacity:0.8";
+    marker.innerText = DEPLOY_VERSION;
+    document.body.appendChild(marker);
 
     const body = document.body;
     const html = document.documentElement;
 
     const forceUnlock = () => {
-      // Force individual styles
       body.style.setProperty('overflow-y', 'visible', 'important');
-      body.style.setProperty('overflow-x', 'visible', 'important');
+      body.style.setProperty('overflow-x', 'hidden', 'important');
       body.style.setProperty('height', 'auto', 'important');
       body.style.setProperty('position', 'static', 'important');
 
       html.style.setProperty('overflow-y', 'visible', 'important');
-      html.style.setProperty('overflow-x', 'visible', 'important');
+      html.style.setProperty('overflow-x', 'hidden', 'important');
       html.style.setProperty('height', 'auto', 'important');
       html.style.setProperty('position', 'static', 'important');
 
       body.classList.remove('antigravity-scroll-lock');
     };
 
-    // MutationObserver to catch anyone (including environment) trying to lock the scroll
-    const observer = new MutationObserver(() => {
-      if (body.classList.contains('antigravity-scroll-lock') || body.style.overflow === 'hidden') {
-        forceUnlock();
-      }
-    });
-
+    const observer = new MutationObserver(forceUnlock);
     observer.observe(body, { attributes: true, attributeFilter: ['style', 'class'] });
     observer.observe(html, { attributes: true, attributeFilter: ['style', 'class'] });
 
     forceUnlock();
     const timer = setInterval(forceUnlock, 1000);
-    window.addEventListener('resize', forceUnlock);
 
     return () => {
       observer.disconnect();
       clearInterval(timer);
-      window.removeEventListener('resize', forceUnlock);
+      marker.remove();
     };
   }, []);
 
