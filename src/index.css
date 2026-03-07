@@ -1,39 +1,31 @@
 :root {
-  /* === APPLE PREMIUM GLASSMORPHISM PALETTE === */
-  --bg-dark: #000000;
-  /* Deep pitch black background */
-  --bg-card: rgba(30, 30, 35, 0.4);
-  /* Translucent dark gray for glass */
+  /* === INTENSIFIED PREMIUM PALETTE === */
+  --bg-dark: #000205;
+  /* Even deeper black */
+  --bg-card: rgba(13, 17, 23, 0.7);
+  /* Slightly more opaque glass */
 
-  --accent-blue: #0ea5e9;
-  /* Sky blue (neutral, professional) */
-  --accent-purple: #8b5cf6;
-  /* Soft violet */
-  --accent-orange: #f59e0b;
-  /* Amber */
-  --accent-pink: #ec4899;
-  /* Pink */
-  --accent-emerald: #10b981;
-  /* Emerald green */
-  --accent-rose: #ef4444;
-  /* Soft red */
-  --accent-amber: #eab308;
-  /* Yellow */
-  --accent-cyan: #06b6d4;
-  /* Base cyan */
+  --accent-blue: #00d2ff;
+  /* Kinetic Cyan */
+  --accent-purple: #a855f7;
+  --accent-orange: #fbbf24;
+  --accent-pink: #f472b6;
+  --accent-emerald: #10f19b;
+  /* Neon Emerald */
+  --accent-rose: #ff4b4b;
+  --accent-amber: #facc15;
+  --accent-cyan: #22d3ee;
 
-  --text-primary: #f8fafc;
-  /* Pure ice white */
+  --text-primary: #ffffff;
   --text-secondary: #94a3b8;
-  /* Slate gray */
 
-  --border-light: rgba(255, 255, 255, 0.08);
-  /* Very subtle white border */
-  --border-hover: rgba(255, 255, 255, 0.2);
+  --border-light: rgba(56, 189, 248, 0.15);
+  /* Tinted borders */
+  --border-hover: rgba(56, 189, 248, 0.35);
 
-  /* Glows */
-  --glow-blue: 0 0 20px rgba(139, 233, 253, 0.2);
-  --glow-emerald: 0 0 20px rgba(80, 250, 123, 0.2);
+  /* Kinetic Glows */
+  --glow-blue: 0 0 30px rgba(0, 210, 255, 0.35);
+  --glow-emerald: 0 0 30px rgba(16, 241, 155, 0.35);
 
   --font-main: 'Inter', system-ui, sans-serif;
   --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -127,8 +119,11 @@ html,
 body,
 #root {
   height: auto !important;
-  min-height: 100vh !important;
-  overflow-y: auto !important;
+  min-height: 100% !important;
+  /* Changed from 100vh to avoid mobile browser address bar issues */
+  overflow-y: visible !important;
+  /* Body should not scroll internally, the document should */
+  overflow-x: hidden !important;
   position: relative !important;
 }
 
@@ -237,10 +232,10 @@ body {
   .terminal-content {
     flex-direction: column !important;
     flex: none !important;
-    display: flex !important;
+    display: block !important;
     width: 100% !important;
     max-width: 100vw !important;
-    overflow-x: hidden !important;
+    overflow: visible !important;
   }
 
   .layout-main-content {
