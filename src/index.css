@@ -124,10 +124,11 @@
 }
 
 html,
-body {
+body,
+#root {
   height: auto !important;
   min-height: 100vh !important;
-  overflow: visible !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
   position: relative !important;
 }
@@ -155,6 +156,8 @@ body {
     overflow-y: visible !important;
     overflow-x: hidden;
     position: relative;
+    display: block !important;
+    /* Change from flex to block on mobile for natural flow */
   }
 }
 
