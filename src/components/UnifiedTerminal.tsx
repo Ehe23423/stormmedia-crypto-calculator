@@ -51,18 +51,6 @@ function Panel({ title, children, tint, noPad }: { title: React.ReactNode; child
                 {title}
             </h3>
             {children}
-            {/* ══ FOOTER / VERIFICATION ══ */}
-            <div style={{
-                padding: '40px',
-                textAlign: 'center',
-                opacity: 0.3,
-                fontSize: '0.8rem',
-                borderTop: '1px solid var(--border-light)',
-                marginTop: '40px'
-            }}>
-                <span id="gitara-marker">GITARA</span>
-                <div style={{ marginTop: '10px' }}>© 2026 SZYMON CRYPTO BRAIN v2.0</div>
-            </div>
         </div>
     );
 }
@@ -372,8 +360,8 @@ export function UnifiedTerminal() {
                             </div>
                         )}
 
-                        <div style={{ marginTop: '20px', paddingBottom: '12px', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                            SZYMON CRYPTO BRAIN ACTIVE · {tab.emoji} {tab.label} · V4.2 PRO · TERMINAL ACTIVE
+                        <div style={{ marginTop: '20px', paddingBottom: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.2)', fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                            SZYMON CRYPTO BRAIN ACTIVE · {tab.emoji} {tab.label} · V2.0 PRISTINE · DEPLOYED
                         </div>
                     </div>
                 </div>

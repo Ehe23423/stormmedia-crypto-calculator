@@ -6,7 +6,7 @@ import './index.css';
 
 export default function App() {
   useEffect(() => {
-    const DEPLOY_VERSION = "2.0.FINAL_GOLD_v1";
+    const DEPLOY_VERSION = "PRISTINE_PURGE_v2.0";
     console.log(`%c [SYSTEM] ${DEPLOY_VERSION} LOADED`, 'background: #00d2ff; color: #000; font-weight: bold;');
 
     const body = document.body;
@@ -25,22 +25,24 @@ export default function App() {
       html.style.setProperty('position', 'static', 'important');
 
       body.classList.remove('antigravity-scroll-lock');
-
-      // Ensure the marker is there for subagent to find
-      if (!document.getElementById('deploy-ver')) {
-        const div = document.createElement('div');
-        div.id = 'deploy-ver';
-        div.style.display = 'none';
-        div.innerText = DEPLOY_VERSION;
-        body.appendChild(div);
-      }
     };
 
+    // MutationObserver to catch anyone (including environment) trying to lock the scroll
+    const observer = new MutationObserver(() => {
+      if (body.classList.contains('antigravity-scroll-lock') || body.style.overflow === 'hidden') {
+        forceUnlock();
+      }
+    });
+
+    observer.observe(body, { attributes: true, attributeFilter: ['style', 'class'] });
+    observer.observe(html, { attributes: true, attributeFilter: ['style', 'class'] });
+
     forceUnlock();
-    const timer = setInterval(forceUnlock, 500);
+    const timer = setInterval(forceUnlock, 1000);
     window.addEventListener('resize', forceUnlock);
 
     return () => {
+      observer.disconnect();
       clearInterval(timer);
       window.removeEventListener('resize', forceUnlock);
     };
