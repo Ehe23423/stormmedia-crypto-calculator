@@ -87,26 +87,50 @@
   animation: solFall 2.5s linear forwards;
 }
 
+@keyframes whaleAlertVanish {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -40%) scale(0.9);
+    filter: blur(10px);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(1.1);
+    filter: blur(10px);
+  }
+}
+
 .whale-alert {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(20, 20, 35, 0.45);
-  backdrop-filter: blur(40px) saturate(150%);
-  -webkit-backdrop-filter: blur(40px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 40px 60px;
-  border-radius: 32px;
+  background: transparent;
+  border: none;
+  padding: 0;
   color: #fff;
   font-family: var(--font-main);
-  font-weight: 800;
-  font-size: 2.5rem;
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  font-size: 4rem;
+  letter-spacing: 0.2em;
   z-index: 10002;
   text-align: center;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  animation: tabFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  text-shadow: 0 0 20px rgba(0, 210, 255, 0.8), 0 0 40px rgba(0, 210, 255, 0.4);
+  animation: whaleAlertVanish 5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 * {
