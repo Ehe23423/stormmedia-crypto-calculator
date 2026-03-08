@@ -32,10 +32,10 @@ const TABS: { id: TabId; emoji: string; labelKey: string; color: string }[] = [
 ];
 
 const PRESET_SCENARIOS = [
-    { key: "vanilla", params: { V: 10_000_000, F: 0.035, P: 50, S: 30, R: 0, I: 0, B: 0, safetyThreshold: 15 } },
-    { key: "trap", params: { V: 20_000_000, F: 0.04, P: 50, S: 30, R: 20000, I: 5000, B: 0, safetyThreshold: 15 } },
-    { key: "hunter", params: { V: 50_000_000, F: 0.04, P: 50, S: 40, R: 0, I: 0, B: 0, safetyThreshold: 15 } },
-    { key: "whale", params: { V: 250_000_000, F: 0.02, P: 50, S: 20, R: 0, I: 0, B: 0, safetyThreshold: 5 } },
+    { key: "conservative", params: { V: 5_000_000, F: 0.1, P: 30, S: 20, R: 0, I: 0, B: 0, safetyThreshold: 20, productType: 'SPOT', exchangeFlavor: 'GENERIC' } },
+    { key: "balanced", params: { V: 15_000_000, F: 0.04, P: 50, S: 30, R: 2000, I: 0, B: 0, safetyThreshold: 15, productType: 'FUTURES', exchangeFlavor: 'BINGX' } },
+    { key: "aggressive", params: { V: 45_000_000, F: 0.035, P: 70, S: 45, R: 5000, I: 2000, B: 200, safetyThreshold: 5, productType: 'FUTURES', exchangeFlavor: 'BINGX' } },
+    { key: "hunter", params: { V: 100_000_000, F: 0.025, P: 60, S: 40, R: 0, I: 0, B: 0, safetyThreshold: 10, productType: 'FUTURES', exchangeFlavor: 'GENERIC' } },
 ];
 
 function Panel({ title, children, tint, noPad }: { title: React.ReactNode; children: React.ReactNode; tint?: string; noPad?: boolean }) {
@@ -59,8 +59,16 @@ export function UnifiedTerminal() {
     const { language, setLanguage, t } = useLanguage();
     const [activeTab, setActiveTab] = useState<TabId>('hunter');
     const [params, setParams] = useState<DealParams>({
-        V: 10_000_000, F: 0.035, P: 50, S: 30,
-        R: 0, I: 0, B: 0, safetyThreshold: 15,
+        V: 10_000_000,
+        F: 0.035,
+        P: 50,
+        S: 30,
+        R: 0,
+        I: 0,
+        B: 0,
+        safetyThreshold: 15,
+        productType: 'FUTURES',
+        exchangeFlavor: 'BINGX'
     });
 
     const metrics = useMemo(() => calculateDealMetrics(params), [params]);

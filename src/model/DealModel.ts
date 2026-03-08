@@ -14,6 +14,8 @@ export interface DealParams {
     I: number;  // Infrastructure/Op Cost (USD)
     B: number;  // Bonus per 1M Volume (USD)
     safetyThreshold: number; // Minimum Margin Buffer %
+    productType: 'SPOT' | 'FUTURES';
+    exchangeFlavor: 'GENERIC' | 'BINGX';
 }
 
 export interface DealResult {
