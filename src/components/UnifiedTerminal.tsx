@@ -111,20 +111,20 @@ export function UnifiedTerminal() {
             }} className="terminal-header">
                 <div className="layout-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', flexWrap: 'wrap', gap: '16px' }}>
                     <div style={{ flex: 1, minWidth: '100%' }} className="header-title-section">
-                        <h1 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, letterSpacing: '0.02em', lineHeight: 1.1 }}>
+                        <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, letterSpacing: '0.02em', lineHeight: 1.1 }}>
                             {t('title').split(' ')[0]} <span style={{
                                 background: 'linear-gradient(90deg, var(--accent-emerald), var(--accent-amber))',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent'
                             }}>{t('title').split(' ').slice(1).join(' ')}</span>
                         </h1>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--accent-amber)', letterSpacing: '0.15em', marginTop: '2px' }}>
+                        <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--accent-amber)', letterSpacing: '0.15em', marginTop: '4px' }}>
                             {t('subtitle')}
                         </div>
-                        <div style={{ fontSize: '0.55rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.2em', marginTop: '4px', textTransform: 'uppercase' }}>
+                        <div style={{ fontSize: '0.55rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.2em', marginTop: '6px', textTransform: 'uppercase' }}>
                             {t('topBar.createdBy')} Szymon & Damian
                         </div>
-                        <div className="header-actions" style={{ display: 'flex', gap: '8px', marginTop: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div className="header-actions" style={{ display: 'flex', gap: '8px', marginTop: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
                             <div style={{ display: 'flex', gap: '4px', background: 'rgba(255,255,255,0.05)', padding: '4px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
                                 <button onClick={() => setLanguage('en')} style={{ background: language === 'en' ? 'rgba(255,255,255,0.15)' : 'transparent', border: 'none', cursor: 'pointer', borderRadius: '4px', padding: '2px 6px', fontSize: '1rem' }} title="English">🇺🇸</button>
                                 <button onClick={() => setLanguage('pl')} style={{ background: language === 'pl' ? 'rgba(255,255,255,0.15)' : 'transparent', border: 'none', cursor: 'pointer', borderRadius: '4px', padding: '2px 6px', fontSize: '1rem' }} title="Polski">🇵🇱</button>

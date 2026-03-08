@@ -6,15 +6,12 @@
   /* Slightly more opaque glass */
 
   --accent-blue: #00d2ff;
-  /* Kinetic Cyan */
-  --accent-purple: #a855f7;
-  --accent-orange: #fbbf24;
+  --accent-purple: #8b5cf6;
+  --accent-amber: #fbbf24;
   --accent-pink: #f472b6;
   --accent-emerald: #10f19b;
-  /* Neon Emerald */
   --accent-rose: #ff4b4b;
-  --accent-amber: #facc15;
-  --accent-cyan: #22d3ee;
+  --accent-cyan: #00e5ff;
 
   --text-primary: #ffffff;
   --text-secondary: #94a3b8;
@@ -65,6 +62,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* MISSION BANNER FIX */
+[style*="MISSION RECOVERY"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.5) !important;
 }
 
 .whale-sprite {
@@ -202,6 +213,8 @@ body {
   padding: 12px;
   transition: var(--transition-fast);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  /* Prevent internal content from leaking */
 }
 
 .bento-item:hover {
@@ -211,12 +224,14 @@ body {
 }
 
 .module-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  /* Standardized small uppercase title */
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   margin-bottom: 12px;
-  opacity: 0.9;
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 /* Streamer Mode Utility */
@@ -300,17 +315,18 @@ body {
   #root,
   .unified-terminal-root {
     height: auto !important;
-    overflow-y: visible !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
     position: relative !important;
     display: block !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   .terminal-header {
-    padding: 80px 16px 20px 16px !important;
+    padding: 100px 16px 20px 16px !important;
+    /* Space for banner */
   }
-
-  /* Space for version banner */
 
   .terminal-content,
   .layout-main-content,
