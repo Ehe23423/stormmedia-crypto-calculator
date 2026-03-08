@@ -6,7 +6,7 @@ import './index.css';
 
 export default function App() {
   useEffect(() => {
-    const DEPLOY_VERSION = "v5.3_FINAL_RECOVERY";
+    const DEPLOY_VERSION = "v5.4_FINAL_RECOVERY";
     console.log(`%c [SYSTEM] ${DEPLOY_VERSION} LOADED`, 'background: #00d2ff; color: #000; font-weight: bold;');
 
     // Add visible marker to UI

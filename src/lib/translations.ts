@@ -145,7 +145,7 @@ export const translations = {
             margin: "Safety buffer after all payouts and costs."
         },
         gloss: {
-            hover: "Hover over values in the terminal for quick definitions."
+            // hover instruction removed
         },
         sim: {
             params: "PARAMETERS",
@@ -348,7 +348,7 @@ export const translations = {
             margin: "Bufor bezpieczeństwa po wszystkich wypłatach i kosztach."
         },
         gloss: {
-            hover: "Najedź na wartości w terminalu, aby zobaczyć szybkie definicje."
+            // hover instruction removed
         },
         sim: {
             params: "PARAMETRY",
@@ -551,7 +551,7 @@ export const translations = {
             margin: "Margen de seguridad después de costos."
         },
         gloss: {
-            hover: "Pase el cursor sobre los valores en el terminal para definiciones rápidas."
+            // hover instruction removed
         },
         sim: {
             params: "PARÁMETROS",
@@ -754,7 +754,7 @@ export const translations = {
             margin: "सभी पेआउट के बाद सुरक्षा बफर।"
         },
         gloss: {
-            hover: "त्वरित आभाषों के लिए टर्मिनल में मानों पर होवर करें।"
+            // hover instruction removed
         },
         sim: {
             params: "पैरामीटर",

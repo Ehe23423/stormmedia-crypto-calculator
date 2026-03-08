@@ -90,7 +90,7 @@ export function UnifiedTerminal() {
         <div className="unified-terminal-root">
             {/* MASSIVE VERSION BANNER FOR VERIFICATION */}
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#ff0000', color: '#fff', fontSize: '10px', textAlign: 'center', zIndex: 99999, fontWeight: 900, pointerEvents: 'none', padding: '2px' }}>
-                MISSION RECOVERY v5.3 - SYSTEM ACTIVE
+                MISSION RECOVERY v5.4 - SYSTEM ACTIVE
             </div>
             <WhaleEffect volume={params.V} />
             {RainComponent}
@@ -365,7 +365,7 @@ export function UnifiedTerminal() {
                         )}
 
                         <div style={{ marginTop: '20px', paddingBottom: '20px', textAlign: 'center', color: 'rgba(255,255,255,1)', fontSize: '0.8rem', fontWeight: 900, letterSpacing: '0.2em', textTransform: 'uppercase', background: 'rgba(255,0,0,0.1)', padding: '10px' }}>
-                            MISSION RECOVERY v5.3 · PRO CLEAN · NO GITARA · {tab.emoji} {tab.label.toUpperCase()}
+                            MISSION RECOVERY v5.4 · PRO CLEAN · NO GITARA · {tab.emoji} {tab.label.toUpperCase()}
                         </div>
                     </div>
                 </div>
