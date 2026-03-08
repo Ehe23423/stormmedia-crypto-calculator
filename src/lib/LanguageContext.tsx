@@ -6,7 +6,7 @@ import type { Language } from './translations';
 interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => void;
-    t: (path: string) => string;
+    t: (path: string, params?: Record<string, any>) => any;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -24,7 +24,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
 
     // Helper to get nested translation strings (e.g. t('tabs.HUNTER'))
-    const t = (path: string): string => {
+    const t = (path: string, params?: Record<string, any>): any => {
         const keys = path.split('.');
         let current: any = translations[language];
 
@@ -37,10 +37,20 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
                     if (fallback[fbKey] === undefined) return path; // Return path if totally missing
                     fallback = fallback[fbKey];
                 }
-                return fallback;
+                current = fallback;
+                break;
             }
             current = current[key];
         }
+
+        if (typeof current === 'string' && params) {
+            let res = current;
+            Object.entries(params).forEach(([k, v]) => {
+                res = res.replace(`{${k}}`, String(v));
+            });
+            return res;
+        }
+
         return current;
     };
 

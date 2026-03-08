@@ -14,7 +14,7 @@ interface RoastLine {
     severity: 'critical' | 'warning' | 'ok' | 'chad';
 }
 
-function generateRoastLines(params: DealParams, metrics: DealResult, score: number, t: (k: string, p?: any) => string): RoastLine[] {
+function generateRoastLines(params: DealParams, metrics: DealResult, score: number, t: (k: string, p?: any) => any): RoastLine[] {
     const lines: RoastLine[] = [];
 
     // Sub-split
@@ -96,15 +96,15 @@ function generateRoastLines(params: DealParams, metrics: DealResult, score: numb
     return lines.slice(0, 7); // max 7 roast lines
 }
 
-export const DealRoast: React.FC<Props> = ({ params, metrics, dealScore }) => {
+export const DealRoast: React.FC<Props> = ({ params, metrics, dealScore }: Props) => {
     const { t } = useLanguage();
     const [showTips, setShowTips] = useState(false);
 
     const getRoastTier = (score: number) => {
-        if (score >= 80) return { emoji: '🚀', color: '#10b981', bg: 'rgba(16,185,129,0.08)', ...t('roastTiers.chad') };
-        if (score >= 60) return { emoji: '🤔', color: '#60a5fa', bg: 'rgba(96,165,250,0.08)', ...t('roastTiers.ser') };
-        if (score >= 40) return { emoji: '😬', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', ...t('roastTiers.cope') };
-        return { emoji: '💀', color: '#ef4444', bg: 'rgba(239,68,68,0.08)', ...t('roastTiers.ngmi') };
+        if (score >= 80) return { emoji: '🚀', color: '#10b981', bg: 'rgba(16,185,129,0.08)', ...(t('roastTiers.chad') as any) };
+        if (score >= 60) return { emoji: '🤔', color: '#60a5fa', bg: 'rgba(96,165,250,0.08)', ...(t('roastTiers.ser') as any) };
+        if (score >= 40) return { emoji: '😬', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', ...(t('roastTiers.cope') as any) };
+        return { emoji: '💀', color: '#ef4444', bg: 'rgba(239,68,68,0.08)', ...(t('roastTiers.ngmi') as any) };
     };
 
     const tier = getRoastTier(dealScore) as any;
@@ -141,7 +141,7 @@ export const DealRoast: React.FC<Props> = ({ params, metrics, dealScore }) => {
                 </div>
                 <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     <span style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '4px 14px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
-                        {t('topBar.score').replace('{val}', dealScore)}
+                        {t('topBar.score').replace('{val}', String(dealScore))}
                     </span>
                     <span
                         title={t('tooltips.V')}
@@ -186,7 +186,7 @@ export const DealRoast: React.FC<Props> = ({ params, metrics, dealScore }) => {
             {/* NEGOTIATION TIPS TOGGLE */}
             <div>
                 <button
-                    onClick={() => setShowTips(v => !v)}
+                    onClick={() => setShowTips((v: boolean) => !v)}
                     style={{
                         width: '100%',
                         padding: '10px 20px',
