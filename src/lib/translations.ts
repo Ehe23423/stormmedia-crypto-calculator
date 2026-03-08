@@ -205,6 +205,9 @@ export const translations = {
             urlCopied: "App URL copied to clipboard!"
         },
         scenarios: {
+            conservative: "Conservative Setup",
+            balanced: "Balanced Growth",
+            aggressive: "High Upside Aggressive",
             vanilla: "Vanilla Agency",
             trap: "High Rebate Trap",
             hunter: "Aggressive Hunter",
@@ -291,6 +294,30 @@ export const translations = {
             copied: "📋 {val} copied to clipboard!",
             summary: "Executive Summary",
             proposal: "Proposal"
+        },
+        warnLabels: {
+            retainer: "RETAINER RISK",
+            breakEven: "BREAK-EVEN RISK",
+            share: "SHARE LIMIT",
+            margin: "SAFETY VIOLATION",
+            fee: "FEE COMPRESSION",
+            marginCollapse: "MARGIN COLLAPSE",
+            hunter: "HUNTER DETECTED",
+            bonusStacking: "BONUS STACKING",
+            doubleCost: "DOUBLE COST STRUCTURE"
+        },
+        warn: {
+            title: "Structural Warnings",
+            highRetainer: "Retainer is higher than net profit. Critical exposure.",
+            beExtreme: "Break-even at ${val}M is extremely high for this fee tier.",
+            shareCeil: "Partner share is above 70%. Very low retention for exchange.",
+            marginSafety: "Margin buffer ({val}%) is below your safety threshold ({thresh}%).",
+            feeComp: "Fee tier is dangerously low. Margin will evaporate with any discount.",
+            marginCollapseText: "Retaining only ${val} per $1M volume. High risk of operational loss.",
+            hunterText: "High volume profile detected. Ensure API limits and depth are confirmed.",
+            bonusStackingText: "Bonus represents {val}% of gross fees. Stacking risk at scale.",
+            doubleCostText: "Combination of high retainer and 40%+ share is structurally unstable.",
+            noRisk: "No structural risks detected in current model."
         }
     },
     pl: {
@@ -499,9 +526,12 @@ export const translations = {
             urlCopied: "Link do aplikacji skopiowany!"
         },
         scenarios: {
+            conservative: "Konserwatywny",
+            balanced: "Zrównoważony",
+            aggressive: "Agresywny",
             vanilla: "Standardowa Agencja",
-            trap: "Pułapka Rabatu",
-            hunter: "Agresywny Łowca",
+            trap: "Pułapka Wysokiego Rebatu",
+            hunter: "Agresywny Hunter",
             whale: "Klient Wieloryb (M-Tier)"
         },
         scoreLabels: {
@@ -583,8 +613,32 @@ export const translations = {
         },
         common: {
             copied: "📋 {val} skopiowane do schowka!",
-            summary: "Podsumowanie Wykonawcze",
+            summary: "Podsumowanie",
             proposal: "Propozycja"
+        },
+        warnLabels: {
+            retainer: "RYZYKO RETAINERA",
+            breakEven: "RYZYKO BE",
+            share: "LIMIT UDZIAŁÓW",
+            margin: "NARUSZENIE BEZPIECZEŃSTWA",
+            fee: "KOMPRESJA OPŁAT",
+            marginCollapse: "ZAPAŚĆ MARŻY",
+            hunter: "WYKRYTO HUNTERA",
+            bonusStacking: "KUMULACJA BONUSÓW",
+            doubleCost: "PODWÓJNA STRUKTURA KOSZTÓW"
+        },
+        warn: {
+            title: "Ostrzeżenia Strukturalne",
+            highRetainer: "Retainer przewyższa zysk netto. Krytyczna ekspozycja.",
+            beExtreme: "Punkt rentowności na poziomie ${val}M jest ekstremalnie wysoki.",
+            shareCeil: "Udział partnera powyżej 70%. Bardzo niska retencja dla giełdy.",
+            marginSafety: "Bufor marży ({val}%) jest poniżej progu bezpieczeństwa ({thresh}%).",
+            feeComp: "Poziom opłat jest niebezpiecznie niski. Marża wyparuje przy jakimkolwiek rabacie.",
+            marginCollapseText: "Zatrzymujesz tylko ${val} na każde $1M obrotu. Wysokie ryzyko straty operacyjnej.",
+            hunterText: "Wykryto profil wysokonakładowy. Potwierdź limity API.",
+            bonusStackingText: "Bonus stanowi {val}% opłat brutto. Ryzyko kumulacji przy skali.",
+            doubleCostText: "Struktura wysokiego retainera i 40%+ udziałów jest niestabilna.",
+            noRisk: "Nie wykryto ryzyk strukturalnych."
         }
     },
     es: {
