@@ -81,7 +81,7 @@ export function UnifiedTerminal() {
     }, [params, metrics]);
 
     const updateParam = (key: keyof DealParams, val: number | string) =>
-        setParams(prev => ({ ...prev, [key]: val }));
+        setParams((prev: DealParams) => ({ ...prev, [key]: val }));
 
     const sColor = metrics.status === 'SAFE' ? '#10b981' : metrics.status === 'WARNING' ? '#f59e0b' : '#ef4444';
     const tab = TABS.find(t => t.id === activeTab)!;
@@ -259,7 +259,7 @@ export function UnifiedTerminal() {
                                     ].map(temp => (
                                         <button
                                             key={temp.key}
-                                            onClick={() => setParams(prev => ({ ...prev, ...temp.params }))}
+                                            onClick={() => setParams((prev: DealParams) => ({ ...prev, ...temp.params }))}
                                             className="storm-btn"
                                             style={{
                                                 width: '100%', justifyContent: 'flex-start', padding: '10px 14px',
