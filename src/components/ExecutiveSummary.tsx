@@ -37,7 +37,7 @@ ${t('exec.summaryText').replace('{pool}', formatUSD(metrics.partnerPool))}
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(generateReport());
-        alert('📋 Executive Summary copied to clipboard!');
+        alert(t('topBar.urlCopied'));
     };
 
     return (

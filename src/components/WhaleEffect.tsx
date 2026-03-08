@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../lib/LanguageContext';
 
 export function WhaleEffect({ volume }: { volume: number }) {
+    const { t } = useLanguage();
     const [showAlert, setShowAlert] = useState(false);
     const [hasPlayed, setHasPlayed] = useState(false);
 
@@ -9,7 +11,6 @@ export function WhaleEffect({ volume }: { volume: number }) {
         const RESET_VOL = 90_000_000; // Drop to 90M to reset
 
         if (volume >= TRIGGER_VOL && !hasPlayed) {
-            console.log("WHALE TRIGGERED");
             setShowAlert(true);
             setHasPlayed(true);
 
@@ -23,16 +24,13 @@ export function WhaleEffect({ volume }: { volume: number }) {
         }
     }, [volume, hasPlayed]);
 
-
-    if (volume < 100_000_000 && !showAlert) return null;
+    if (!showAlert) return null;
 
     return (
         <>
-            {showAlert && (
-                <div className="whale-alert">
-                    WHALE DETECTED
-                </div>
-            )}
+            <div className="whale-alert">
+                {t('whale.alert')}
+            </div>
             <div className="whale-overlay">
                 <div className="whale-sprite">🐳</div>
             </div>

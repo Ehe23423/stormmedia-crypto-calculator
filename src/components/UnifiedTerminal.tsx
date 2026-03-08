@@ -23,19 +23,19 @@ import { useLanguage } from '../lib/LanguageContext';
 
 type TabId = 'hunter' | 'agency' | 'roast' | 'streamer' | 'trader';
 
-const TABS: { id: TabId; emoji: string; label: string; color: string }[] = [
-    { id: 'hunter', emoji: '🎯', label: 'HUNTER', color: '#10b981' },
-    { id: 'agency', emoji: '🏢', label: 'AGENCY', color: '#60a5fa' },
-    { id: 'streamer', emoji: '📺', label: 'STREAMER', color: '#ec4899' },
-    { id: 'trader', emoji: '📈', label: 'TRADER', color: '#a855f7' },
-    { id: 'roast', emoji: '🔥', label: 'ROAST', color: '#f97316' },
+const TABS: { id: TabId; emoji: string; labelKey: string; color: string }[] = [
+    { id: 'hunter', emoji: '🎯', labelKey: 'tabs.HUNTER', color: '#10b981' },
+    { id: 'agency', emoji: '🏢', labelKey: 'tabs.AGENCY', color: '#60a5fa' },
+    { id: 'streamer', emoji: '📺', labelKey: 'tabs.STREAMER', color: '#ec4899' },
+    { id: 'trader', emoji: '📈', labelKey: 'tabs.TRADER', color: '#a855f7' },
+    { id: 'roast', emoji: '🔥', labelKey: 'tabs.ROAST', color: '#f97316' },
 ];
 
 const PRESET_SCENARIOS = [
-    { label: "Vanilla Agency", params: { V: 10_000_000, F: 0.035, P: 50, S: 30, R: 0, I: 0, B: 0, safetyThreshold: 15 } },
-    { label: "High Rebate Trap", params: { V: 20_000_000, F: 0.04, P: 50, S: 30, R: 20000, I: 5000, B: 0, safetyThreshold: 15 } },
-    { label: "Aggressive Hunter", params: { V: 50_000_000, F: 0.04, P: 50, S: 40, R: 0, I: 0, B: 0, safetyThreshold: 15 } },
-    { label: "Whale Client (M-Tier)", params: { V: 250_000_000, F: 0.02, P: 50, S: 20, R: 0, I: 0, B: 0, safetyThreshold: 5 } },
+    { key: "vanilla", params: { V: 10_000_000, F: 0.035, P: 50, S: 30, R: 0, I: 0, B: 0, safetyThreshold: 15 } },
+    { key: "trap", params: { V: 20_000_000, F: 0.04, P: 50, S: 30, R: 20000, I: 5000, B: 0, safetyThreshold: 15 } },
+    { key: "hunter", params: { V: 50_000_000, F: 0.04, P: 50, S: 40, R: 0, I: 0, B: 0, safetyThreshold: 15 } },
+    { key: "whale", params: { V: 250_000_000, F: 0.02, P: 50, S: 20, R: 0, I: 0, B: 0, safetyThreshold: 5 } },
 ];
 
 function Panel({ title, children, tint, noPad }: { title: React.ReactNode; children: React.ReactNode; tint?: string; noPad?: boolean }) {
@@ -80,7 +80,7 @@ export function UnifiedTerminal() {
         return Math.min(100, Math.round(mS + tS + rS + bS + fS + 10));
     }, [params, metrics]);
 
-    const updateParam = (key: keyof DealParams, val: any) =>
+    const updateParam = (key: keyof DealParams, val: number | string) =>
         setParams(prev => ({ ...prev, [key]: val }));
 
     const sColor = metrics.status === 'SAFE' ? '#10b981' : metrics.status === 'WARNING' ? '#f59e0b' : '#ef4444';
@@ -89,8 +89,8 @@ export function UnifiedTerminal() {
     return (
         <div className="unified-terminal-root">
             {/* MASSIVE VERSION BANNER FOR VERIFICATION */}
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#ff0000', color: '#fff', fontSize: '10px', textAlign: 'center', zIndex: 99999, fontWeight: 900, pointerEvents: 'none', padding: '2px' }}>
-                MISSION RECOVERY v5.4 - SYSTEM ACTIVE
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: '#ff453a', color: '#fff', fontSize: '10px', textAlign: 'center', zIndex: 99999, fontWeight: 900, pointerEvents: 'none', padding: '2px' }}>
+                {t('topBar.version')}
             </div>
             <WhaleEffect volume={params.V} />
             {RainComponent}
@@ -132,10 +132,10 @@ export function UnifiedTerminal() {
                                 <button onClick={() => setLanguage('es')} style={{ background: language === 'es' ? 'rgba(255,255,255,0.15)' : 'transparent', border: 'none', cursor: 'pointer', borderRadius: '4px', padding: '2px 6px', fontSize: '1rem' }} title="Español">🇪🇸</button>
                             </div>
                             <div style={{ display: 'flex', gap: '8px' }}>
-                                <a href="https://t.me/ostryopos" target="_blank" rel="noreferrer" className="storm-btn" style={{ fontSize: '0.7rem', fontWeight: 800, padding: '6px 16px', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', borderColor: 'rgba(56, 189, 248, 0.3)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', borderRadius: '8px' }}>
-                                    ✈️ DM @ostryopos
+                                <a href="https://t.me/ostryopos" target="_blank" rel="noreferrer" className="storm-btn" style={{ fontSize: '0.7rem', fontWeight: 800, padding: '6px 16px', color: '#38bdf8', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', borderRadius: '8px' }}>
+                                    {t('topBar.contact')}
                                 </a>
-                                <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert('App URL copied to clipboard!'); }} className="storm-btn" style={{ fontSize: '0.7rem', fontWeight: 800, padding: '6px 16px', background: 'rgba(255, 255, 255, 0.08)', color: 'white', borderColor: 'rgba(255, 255, 255, 0.15)', display: 'flex', alignItems: 'center', gap: '6px', borderRadius: '8px' }}>
+                                <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert(t('topBar.urlCopied')); }} className="storm-btn" style={{ fontSize: '0.7rem', fontWeight: 800, padding: '6px 16px', color: 'white', display: 'flex', alignItems: 'center', gap: '6px', borderRadius: '8px' }}>
                                     🔗 {t('shareSetup')}
                                 </button>
                             </div>
@@ -143,7 +143,7 @@ export function UnifiedTerminal() {
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', width: '100%' }} className="header-controls">
                         <select
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                 if (e.target.value) setParams(PRESET_SCENARIOS[parseInt(e.target.value)].params);
                             }}
                             defaultValue=""
@@ -152,14 +152,14 @@ export function UnifiedTerminal() {
                         >
                             <option value="" disabled>{t('topBar.loadParams')}</option>
                             {PRESET_SCENARIOS.map((s, i) => (
-                                <option key={i} value={i} style={{ background: '#1e1e22' }}>{s.label}</option>
+                                <option key={i} value={i} style={{ background: '#1e1e22' }}>{t(`scenarios.${s.key}`)}</option>
                             ))}
                         </select>
 
                         <div style={{ display: 'flex', gap: '2px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', overflow: 'hidden' }}>
                             <select
                                 value={selectedRainCoin}
-                                onChange={(e) => setSelectedRainCoin(e.target.value as CoinType)}
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedRainCoin(e.target.value as CoinType)}
                                 className="storm-btn"
                                 style={{
                                     fontSize: '0.65rem', padding: '0 8px', height: '28px',
@@ -194,8 +194,8 @@ export function UnifiedTerminal() {
                             { label: t(`panels.scoreDesc.${metrics.status === 'BLOCKED' ? 'blocked' : metrics.status === 'SAFE' ? 'safe' : metrics.status === 'WARNING' ? 'warn' : 'crit'}`), color: sColor, glow: sColor },
                             { label: t('topBar.score').replace('{val}', dealScore.toString()), color: 'var(--accent-amber)', glow: 'var(--accent-amber)' },
                             { label: `V $${(params.V / 1e6).toFixed(1)}M`, color: 'var(--accent-blue)', glow: 'var(--accent-blue)' },
-                        ].map(chip => (
-                            <div key={chip.label} style={{
+                        ].map((chip, idx) => (
+                            <div key={idx} style={{
                                 background: 'rgba(255,255,255,0.03)',
                                 padding: '4px 12px',
                                 fontSize: '0.7rem',
@@ -227,15 +227,15 @@ export function UnifiedTerminal() {
                 flexWrap: 'wrap'
             }}>
                 <span style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.15em', color: 'rgba(255, 255, 255, 0.5)', textTransform: 'uppercase', marginRight: '8px' }}>{t('tabs.MODE')}</span>
-                {TABS.map(t => (
+                {TABS.map(tTab => (
                     <button
-                        key={t.id}
-                        onClick={() => setActiveTab(t.id)}
-                        className={`storm-btn ${activeTab === t.id ? 'active' : ''}`}
-                        data-variant={t.id}
+                        key={tTab.id}
+                        onClick={() => setActiveTab(tTab.id)}
+                        className={`storm-btn ${activeTab === tTab.id ? 'active' : ''}`}
+                        data-variant={tTab.id}
                         style={{ padding: '8px 16px', fontSize: '0.7rem' }}
                     >
-                        {t.emoji} {t.label}
+                        {tTab.emoji} {t(tTab.labelKey)}
                     </button>
                 ))}
             </div>
@@ -253,20 +253,20 @@ export function UnifiedTerminal() {
                             <Panel title={`📑 ${t('panels.templates')}`} noPad>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                     {[
-                                        { name: '🛡️ Conservative', params: { V: 5000000, F: 0.035, P: 40, S: 30, R: 0, I: 0, B: 0 } },
-                                        { name: '⚖️ Balanced', params: { V: 15000000, F: 0.035, P: 50, S: 37, R: 1200, I: 500, B: 50 } },
-                                        { name: '🔥 Aggressive', params: { V: 30000000, F: 0.035, P: 60, S: 45, R: 1800, I: 800, B: 100 } },
-                                    ].map(t => (
+                                        { key: 'conservative', emoji: '🛡️', params: { V: 5000000, F: 0.035, P: 40, S: 30, R: 0, I: 0, B: 0 } },
+                                        { key: 'balanced', emoji: '⚖️', params: { V: 15000000, F: 0.035, P: 50, S: 37, R: 1200, I: 500, B: 50 } },
+                                        { key: 'aggressive', emoji: '🔥', params: { V: 30000000, F: 0.035, P: 60, S: 45, R: 1800, I: 800, B: 100 } },
+                                    ].map(temp => (
                                         <button
-                                            key={t.name}
-                                            onClick={() => setParams(prev => ({ ...prev, ...t.params }))}
+                                            key={temp.key}
+                                            onClick={() => setParams(prev => ({ ...prev, ...temp.params }))}
                                             className="storm-btn"
                                             style={{
                                                 width: '100%', justifyContent: 'flex-start', padding: '10px 14px',
                                                 fontSize: '0.7rem', background: 'rgba(255,255,255,0.03)'
                                             }}
                                         >
-                                            {t.name}
+                                            {temp.emoji} {t(`scenarios.${temp.key}`)}
                                         </button>
                                     ))}
                                 </div>
@@ -304,7 +304,7 @@ export function UnifiedTerminal() {
                                 <Panel title={`📈 ${t('panels.projections')}`}>
                                     <MinimalCharts params={params} />
                                 </Panel>
-                                <Panel title="⛈️ Stress Tests" tint="danger">
+                                <Panel title={`⛈️ ${t('stress.title')}`} tint="danger">
                                     <StressTests baseParams={params} />
                                 </Panel>
                                 <Panel title={`🌡️ ${t('panels.heatmap')}`}>
@@ -358,14 +358,14 @@ export function UnifiedTerminal() {
                                         <StructuralWarnings params={params} metrics={metrics} />
                                     </Panel>
                                 </div>
-                                <Panel title="⛈️ Stress Tests — is your deal cooked?" tint="danger">
+                                <Panel title={`⛈️ ${t('stress.title')} — is your deal cooked?`} tint="danger">
                                     <StressTests baseParams={params} />
                                 </Panel>
                             </div>
                         )}
 
-                        <div style={{ marginTop: '20px', paddingBottom: '20px', textAlign: 'center', color: 'rgba(255,255,255,1)', fontSize: '0.8rem', fontWeight: 900, letterSpacing: '0.2em', textTransform: 'uppercase', background: 'rgba(255,0,0,0.1)', padding: '10px' }}>
-                            MISSION RECOVERY v5.4 · PRO CLEAN · NO GITARA · {tab.emoji} {tab.label.toUpperCase()}
+                        <div style={{ marginTop: '20px', paddingBottom: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '10px' }}>
+                            {t('topBar.version')} · PRO CLEAN · {tab.emoji} {t(tab.labelKey)}
                         </div>
                     </div>
                 </div>

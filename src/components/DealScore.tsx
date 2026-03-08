@@ -1,3 +1,4 @@
+import { useLanguage } from '../lib/LanguageContext';
 import type { DealParams, DealResult } from '../model/DealModel';
 import { calculateDealMetrics } from '../model/DealModel';
 
@@ -7,14 +8,13 @@ interface Props {
 }
 
 interface ScoreComponent {
-    label: string;
+    key: string;
     score: number;
     max: number;
 }
 
 function computeScoreComponents(params: DealParams, metrics: DealResult): ScoreComponent[] {
-    // 1. Margin buffer: 25 pts
-    // Full points if Margin >= Threshold + 15
+    // ... (logic remains same, just changed label to key)
     const marginPct = metrics.marginBuffer * 100;
     const thresh = params.safetyThreshold;
     let marginScore: number;
@@ -22,15 +22,11 @@ function computeScoreComponents(params: DealParams, metrics: DealResult): ScoreC
     if (marginPct >= thresh + 15) {
         marginScore = 25;
     } else if (marginPct >= thresh) {
-        // Linear scale between thresh and thresh+15
         marginScore = ((marginPct - thresh) / 15) * 25;
     } else {
-        // Proportional score for being below threshold (dangerous)
         marginScore = Math.max(0, (marginPct / thresh) * 10);
     }
 
-    // 2. Tier protection: 15 pts
-    // S < 40% = full 15, 40-50% = proportional, >50% = 0
     const subSplitPct = params.S;
     let tierScore: number;
     if (subSplitPct < 40) {
@@ -41,8 +37,6 @@ function computeScoreComponents(params: DealParams, metrics: DealResult): ScoreC
         tierScore = 0;
     }
 
-    // 3. Retainer safety: 15 pts
-    // R < netProfit * 0.45 = full 15, proportional otherwise, R > netProfit = 0
     const retainer = params.R;
     const netProfit = metrics.netProfit;
     let retainerScore: number;
@@ -61,9 +55,6 @@ function computeScoreComponents(params: DealParams, metrics: DealResult): ScoreC
         }
     }
 
-    // 4. Bonus containment: 15 pts
-    // Bonus equivalent = (B / 350) * 100 as a percentage
-    // < 15% = full 15, proportional to 30%, >30% = 0
     const bonusEquivalentPct = (params.B / 350) * 100;
     let bonusScore: number;
     if (bonusEquivalentPct < 15) {
@@ -74,8 +65,6 @@ function computeScoreComponents(params: DealParams, metrics: DealResult): ScoreC
         bonusScore = 0;
     }
 
-    // 5. Fee compression resilience: 15 pts
-    // Simulate at 0.028% fee — if still profitable = 15, break-even = 7, loss = 0
     const stressParams: DealParams = { ...params, F: 0.028 };
     const stressMetrics = calculateDealMetrics(stressParams);
     let feeScore: number;
@@ -87,21 +76,20 @@ function computeScoreComponents(params: DealParams, metrics: DealResult): ScoreC
         feeScore = 0;
     }
 
-    // 6. Portfolio correlation risk: 15 pts
-    // Fixed 10pts — single deal, no portfolio data available
     const portfolioScore = 10;
 
     return [
-        { label: 'Margin Buffer', score: marginScore, max: 25 },
-        { label: 'Tier Protection', score: tierScore, max: 15 },
-        { label: 'Retainer Safety', score: retainerScore, max: 15 },
-        { label: 'Bonus Containment', score: bonusScore, max: 15 },
-        { label: 'Fee Compression', score: feeScore, max: 15 },
-        { label: 'Portfolio Risk', score: portfolioScore, max: 15 },
+        { key: 'scoreLabels.margin', score: marginScore, max: 25 },
+        { key: 'scoreLabels.tier', score: tierScore, max: 15 },
+        { key: 'scoreLabels.retainer', score: retainerScore, max: 15 },
+        { key: 'scoreLabels.bonus', score: bonusScore, max: 15 },
+        { key: 'scoreLabels.fee', score: feeScore, max: 15 },
+        { key: 'scoreLabels.portfolio', score: portfolioScore, max: 15 },
     ];
 }
 
 export function DealScore({ params, metrics }: Props) {
+    const { t } = useLanguage();
     const components = computeScoreComponents(params, metrics);
     const scoreValue = Math.round(components.reduce((sum, c) => sum + c.score, 0));
 
@@ -116,11 +104,11 @@ export function DealScore({ params, metrics }: Props) {
     };
 
     const getScoreDescription = () => {
-        if (metrics.status === 'BLOCKED') return 'VIOLATION: Margin below safety threshold.';
-        if (metrics.status === 'SAFE') return 'OPTIMAL: Strong margin buffer, scalable structure.';
-        if (metrics.status === 'WARNING') return 'SUB-OPTIMAL: Respectable, but vulnerable to volume dips.';
-        if (metrics.status === 'CRITICAL') return 'DANGEROUS: Margin collapse imminent. Renegotiate.';
-        return 'CALCULATING...';
+        if (metrics.status === 'BLOCKED') return t('scoreDesc.blocked');
+        if (metrics.status === 'SAFE') return t('scoreDesc.safe');
+        if (metrics.status === 'WARNING') return t('scoreDesc.warn');
+        if (metrics.status === 'CRITICAL') return t('scoreDesc.crit');
+        return t('scoreDesc.calculating');
     };
 
     const statusColor = getStatusColor();
@@ -145,7 +133,7 @@ export function DealScore({ params, metrics }: Props) {
                     letterSpacing: '0.15em',
                     marginTop: '4px'
                 }}>
-                    {metrics.status} STATUS
+                    {t('scoreLabels.status').replace('{status}', metrics.status)}
                 </div>
             </div>
 
@@ -177,7 +165,7 @@ export function DealScore({ params, metrics }: Props) {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px' }}>
                 {components.map((c) => (
-                    <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div key={c.key} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{
                             fontSize: '0.65rem',
                             color: 'var(--text-secondary)',
@@ -186,7 +174,7 @@ export function DealScore({ params, metrics }: Props) {
                             width: '120px',
                             flexShrink: 0
                         }}>
-                            {c.label}
+                            {t(c.key)}
                         </span>
                         <div style={{
                             flex: 1,

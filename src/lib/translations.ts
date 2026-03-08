@@ -11,11 +11,11 @@ export const translations = {
             BD_OS: "BD OS",
             KNOWLEDGE: "Knowledge Base",
             ARCHITECT: "Architect",
-            HUNTER: "Hunter Panel",
-            PITCH: "Pitch Mode",
-            AGENCY: "Agency Ops",
-            SAVES: "Library",
-            ADMIN: "Admin Console",
+            HUNTER: "HUNTER",
+            AGENCY: "AGENCY",
+            STREAMER: "STREAMER",
+            TRADER: "TRADER",
+            ROAST: "ROAST",
             MODE: "MODE"
         },
         variables: {
@@ -199,7 +199,98 @@ export const translations = {
             createdBy: "Created by",
             loadParams: "⚡ LOAD SCENARIO",
             rain: "🌧️ MAKE IT RAIN {coin}",
-            score: "Score {val}/100"
+            score: "Score {val}/100",
+            version: "MISSION RECOVERY v5.5 - SYSTEM ACTIVE",
+            contact: "✈️ DM @ostryopos",
+            urlCopied: "App URL copied to clipboard!"
+        },
+        scenarios: {
+            vanilla: "Vanilla Agency",
+            trap: "High Rebate Trap",
+            hunter: "Aggressive Hunter",
+            whale: "Whale Client (M-Tier)"
+        },
+        scoreLabels: {
+            margin: "Margin Buffer",
+            tier: "Tier Protection",
+            retainer: "Retainer Safety",
+            bonus: "Bonus Containment",
+            fee: "Fee Compression",
+            portfolio: "Portfolio Risk",
+            status: "{status} STATUS"
+        },
+        scoreDesc: {
+            blocked: "VIOLATION: Margin below safety threshold.",
+            safe: "OPTIMAL: Strong margin buffer, scalable structure.",
+            warn: "SUB-OPTIMAL: Respectable, but vulnerable to volume dips.",
+            crit: "DANGEROUS: Margin collapse imminent. Renegotiate.",
+            calculating: "CALCULATING..."
+        },
+        roast: {
+            title: "🔥 The Roast",
+            subSplitCrit: "Sub-split at {val}%? Bro literally donated the exchange to the KOL. GM ser 🫡",
+            subSplitWarn: "{val}% sub-split and you're still okay with this? Bold strategy cotton.",
+            subSplitChad: "Sub-split at {val}%? Based. The exchange keeps its lunch money.",
+            retainerCrit: "Retainer (${val}) is bigger than net profit. Sir this is a charity.",
+            retainerWarn: "Retainer eating 70%+ of profit. One bad month and you're ngmi.",
+            retainerDegen: "Zero retainer. High-risk high-reward. Very degen. Very BD.",
+            netCrit: "Negative net profit ({val}). This deal is literally burning money. WAGMI? No.",
+            netChad: "{val} net/month. This deal is sending. Degen approved.",
+            marginCrit: "Margin buffer at {val}%? One volume dip and you're eating Mcdonalds.",
+            marginChad: "{val}% margin buffer. Diamond hands deal structure. Respect.",
+            bonusCrit: "Bonus stacking at {val}% equivalent. One good month ruins the model. Classic bonus trap.",
+            bonusWarn: "Bonus equivalent at {val}%. Getting spicy. Watch the stack.",
+            bonusOk: "Bonus equivalent {val}% — contained and based. Good boy.",
+            volWarn: "${val}M volume? Even my grandma trades more.",
+            volChad: "${val}M volume — HUNTER TIER. This KOL is built different.",
+            partnerCrit: "{val}% partner share? You're basically the KOL's employee at this point.",
+            partnerOk: "{val}% partner share? Exchange-maxi energy. Frugal and disciplined.",
+            retainedCrit: "Only ${val} retained per $1M volume. This is margin collapse territory. RIP.",
+            scoreChad: "Deal score {val}/100. Chad structure. Screenshot this. Show your boss.",
+            scoreOk: "Score {val}/100. Workable. Don't celebrate yet. Run stress tests.",
+            scoreWarn: "Score {val}/100. COPE tier. This deal is one bad month from disaster.",
+            scoreCrit: "Score {val}/100. NGMI. Anon this deal is structurally cursed. Renegotiate everything."
+        },
+        roastTiers: {
+            chad: { label: "CHAD DEAL", desc: "Sir this deal is built." },
+            ser: { label: "SER", desc: "Technically passable. Barely." },
+            cope: { label: "COPE", desc: "We are so back? No. We are not." },
+            ngmi: { label: "NGMI", desc: "This deal is structurally cooked." }
+        },
+        roastNegotiation: {
+            title: "🎯 Negotiation Rulebook",
+            move1: { title: "Adjust retainer structure", detail: "Split R into milestone tranches (launch / 25M / 40M). Reduces upfront exposure." },
+            move2: { title: "Use tiered sub-split", detail: "0–20M → 30%, 20–35M → 40%, 35M+ → 50%. Align KOL incentives with volume." },
+            move3: { title: "Replace bonus with tier upgrade", detail: "Bonus stacking is a trap. Offer tier promotion instead — less linear risk." },
+            move4: { title: "Only then raise S", detail: "S increase is last resort. Every 10% in S needs ~20% more volume to compensate." }
+        },
+        roastOptimizer: {
+            title: "🤖 Auto-Optimizer Suggestions",
+            reduceS: "Reduce sub-split S from {val1}% to {val2}% to increase margin buffer by ~{val3}%",
+            replaceB: "Replace bonus $B={val1}/1M with tier upgrade at {val2}M volume milestone",
+            splitR: "Split retainer $R={val1} into milestones: launch (40%) + 25M (35%) + 40M (25%)",
+            reduceP: "Negotiate partner share P down from {val1}% to {val2}%",
+            perfect: "✅ Parameters are reasonable. Focus on volume growth to improve score."
+        },
+        charts: {
+            efficiency: "💎 Margin Efficiency",
+            yield: "Net Yield on Gross Volume",
+            retained: "Retained",
+            partner: "Partner",
+            totalFees: "Total Fees",
+            volLabel: "{val}M VOL"
+        },
+        ticker: {
+            live: "⚡ EXCHANGE LIVE",
+            demo: "DEMO"
+        },
+        whale: {
+            detected: "WHALE DETECTED"
+        },
+        common: {
+            copied: "📋 {val} copied to clipboard!",
+            summary: "Executive Summary",
+            proposal: "Proposal"
         }
     },
     pl: {
@@ -214,11 +305,11 @@ export const translations = {
             BD_OS: "BD OS",
             KNOWLEDGE: "Baza Wiedzy",
             ARCHITECT: "Architekt",
-            HUNTER: "Panel Huntera",
-            PITCH: "Tryb Pitch",
-            AGENCY: "Operacje Agencyjne",
-            SAVES: "Biblioteka",
-            ADMIN: "Konsola Admina",
+            HUNTER: "HUNTER",
+            AGENCY: "AGENCY",
+            STREAMER: "STREAMER",
+            TRADER: "TRADER",
+            ROAST: "ROAST",
             MODE: "TRYB"
         },
         variables: {
@@ -402,7 +493,98 @@ export const translations = {
             createdBy: "Stworzone przez",
             loadParams: "⚡ ZAŁADUJ SCENARIUSZ",
             rain: "🌧️ ZRÓB DESZCZ {coin}",
-            score: "Wynik {val}/100"
+            score: "Wynik {val}/100",
+            version: "MISJA REKOWERY v5.5 - SYSTEM AKTYWNY",
+            contact: "✈️ DM @ostryopos",
+            urlCopied: "Link do aplikacji skopiowany!"
+        },
+        scenarios: {
+            vanilla: "Standardowa Agencja",
+            trap: "Pułapka Rabatu",
+            hunter: "Agresywny Łowca",
+            whale: "Klient Wieloryb (M-Tier)"
+        },
+        scoreLabels: {
+            margin: "Bufor Marży",
+            tier: "Ochrona Poziomów",
+            retainer: "Bezpieczeństwo Retainera",
+            bonus: "Kontrola Bonusu",
+            fee: "Kompresja Opłat",
+            portfolio: "Ryzyko Portfela",
+            status: "STATUS {status}"
+        },
+        scoreDesc: {
+            blocked: "NARUSZENIE: Marża poniżej progu bezpieczeństwa.",
+            safe: "OPTYMALNIE: Silny bufor marży, skalowalna struktura.",
+            warn: "SUBOPTYMALNIE: Przyzwoicie, ale wrażliwie na spadki wolumenu.",
+            crit: "NIEBEZPIECZNIE: Bliska zapaść marży. Renegocjuj.",
+            calculating: "OBLICZANIE..."
+        },
+        roast: {
+            title: "🔥 Roast",
+            subSplitCrit: "Sub-split na poziomie {val}%? Dosłownie oddałeś giełdę KOL-owi. GM ser 🫡",
+            subSplitWarn: "{val}% sub-splitu i nadal Ci to pasuje? Odważna strategia.",
+            subSplitChad: "Sub-split {val}%? Bazowane. Giełda zachowuje swoje na obiad.",
+            retainerCrit: "Retainer (${val}) jest większy niż zysk netto. Ser, to jest organizacja charytatywna.",
+            retainerWarn: "Retainer zjada ponad 70% zysku. Jeden słaby miesiąc i ngmi.",
+            retainerDegen: "Zero retainera. Wysokie ryzyko, wysoka nagroda. Bardzo degen. Bardzo BD.",
+            netCrit: "Ujemny zysk netto ({val}). Ten deal dosłownie pali pieniądze. WAGMI? Nie.",
+            netChad: "{val} netto/msc. Ten deal wysyła. Degen approved.",
+            marginCrit: "Bufor marży na poziomie {val}%? Jeden spadek wolumenu i jesz w Mcdonaldzie.",
+            marginChad: "{val}% bufora marży. Struktura typu diamond hands. Szacunek.",
+            bonusCrit: "Kumulacja bonusu na poziomie {val}% ekwiwalentu. Jeden dobry miesiąc rujnuje model. Klasyczna pułapka bonusowa.",
+            bonusWarn: "Ekwiwalent bonusu na poziomie {val}%. Robi się gorąco. Pilnuj stosu.",
+            bonusOk: "Ekwiwalent bonusu {val}% — opanowany i bazowany. Dobry chłopiec.",
+            volWarn: "${val}M wolumenu? Nawet moja babcia ma większy obrót.",
+            volChad: "${val}M wolumenu — HUNTER TIER. Ten KOL jest zbudowany inaczej.",
+            partnerCrit: "{val}% udziału partnera? W tym momencie jesteś praktycznie pracownikiem KOL-a.",
+            partnerOk: "{val}% udziału partnera? Energia exchange-maxi. Oszczędnie i dyscyplina.",
+            retainedCrit: "Tylko ${val} zatrzymane na $1M wolumenu. To jest terytorium zapaści marży. RIP.",
+            scoreChad: "Wynik dealu {val}/100. Struktura typu Chad. Zrób screena. Pokaż szefowi.",
+            scoreOk: "Wynik {val}/100. Do wypracowania. Jeszcze nie świętuj. Zrób testy stresowe.",
+            scoreWarn: "Wynik {val}/100. Poziom COPE. Ten deal jest o jeden zły miesiąc od katastrofy.",
+            scoreCrit: "Wynik {val}/100. NGMI. Anon, ten deal jest strukturalnie przeklęty. Renegocjuj wszystko."
+        },
+        roastTiers: {
+            chad: { label: "CHAD DEAL", desc: "Sir, ten deal jest zbudowany." },
+            ser: { label: "SER", desc: "Technicznie dopuszczalne. Ledwo." },
+            cope: { label: "COPE", desc: "Wracamy? Nie. Nie wracamy." },
+            ngmi: { label: "NGMI", desc: "Ten deal jest strukturalnie ugotowany." }
+        },
+        roastNegotiation: {
+            title: "🎯 Zasady Negocjacji",
+            move1: { title: "Dostosuj strukturę retainera", detail: "Podziel R na transze kamieni milowych (start / 25M / 40M). Zmniejsza to początkową ekspozycję." },
+            move2: { title: "Użyj progresywnego sub-splitu", detail: "0–20M → 30%, 20–35M → 40%, 35M+ → 50%. Dopasuj zachęty KOL do wolumenu." },
+            move3: { title: "Zamień bonus na upgrade poziomu", detail: "Kumulacja bonusów to pułapka. Oferuj promocję poziomu — mniejsze ryzyko liniowe." },
+            move4: { title: "Dopiero wtedy podnieś S", detail: "Zwiększenie S to ostateczność. Każde 10% w S wymaga ~20% więcej wolumenu dla rekompensaty." }
+        },
+        roastOptimizer: {
+            title: "🤖 Sugestie Auto-Optymalizatora",
+            reduceS: "Zmniejsz sub-split S z {val1}% do {val2}%, aby zwiększyć bufor marży o ~{val3}%",
+            replaceB: "Zastąp bonus $B={val1}/1M upgrade'em poziomu przy progu {val2}M wolumenu",
+            splitR: "Podziel retainer $R={val1} na kamienie milowe: start (40%) + 25M (35%) + 40M (25%)",
+            reduceP: "Wynegocjuj obniżenie udziału partnera P z {val1}% do {val2}%",
+            perfect: "✅ Parametry są rozsądne. Skup się na wzroście wolumenu, aby poprawić wynik."
+        },
+        charts: {
+            efficiency: "💎 Wydajność Marży",
+            yield: "Zysk Netto z Wolumenu Brutto",
+            retained: "Zatrzymane",
+            partner: "Partner",
+            totalFees: "Suma Opłat",
+            volLabel: "{val}M WOL"
+        },
+        ticker: {
+            live: "⚡ GIEŁDA NA ŻYWO",
+            demo: "DEMO"
+        },
+        whale: {
+            detected: "WYKRYTO WIELORYBA"
+        },
+        common: {
+            copied: "📋 {val} skopiowane do schowka!",
+            summary: "Podsumowanie Wykonawcze",
+            proposal: "Propozycja"
         }
     },
     es: {
@@ -417,11 +599,11 @@ export const translations = {
             BD_OS: "BD OS",
             KNOWLEDGE: "Base de Conocimiento",
             ARCHITECT: "Arquitecto",
-            HUNTER: "Panel de Cazador",
-            PITCH: "Modo Pitch",
-            AGENCY: "Operaciones",
-            SAVES: "Biblioteca",
-            ADMIN: "Consola de Admin",
+            HUNTER: "HUNTER",
+            AGENCY: "AGENCY",
+            STREAMER: "STREAMER",
+            TRADER: "TRADER",
+            ROAST: "ROAST",
             MODE: "MODO"
         },
         variables: {
@@ -605,7 +787,98 @@ export const translations = {
             createdBy: "Creado por",
             loadParams: "⚡ CARGAR ESCENARIO",
             rain: "🌧️ HACER QUE LLUEVA {coin}",
-            score: "Puntos {val}/100"
+            score: "Puntos {val}/100",
+            version: "MISIÓN RECUPERACIÓN v5.5 - SISTEMA ACTIVO",
+            contact: "✈️ DM @ostryopos",
+            urlCopied: "¡URL de la aplicación copiada!"
+        },
+        scenarios: {
+            vanilla: "Agencia Estándar",
+            trap: "Trampa de Reembolso",
+            hunter: "Cazador Agresivo",
+            whale: "Cliente Ballena (Nivel-M)"
+        },
+        scoreLabels: {
+            margin: "Margen de Seguridad",
+            tier: "Protección de Nivel",
+            retainer: "Seguridad de Retenedor",
+            bonus: "Contención de Bonos",
+            fee: "Compresión de Tarifas",
+            portfolio: "Riesgo de Cartera",
+            status: "ESTADO {status}"
+        },
+        scoreDesc: {
+            blocked: "VIOLACIÓN: Margen por debajo del umbral.",
+            safe: "ÓPTIMO: Margen sólido, estructura escalable.",
+            warn: "SUBÓPTIMO: Respetable, pero vulnerable.",
+            crit: "PELIGROSO: Colapso inminente. Renegociar.",
+            calculating: "CALCULANDO..."
+        },
+        roast: {
+            title: "🔥 El Roast",
+            subSplitCrit: "¿Sub-split al {val}%? Literalmente donaste el exchange al KOL. GM ser 🫡",
+            subSplitWarn: "{val}% de sub-split y ¿sigues de acuerdo? Estrategia audaz.",
+            subSplitChad: "¿Sub-split al {val}%? Basado. El exchange se queda con su comida.",
+            retainerCrit: "El retenedor (${val}) es mayor que el beneficio neto. Señor, esto es caridad.",
+            retainerWarn: "Retenedor consumiendo más del 70% del beneficio. Un mal mes y ngmi.",
+            retainerDegen: "Sin retenedor. Alto riesgo, alta recompensa. Muy degen. Muy BD.",
+            netCrit: "Beneficio neto negativo ({val}). Este acuerdo está quemando dinero. ¿WAGMI? No.",
+            netChad: "{val} neto/mes. Este acuerdo está enviando. Degen aprobado.",
+            marginCrit: "¿Margen al {val}%? Una caída de volumen y estarás comiendo en Mcdonalds.",
+            marginChad: "{val}% de margen. Estructura de manos de diamante. Respeto.",
+            bonusCrit: "Bono acumulado al {val}% equivalente. Un buen mes arruina el modelo. Trampa clásica.",
+            bonusWarn: "Equivalente de bono al {val}%. Se está poniendo picante.",
+            bonusOk: "Equivalente de bono {val}% — contenido y basado. Buen chico.",
+            volWarn: "¿${val}M de volumen? Hasta mi abuela opera más.",
+            volChad: "${val}M de volumen — NIVEL CAZADOR. Este KOL es diferente.",
+            partnerCrit: "¿{val}% de parte del socio? Básicamente eres empleado del KOL ahora.",
+            partnerOk: "¿{val}% de parte del socio? Energía exchange-maxi. Frugal y disciplinado.",
+            retainedCrit: "Solo ${val} retenido por $1M. Territorio de colapso de margen. RIP.",
+            scoreChad: "Puntuación {val}/100. Estructura Chad. Haz captura. Muéstrasela a tu jefe.",
+            scoreOk: "Puntuación {val}/100. Trabajable. No celebres aún. Haz pruebas de estrés.",
+            scoreWarn: "Puntuación {val}/100. Nivel COPE. A un mal mes del desastre.",
+            scoreCrit: "Puntuación {val}/100. NGMI. Anon, este acuerdo está maldito. Renegocia todo."
+        },
+        roastTiers: {
+            chad: { label: "ACUERDO CHAD", desc: "Señor, este acuerdo está construido." },
+            ser: { label: "SER", desc: "Técnicamente pasable. Apenas." },
+            cope: { label: "COPE", desc: "¿Hemos vuelto? No. No hemos vuelto." },
+            ngmi: { label: "NGMI", desc: "Este acuerdo está estructuralmente cocinado." }
+        },
+        roastNegotiation: {
+            title: "🎯 Reglas de Negociación",
+            move1: { title: "Ajustar estructura de retenedor", detail: "Divida R en hitos (lanzamiento / 25M / 40M). Reduce exposición inicial." },
+            move2: { title: "Usar sub-split escalonado", detail: "0–20M → 30%, 20–35M → 40%, 35M+ → 50%. Alinea incentivos." },
+            move3: { title: "Cambiar bono por mejora de nivel", detail: "Los bonos acumulados son una trampa. Ofrezca promoción de nivel." },
+            move4: { title: "Solo entonces suba S", detail: "Subir S es el último recurso. Cada 10% necesita ~20% más volumen." }
+        },
+        roastOptimizer: {
+            title: "🤖 Sugeries del Auto-Optimizador",
+            reduceS: "Reducir sub-split S de {val1}% a {val2}% para subir margen en ~{val3}%",
+            replaceB: "Cambiar bono $B={val1}/1M por mejora de nivel a los {val2}M",
+            splitR: "Dividir retenedor $R={val1} en hitos: inicio (40%) + 25M (35%) + 40M (25%)",
+            reduceP: "Negociar parte del socio P de {val1}% a {val2}%",
+            perfect: "✅ Los parámetros son razonables. Enfoque en el crecimiento del volumen."
+        },
+        charts: {
+            efficiency: "💎 Eficiencia de Margen",
+            yield: "Rendimiento Neto sobre Volumen Bruto",
+            retained: "Retenido",
+            partner: "Socio",
+            totalFees: "Total Tarifas",
+            volLabel: "{val}M VOL"
+        },
+        ticker: {
+            live: "⚡ EXCHANGE EN VIVO",
+            demo: "DEMO"
+        },
+        whale: {
+            detected: "BALLENA DETECTADA"
+        },
+        common: {
+            copied: "📋 {val} copiado al portapapeles!",
+            summary: "Resumen Ejecutivo",
+            proposal: "Propuesta"
         }
     },
     hi: {
@@ -620,12 +893,27 @@ export const translations = {
             BD_OS: "BD OS",
             KNOWLEDGE: "ज्ञानकोष",
             ARCHITECT: "आर्किटेक्ट",
-            HUNTER: "हंटर पैनल",
-            PITCH: "पिच मोड",
-            AGENCY: "एजेंसी संचालन",
-            SAVES: "लाइब्रेरी",
-            ADMIN: "एडमिन कंसोल",
+            HUNTER: "HUNTER",
+            AGENCY: "AGENCY",
+            STREAMER: "STREAMER",
+            TRADER: "TRADER",
+            ROAST: "ROAST",
             MODE: "मोड"
+        },
+        topBar: {
+            createdBy: "द्वारा निर्मित",
+            loadParams: "⚡ लोड परिदृश्य",
+            rain: "🌧️ बारिश करें {coin}",
+            score: "स्कोर {val}/100",
+            version: "मिशन रिकवरी v5.5 - सिस्टम सक्रिय",
+            contact: "✈️ DM @ostryopos",
+            urlCopied: "ऐप URL कॉपी किया गया!"
+        },
+        scenarios: {
+            vanilla: "वेनिला एजेंसी",
+            trap: "हाई रिबेट ट्रैप",
+            hunter: "आक्रामक हंटर",
+            whale: "व्हेल क्लाइंट (M-टियर)"
         },
         variables: {
             title: "वेरिएबल्स",
@@ -720,7 +1008,7 @@ export const translations = {
             variant2Title: "ट्रेडर / डेस्क",
             variant2Content: "सज्मन क्रिप्टो ब्रेन प्रस्ताव — वीआईपी ट्रेडर\nवॉल्यूम प्रतिबद्धता: ${vol}M/माह\nशुद्ध शुल्क: {netFee}%\nवीआईपी टियर: एलीट\n\nसंरचना: {F}% आधार शुल्क से {P}% की सीधी शुल्क छूट।\nअगला कदम: एपीआई वीआईपी नोड पर ऑनबोर्ड।",
             variant3Title: "व्हेल / संस्थागत",
-            variant3Content: "सज्मन क्रिप्टो ब्रेन प्रस्ताव — संस्थागत\nकुल मासिक प्रवाह: ${vol}M/माह\nप्रभावी छूट: {P}%\nएक्सचेंज बरकरार: {retained}\n\nसंरचना: ${I} ऑप-कॉस्ट अनुकूलन + {P}% प्रदर्शन विभाजन।\nअगला कदम: प्रत्यक्ष कस्टडी और सेटलमेंट कॉल।",
+            variant3Content: "सज्मन क्रिप्टो ब्रेन प्रस्ताव — संस्थागत\nकुल मासिक प्रवाह: ${vol}M/माह\nप्रभावी छूट: {P}%\nएक्सचेंज बरकरार: {retained}\n\nसंरচনা: ${I} ऑप-कॉस्ट अनुकूलन + {P}% प्रदर्शन विभाजन।\nअगला कदम: प्रत्यक्ष कस्टडी और सेटलमेंट कॉल।",
             copyBtn: "प्रस्ताव कॉपी करें"
         },
         rule: {
@@ -803,12 +1091,6 @@ export const translations = {
                 low: "🟡 कम मार्जिन बफर: ${val}/1M बचा। अनुशंसित सीमा $140/1M है।",
                 healthy: "🟢 स्वस्थ मार्जिन: प्रति $1M ${val} बचा। आप सकल शुल्क का {pct}% बचा रहे हैं।"
             }
-        },
-        topBar: {
-            createdBy: "द्वारा निर्मित",
-            loadParams: "⚡ लोड परिदृश्य",
-            rain: "🌧️ बारिश करें {coin}",
-            score: "स्कोर {val}/100"
         }
     }
 };
